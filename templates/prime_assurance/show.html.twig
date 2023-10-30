@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PrimeAssurance{% endblock %}
+
+{% block body %}
+    <h1>PrimeAssurance</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ prime_assurance.id }}</td>
+            </tr>
+            <tr>
+                <th>Annee</th>
+                <td>{{ prime_assurance.annee }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ prime_assurance.montant }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prime_assurance_index') }}">back to list</a>
+
+    <a href="{{ path('app_prime_assurance_edit', {'id': prime_assurance.id}) }}">edit</a>
+
+    {{ include('prime_assurance/_delete_form.html.twig') }}
+{% endblock %}

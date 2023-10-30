@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Charge{% endblock %}
+
+{% block body %}
+    <h1>Modifier Charge</h1>
+
+    {{ include('charge/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    {{ include('charge/_delete_form.html.twig') }}
+    <div class="mt-3">
+        <button class="btn btn-secondary"><a href={{ path('app_lot_edit', {residenceId: residence.id, id: lot.id})}}>Retour au lot</a></button>
+    </div>
+{% endblock %}

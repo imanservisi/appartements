@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MandatSyndic index{% endblock %}
+
+{% block body %}
+    <h1>MandatSyndic index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DebutMandat</th>
+                <th>FinMandat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mandat_syndic in mandat_syndics %}
+            <tr>
+                <td>{{ mandat_syndic.id }}</td>
+                <td>{{ mandat_syndic.debutMandat ? mandat_syndic.debutMandat|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ mandat_syndic.finMandat ? mandat_syndic.finMandat|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_mandat_syndic_show', {'id': mandat_syndic.id}) }}">show</a>
+                    <a href="{{ path('app_mandat_syndic_edit', {'id': mandat_syndic.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_mandat_syndic_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Syndic{% endblock %}
+
+{% block body %}
+    <h1>Liste des Syndics</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom Syndic</th>
+                <th>Adresse Syndic</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for syndic in syndics %}
+            <tr>
+                <td>{{ syndic.nomSyndic }}</td>
+                <td>{{ syndic.adresseSyndic }}</td>
+                <td>
+                    {# <a href="{{ path('app_syndic_show', {'id': syndic.id}) }}">show</a> #}
+                    <button class="btn btn-info"><a href="{{ path('app_syndic_edit', {'id': syndic.id}) }}">Modifier</a></button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        <button class="btn btn-primary">
+            <a href="{{ path('app_syndic_new') }}">Ajouter un syndic</a>
+        </button>
+    </div>
+    <div>
+        <button class="mt-3 btn btn-secondary">
+            <a href="{{ path('app_residence_index') }}">Retour résidences</a>
+        </button>
+    </div>
+    
+    
+    
+{% endblock %}

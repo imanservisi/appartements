@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Taxe foncière{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Taxe Foncière pour la résidence {{ residence.nomResidence }}</h1>
+
+    {{ include('taxe_fonciere/_form.html.twig') }}
+
+    <button class="mt-3 btn btn-secondary">
+        <a href="{{ path('app_residence_show', {id: residence.id}) }}">Retour résidence</a>
+    </button>
+{% endblock %}

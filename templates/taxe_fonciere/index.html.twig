@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TaxeFonciere index{% endblock %}
+
+{% block body %}
+    <h1>TaxeFonciere index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Annee</th>
+                <th>Montant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for taxe_fonciere in taxe_foncieres %}
+            <tr>
+                <td>{{ taxe_fonciere.id }}</td>
+                <td>{{ taxe_fonciere.annee }}</td>
+                <td>{{ taxe_fonciere.montant }}</td>
+                <td>
+                    <a href="{{ path('app_taxe_fonciere_show', {'id': taxe_fonciere.id}) }}">show</a>
+                    <a href="{{ path('app_taxe_fonciere_edit', {'id': taxe_fonciere.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_taxe_fonciere_new') }}">Create new</a>
+{% endblock %}

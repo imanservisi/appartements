@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PrimeAssurance{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Ajouter une Prime d'assurance</h1>
+
+    {{ include('prime_assurance/_form.html.twig') }}
+
+    {# <a href="{{ path('app_prime_assurance_index') }}">back to list</a> #}
+{% endblock %}

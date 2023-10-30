@@ -1,0 +1,43 @@
+{% block body %}
+<div class="m-3 col-6 card">
+    <div class="card-header">
+        <h1 class="text-center">Charges</h1>
+    </div>
+    <div class="card-body">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>Annee</th>
+                    <th>Mois</th>
+                    <th>Montant</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% set sommeCharges = 0 %}
+            {% for charge in charges %}
+                <tr>
+                    <td>{{ charge.annee }}</td>
+                    <td>{{ charge.mois }}</td>
+                    <td>{{ charge.montant }}</td>
+                    <td>
+                        <button class="btn btn-success"><a href={{ path('app_charge_edit', {residenceId: residence.id, lotId: lot.id, id: charge.id})}}><i class="fa-solid fa-pen-to-square"></i></a></button>
+                        {{ include('charge/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+                    </td>
+                </tr>
+                {% set sommeCharges = sommeCharges + charge.montant %}
+            {% else %}
+                <tr>
+                    <td colspan="5">aucune donnée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p><strong>Somme des charges : {{ sommeCharges }}</strong></p>
+        <div class="text-center">
+            <button class="btn btn-primary"><a href="{{ path('app_charge_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter charge</a></button>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

@@ -1,0 +1,40 @@
+{% block body %}
+    <div class="m-3 col-6 card">
+    <div class="card-header">
+        <h1 class="text-center">Prime Assurance</h1>
+    </div>
+    <div class="card-body">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>Annee</th>
+                    <th>Montant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {# {% set sommeCharges = 0 %} #}
+            {% for prime_assurance in prime_assurances %}
+                <tr>
+                    <td>{{ prime_assurance.annee }}</td>
+                    <td>{{ prime_assurance.montant }}</td>
+                    <td>
+                        <button class="btn btn-info"><a href="{{ path('app_prime_assurance_edit', {residenceId: residence.id, lotId: lot.id, id: prime_assurance.id })}}">Modifier</a></button>
+                        {{ include('prime_assurance/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+                    </td>
+                </tr>
+                {# {% set sommeCharges = sommeCharges + charge.montant %} #}
+            {% else %}
+                <tr>
+                    <td colspan="5">aucune donnée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {# <p><strong>Somme des charges : {{ sommeCharges }}</strong></p> #}
+        <div class="text-center">
+            <button class="btn btn-primary"><a href="{{ path('app_prime_assurance_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter une prime d'assurance</a></button>
+        </div>
+    </div>
+</div>
+{% endblock %}
