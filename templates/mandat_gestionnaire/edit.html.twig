@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit MandatGestionnaire{% endblock %}
-
 {% block body %}
-    <h1>Edit MandatGestionnaire</h1>
+    <h1 class="text-center">Modifier Mandat de Gestion</h1>
 
-    {{ include('mandat_gestionnaire/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('mandat_gestionnaire/_form.html.twig', {'button_label': 'Mise à jour'}) }}
 
-    <a href="{{ path('app_mandat_gestionnaire_index') }}">back to list</a>
+    {# <a href="{{ path('app_mandat_gestionnaire_index') }}">back to list</a> #}
 
     {{ include('mandat_gestionnaire/_delete_form.html.twig') }}
 {% endblock %}

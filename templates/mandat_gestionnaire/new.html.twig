@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New MandatGestionnaire{% endblock %}
+{% block title %}MandatGestionnaire{% endblock %}
 
 {% block body %}
-    <h1>Create new MandatGestionnaire</h1>
+    <h1 class="text-center">Créer un nouveau mandat de gestion</h1>
 
     {{ include('mandat_gestionnaire/_form.html.twig') }}
-
-    <a href="{{ path('app_mandat_gestionnaire_index') }}">back to list</a>
 {% endblock %}

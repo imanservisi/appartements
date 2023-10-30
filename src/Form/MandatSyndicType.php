@@ -24,10 +24,6 @@ class MandatSyndicType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false
             ])
-            // ->add('residence', EntityType::class, [
-            //     'class' => Residence::class,
-            //     'choice_label' => 'nomResidence'
-            // ])
             ->add('syndic')
         ;
     }

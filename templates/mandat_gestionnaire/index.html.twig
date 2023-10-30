@@ -13,14 +13,13 @@
                 </tr>
             </thead>
             <tbody>
-            {# {{ dump(mandat_gestionnaires) }} #}
             {% for mandat_gestionnaire in mandat_gestionnaires %}
                 <tr>
-                    <td>{{ mandat_gestionnaire.debutMandat ? mandat_gestionnaire.debutMandat|date('Y-m-d') : '' }}</td>
-                    <td>{{ mandat_gestionnaire.finMandat ? mandat_gestionnaire.finMandat|date('Y-m-d') : '' }}</td>
+                    <td>{{ mandat_gestionnaire.debutMandat ? mandat_gestionnaire.debutMandat|date('d-m-Y') : '-' }}</td>
+                    <td>{{ mandat_gestionnaire.finMandat ? mandat_gestionnaire.finMandat|date('d-m-Y') : '-' }}</td>
                     <td>
-                        {# <button class="btn btn-info"><a href="{{ path('app_prime_assurance_edit', {residenceId: residence.id, lotId: lot.id, id: prime_assurance.id })}}">Modifier</a></button> #}
-                        {# {{ include('prime_assurance/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }} #}
+                        <button class="btn btn-info"><a href="{{ path('app_mandat_gestionnaire_edit', {residenceId: residence.id, lotId: lot.id, id: mandat_gestionnaire.id })}}">Modifier</a></button>
+                        {{ include('mandat_gestionnaire/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
                     </td>
                 </tr>
             {% else %}
@@ -30,9 +29,9 @@
             {% endfor %}
             </tbody>
         </table>
-        {# <div class="text-center">
-            <button class="btn btn-primary"><a href="{{ path('app_prime_assurance_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter une prime d'assurance</a></button>
-        </div> #}
+        <div class="text-center">
+            <button class="btn btn-primary"><a href="{{ path('app_mandat_gestionnaire_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter un mandat de gestion</a></button>
+        </div>
     </div>
 </div>
 {% endblock %}
