@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locataire{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Modifier Locataire {{ locataire.nomLocataire }}</h1>
+
+    {{ include('locataire/_form.html.twig', {'button_label': 'Mise à jour'}) }}
+
+    {{ include('locataire/_delete_form.html.twig') }}
+{% endblock %}

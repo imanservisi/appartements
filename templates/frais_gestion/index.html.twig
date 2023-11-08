@@ -1,0 +1,39 @@
+{% block body %}
+    <div class="m-3 col-6 card">
+    <div class="card-header">
+        <h1 class="text-center">Frais de Gestion</h1>
+    </div>
+    <div class="card-body">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>Année</th>
+                    <th>Mois</th>
+                    <th>Montant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for frais_gestion in frais_gestions %}
+                <tr>
+                    <td>{{ frais_gestion.annee }}</td>
+                    <td>{{ frais_gestion.mois }}</td>
+                    <td>{{ frais_gestion.montant }}</td>
+                    <td>
+                        <button class="btn btn-info"><a href="{{ path('app_frais_gestion_edit', {residenceId: residence.id, lotId: lot.id, mandatGestionnaireId: mandat_gestionnaire.id, id: frais_gestion.id })}}">Modifier</a></button>
+                        {{ include('frais_gestion/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id, mandatGestionnaireId: mandat_gestionnaire.id, id: frais_gestion.id}) }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">aucune donnée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center">
+            <button class="btn btn-primary"><a href="{{ path('app_frais_gestion_new', {residenceId: residence.id, lotId: lot.id, mandatGestionnaireId: mandat_gestionnaire.id}) }}">Ajouter un frais de gestion</a></button>
+        </div>
+    </div>
+</div>
+{% endblock %}

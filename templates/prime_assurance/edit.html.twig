@@ -7,7 +7,9 @@
 
     {{ include('prime_assurance/_form.html.twig', {'button_label': 'Mise à jour'}) }}
 
-    {# <a href="{{ path('app_prime_assurance_index') }}">back to list</a> #}
-
     {{ include('prime_assurance/_delete_form.html.twig') }}
+
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
+    </button>
 {% endblock %}

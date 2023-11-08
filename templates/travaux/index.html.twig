@@ -1,0 +1,41 @@
+{% block body %}
+<div class="m-3 col-6 card">
+    <div class="card-header">
+        <h1 class="text-center">Travaux</h1>
+    </div>
+    <div class="card-body">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>Entreprise</th>
+                    <th>Date Travaux</th>
+                    <th>Type Travaux</th>
+                    <th>Montant Travaux</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for travaux in travauxes %}
+                <tr>
+                    <td>{{ travaux.entreprise.nomEntreprise }}</td>
+                    <td>{{ travaux.dateTravaux ? travaux.dateTravaux|date('Y-m-d') : '' }}</td>
+                    <td>{{ travaux.typeTravaux }}</td>
+                    <td>{{ travaux.montantTravaux }}</td>
+                    <td>
+                        <button class="btn btn-info"><a href="{{ path('app_travaux_edit', {residenceId: residence.id, lotId: lot.id, id: travaux.id })}}">Modifier</a></button>
+                        {{ include('travaux/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">aucune donnée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center">
+            <button class="btn btn-primary"><a href="{{ path('app_travaux_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter des travaux</a></button>
+        </div>
+    </div>
+</div>
+{% endblock %}

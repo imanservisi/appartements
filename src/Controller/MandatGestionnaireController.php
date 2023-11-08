@@ -6,6 +6,7 @@ use App\Entity\Lot;
 use App\Entity\MandatGestionnaire;
 use App\Entity\Residence;
 use App\Form\MandatGestionnaireType;
+use App\Repository\FraisGestionRepository;
 use App\Repository\MandatGestionnaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -80,8 +81,11 @@ class MandatGestionnaireController extends AbstractController
         MandatGestionnaire $mandatGestionnaire,
         EntityManagerInterface $entityManager,
         Residence $residence,
-        Lot $lot
+        Lot $lot,
+        FraisGestionRepository $fraisGestionRepository
         ): Response {
+        //Récupération des frais de gestion liés au mandat
+        $frais_gestions = $fraisGestionRepository->findBy(['mandatGestionnaire' => $mandatGestionnaire]);
         $form = $this->createForm(MandatGestionnaireType::class, $mandatGestionnaire);
         $form->handleRequest($request);
 
@@ -98,20 +102,29 @@ class MandatGestionnaireController extends AbstractController
             'mandat_gestionnaire' => $mandatGestionnaire,
             'form' => $form,
             'residence' => $residence,
-            'lot' => $lot
+            'lot' => $lot,
+            'frais_gestions' => $frais_gestions
         ]);
     }
 
     #[Route('/{id}', name: 'app_mandat_gestionnaire_delete', methods: ['POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    public function delete(Request $request, MandatGestionnaire $mandatGestionnaire, EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        MandatGestionnaire $mandatGestionnaire,
+        EntityManagerInterface $entityManager,
+        Residence $residence,
+        Lot $lot
+        ): Response {
         if ($this->isCsrfTokenValid('delete'.$mandatGestionnaire->getId(), $request->request->get('_token'))) {
             $entityManager->remove($mandatGestionnaire);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_mandat_gestionnaire_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_lot_edit', [
+            'residenceId' => $residence->getId(),
+            'id' => $lot->getId()
+        ], Response::HTTP_SEE_OTHER);
     }
 }

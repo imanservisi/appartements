@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestionnaire{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Création nouveau gestionnaire</h1>
+
+    {{ include('gestionnaire/_form.html.twig') }}
+
+    <div>
+        <button class="mt-3 btn btn-secondary">
+            <a href="{{ path('app_gestionnaire_index') }}">Retour liste gestionnaires</a>
+        </button>
+    </div>
+    <div>
+        <button class="mt-3 btn btn-secondary">
+            <a href="{{ path('app_residence_index') }}">Retour liste résidences</a>
+        </button>
+    </div>
+{% endblock %}

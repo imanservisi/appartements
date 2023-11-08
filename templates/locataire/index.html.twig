@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locataire{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Liste Locataires</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom Locataire</th>
+                <th>Date Naissance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for locataire in locataires %}
+            <tr>
+                <td>{{ locataire.nomLocataire }}</td>
+                <td>{{ locataire.dateNaissance ? locataire.dateNaissance|date('d-m-Y') : '-' }}</td>
+                <td>
+                    <a href="{{ path('app_locataire_edit', {'id': locataire.id}) }}">Modifier</a>
+                    {{ include('locataire/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <button class="btn btn-primary">
+            <a href="{{ path('app_locataire_new') }}">Ajouter un locataire</a>
+        </button>
+    </div>
+
+{% endblock %}

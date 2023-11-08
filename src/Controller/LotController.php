@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\FraisGestion;
 use App\Entity\Lot;
 use App\Entity\Residence;
 use App\Form\LotType;
 use App\Repository\ChargeRepository;
+use App\Repository\EmpruntRepository;
+use App\Repository\FraisGestionRepository;
+use App\Repository\LocationRepository;
 use App\Repository\LotRepository;
 use App\Repository\MandatGestionnaireRepository;
 use App\Repository\PrimeAssuranceRepository;
+use App\Repository\TravauxRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,7 +74,10 @@ class LotController extends AbstractController
         EntityManagerInterface $entityManager,
         ChargeRepository $chargeRepository,
         PrimeAssuranceRepository $primeAssuranceRepository,
-        MandatGestionnaireRepository $mandatGestionnaireRepository
+        MandatGestionnaireRepository $mandatGestionnaireRepository,
+        EmpruntRepository $empruntRepository,
+        TravauxRepository $travauxRepository,
+        LocationRepository $locationRepository
         ): Response {
         //Récupération des charges liées au lot
         $charges = $chargeRepository->findBy(['lot' => $lot]);
@@ -77,6 +85,12 @@ class LotController extends AbstractController
         $primesAssurance = $primeAssuranceRepository->findBy(['lot' => $lot]);
         //Récupération des mandats de gestion liés au lot
         $mandatGestionnaires = $mandatGestionnaireRepository->findBy(['lot' => $lot]);
+        //Récupération des emprunts liés au lot
+        $emprunts = $empruntRepository->findBy(['lot' => $lot]);
+        //Récupération des emprunts liés au lot
+        $travauxes = $travauxRepository->findBy(['lot' => $lot]);
+        //Récupération des locations liés au lot
+        $locations = $locationRepository->findBy(['lot' => $lot]);
 
         $form = $this->createForm(LotType::class, $lot);
         $form->handleRequest($request);
@@ -95,7 +109,10 @@ class LotController extends AbstractController
             'form' => $form,
             'charges' => $charges,
             'prime_assurances' => $primesAssurance,
-            'mandat_gestionnaires' => $mandatGestionnaires
+            'mandat_gestionnaires' => $mandatGestionnaires,
+            'emprunts' => $emprunts,
+            'travauxes' => $travauxes,
+            'locations' => $locations
         ]);
     }
 

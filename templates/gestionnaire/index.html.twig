@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestionnaire index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Liste des gestionnaires</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>NomGestionnaire</th>
+                <th>AdresseGestionnaire</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gestionnaire in gestionnaires %}
+            <tr>
+                <td>{{ gestionnaire.nomGestionnaire }}</td>
+                <td>{{ gestionnaire.adresseGestionnaire }}</td>
+                <td>
+                    <a href="{{ path('app_gestionnaire_show', {'id': gestionnaire.id}) }}">show</a>
+                    <a href="{{ path('app_gestionnaire_edit', {'id': gestionnaire.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        <button class="btn btn-primary">
+            <a href="{{ path('app_gestionnaire_new') }}">Ajouter un gestionnaire</a>
+        </button>
+    </div>
+{% endblock %}

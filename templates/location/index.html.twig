@@ -1,0 +1,39 @@
+{% block body %}
+<div class="m-3 col-6 card">
+    <div class="card-header">
+        <h1 class="text-center">Locations</h1>
+    </div>
+    <div class="card-body">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>Nom Locataire</th>
+                    <th>Début Location</th>
+                    <th>Fin Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for location in locations %}
+                <tr>
+                    <td>{{ location.locataire.nomLocataire }}</td>
+                    <td>{{ location.debutLocation ? location.debutLocation|date('d-m-Y') : '-' }}</td>
+                    <td>{{ location.finLocation ? location.finLocation|date('d-m-Y') : '-' }}</td>
+                    <td>
+                        <button class="btn btn-info"><a href="{{ path('app_location_edit', {residenceId: residence.id, lotId: lot.id, id: location.id })}}">Modifier</a></button>
+                        {{ include('location/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">aucune donnée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center">
+            <button class="btn btn-primary"><a href="{{ path('app_location_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter une location</a></button>
+        </div>
+    </div>
+</div>
+{% endblock %}

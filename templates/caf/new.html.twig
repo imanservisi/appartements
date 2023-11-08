@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Caf{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Créer entrée Caf</h1>
+
+    {{ include('caf/_form.html.twig') }}
+
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_location_edit', {residenceId: residence.id, lotId: lot.id, id: location.id }) }}">Retour Location</a>
+    </button>
+{% endblock %}

@@ -5,17 +5,42 @@
 {% block body %}
     <h1 class="text-center">Modification {{ lot.nomLot }}</h1>
     
-    <button class="btn btn-secondary" type="button"><a href="{{ path('app_residence_show', {id: residence.id}) }}">Retour résidence</a></button>
-
     {{ include('lot/_form.html.twig', {'button_label': 'Mise à jour'}) }}
 
     {{ include('charge/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
 
     {{ include('prime_assurance/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
+    
+    {% if mandat_gestionnaires %}
+        {{ include('mandat_gestionnaire/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
+    {% else %}
+        <div class="m-3">
+            <button class="m-3 btn btn-primary"><a href="{{ path('app_mandat_gestionnaire_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter Mandat Gestion</a></button>
+        </div>
+    {% endif %}
 
-    {{ include('mandat_gestionnaire/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
-    {# {{ include('charge/edit.html.twig', {residenceId: residence.id, lotId: lot.id})}} #}
+    {% if emprunts %}
+        {{ include('emprunt/index.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+    {% else %}
+        <div class="m-3">
+            <button class="m-3 btn btn-primary"><a href="{{ path('app_emprunt_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter Emprunt</a></button>
+        </div>
+    {% endif %}
 
+    {% if travauxes %}
+        {{ include('travaux/index.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+    {% else %}
+        <div class="m-3">
+            <button class="m-3 btn btn-primary"><a href="{{ path('app_travaux_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter Travaux</a></button>
+        </div>
+    {% endif %}
 
-    {# {{ include('lot/_delete_form.html.twig') }} #}
+    {% if locations %}
+        {{ include('location/index.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+    {% else %}
+        <div class="m-3">
+            <button class="m-3 btn btn-primary"><a href="{{ path('app_location_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter Location</a></button>
+        </div>
+    {% endif %}
+
 {% endblock %}

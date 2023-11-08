@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Interet{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Créer nouvel Intérêt</h1>
+
+    {{ include('interet/_form.html.twig') }}
+
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_emprunt_edit', {residenceId: residence.id, lotId: lot.id, id: emprunt.id }) }}">Retour emprunt</a>
+    </button>
+{% endblock %}

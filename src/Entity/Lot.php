@@ -37,11 +37,23 @@ class Lot
     #[ORM\OneToMany(mappedBy: 'lot', targetEntity: MandatGestionnaire::class)]
     private Collection $mandatGestionnaires;
 
+    #[ORM\OneToMany(mappedBy: 'lot', targetEntity: Emprunt::class)]
+    private Collection $emprunts;
+
+    #[ORM\OneToMany(mappedBy: 'lot', targetEntity: Travaux::class)]
+    private Collection $travauxes;
+
+    #[ORM\OneToMany(mappedBy: 'lot', targetEntity: Location::class)]
+    private Collection $locations;
+
     public function __construct()
     {
         $this->charges = new ArrayCollection();
         $this->primeAssurances = new ArrayCollection();
         $this->mandatGestionnaires = new ArrayCollection();
+        $this->emprunts = new ArrayCollection();
+        $this->travauxes = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,6 +193,96 @@ class Lot
             // set the owning side to null (unless already changed)
             if ($mandatGestionnaire->getLot() === $this) {
                 $mandatGestionnaire->setLot(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getEmprunts(): Collection
+    {
+        return $this->emprunts;
+    }
+
+    public function addEmprunt(Emprunt $emprunt): static
+    {
+        if (!$this->emprunts->contains($emprunt)) {
+            $this->emprunts->add($emprunt);
+            $emprunt->setLot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmprunt(Emprunt $emprunt): static
+    {
+        if ($this->emprunts->removeElement($emprunt)) {
+            // set the owning side to null (unless already changed)
+            if ($emprunt->getLot() === $this) {
+                $emprunt->setLot(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Travaux>
+     */
+    public function getTravauxes(): Collection
+    {
+        return $this->travauxes;
+    }
+
+    public function addTravaux(Travaux $travaux): static
+    {
+        if (!$this->travauxes->contains($travaux)) {
+            $this->travauxes->add($travaux);
+            $travaux->setLot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTravaux(Travaux $travaux): static
+    {
+        if ($this->travauxes->removeElement($travaux)) {
+            // set the owning side to null (unless already changed)
+            if ($travaux->getLot() === $this) {
+                $travaux->setLot(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): static
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setLot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): static
+    {
+        if ($this->locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getLot() === $this) {
+                $location->setLot(null);
             }
         }
 

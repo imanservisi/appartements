@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FraisGestion{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Ajouter un Frais de Gestion</h1>
+
+    {{ include('frais_gestion/_form.html.twig') }}
+
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
+    </button>
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_mandat_gestionnaire_edit', {residenceId: residence.id, lotId: lot.id, id: mandat_gestionnaire.id }) }}">Retour Mandat Gestionnaire</a>
+    </button>
+{% endblock %}

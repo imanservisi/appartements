@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Loyer{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Modifier Loyer</h1>
+
+    {{ include('loyer/_form.html.twig', {'button_label': 'Mise à jour'}) }}
+
+    {{ include('loyer/_delete_form.html.twig') }}
+
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_location_edit', {residenceId: residence.id, lotId: lot.id, id: location.id }) }}">Retour Location</a>
+    </button>
+{% endblock %}

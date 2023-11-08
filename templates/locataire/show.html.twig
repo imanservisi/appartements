@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Locataire{% endblock %}
+
+{% block body %}
+    <h1>Locataire</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ locataire.id }}</td>
+            </tr>
+            <tr>
+                <th>NomLocataire</th>
+                <td>{{ locataire.nomLocataire }}</td>
+            </tr>
+            <tr>
+                <th>DateNaissance</th>
+                <td>{{ locataire.dateNaissance ? locataire.dateNaissance|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_locataire_index') }}">back to list</a>
+
+    <a href="{{ path('app_locataire_edit', {'id': locataire.id}) }}">edit</a>
+
+    {{ include('locataire/_delete_form.html.twig') }}
+{% endblock %}

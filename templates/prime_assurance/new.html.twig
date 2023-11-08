@@ -7,5 +7,7 @@
 
     {{ include('prime_assurance/_form.html.twig') }}
 
-    {# <a href="{{ path('app_prime_assurance_index') }}">back to list</a> #}
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
+    </button>
 {% endblock %}

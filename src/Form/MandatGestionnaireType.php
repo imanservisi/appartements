@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Gestionnaire;
 use App\Entity\MandatGestionnaire;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,6 +23,10 @@ class MandatGestionnaireType extends AbstractType
                 'label' => 'Fin du mandat',
                 'widget' => 'single_text',
                 'required' => false
+            ])
+            ->add('gestionnaire', EntityType::class, [
+                'class' => Gestionnaire::class,
+                'choice_label' => 'nomGestionnaire'
             ])
         ;
     }

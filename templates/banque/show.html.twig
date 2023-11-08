@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Banque{% endblock %}
+
+{% block body %}
+    <h1>Banque</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ banque.id }}</td>
+            </tr>
+            <tr>
+                <th>NomBanque</th>
+                <td>{{ banque.nomBanque }}</td>
+            </tr>
+            <tr>
+                <th>AdresseBanque</th>
+                <td>{{ banque.adresseBanque }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_banque_index') }}">back to list</a>
+
+    <a href="{{ path('app_banque_edit', {'id': banque.id}) }}">edit</a>
+
+    {{ include('banque/_delete_form.html.twig') }}
+{% endblock %}

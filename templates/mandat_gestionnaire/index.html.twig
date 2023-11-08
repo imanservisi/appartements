@@ -7,6 +7,7 @@
         <table class="table card-table">
             <thead>
                 <tr>
+                    <th>Nom Gestionnaire</th>
                     <th>Début Mandat</th>
                     <th>Fin Mandat</th>
                     <th>Actions</th>
@@ -15,6 +16,7 @@
             <tbody>
             {% for mandat_gestionnaire in mandat_gestionnaires %}
                 <tr>
+                    <td>{{ mandat_gestionnaire.gestionnaire.nomGestionnaire }}</td>
                     <td>{{ mandat_gestionnaire.debutMandat ? mandat_gestionnaire.debutMandat|date('d-m-Y') : '-' }}</td>
                     <td>{{ mandat_gestionnaire.finMandat ? mandat_gestionnaire.finMandat|date('d-m-Y') : '-' }}</td>
                     <td>

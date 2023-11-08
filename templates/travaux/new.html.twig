@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Travaux{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Créer nouveaux Travaux</h1>
+
+    {{ include('travaux/_form.html.twig') }}
+
+    <button class="btn btn-secondary" type="button">
+        <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
+    </button>
+{% endblock %}
