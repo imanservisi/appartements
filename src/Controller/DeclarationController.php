@@ -8,11 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeclarationController extends AbstractController
 {
-    #[Route('/', name: 'app_declaration')]
+    #[Route('{_locale}/', name: 'app_declaration')]
     public function index(): Response
     {
-        return $this->render('declaration/index.html.twig', [
-            'controller_name' => 'DeclarationController',
-        ]);
+        return $this->render('declaration/index.html.twig');
     }
 }

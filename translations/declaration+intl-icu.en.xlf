@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="VCWODIT" resname="title_intitule">
+        <source>title_intitule</source>
+        <target>Intitule</target>
+      </trans-unit>
+      <trans-unit id="LSErx2Z" resname="title_declaration">
+        <source>title_declaration</source>
+        <target>Declaration</target>
+      </trans-unit>
+      <trans-unit id="105KcRG" resname="title_ligne_number">
+        <source>title_ligne_number</source>
+        <target>Ligne Number</target>
+      </trans-unit>
+      <trans-unit id="LECzhlz" resname="title_residence_name">
+        <source>title_residence_name</source>
+        <target>Residence Name</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
