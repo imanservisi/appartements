@@ -5,6 +5,17 @@
 {% block body %}
     <div class="container">
     <h1 class="text-center">Déclaration</h1>
+    <form method="post">
+        <select class="form-select" aria-label="Choix residence" id="choix-residence" name="choix-residence">
+            <option value="">Choisir une résidence</option>
+            {% for residence in residences %}
+                <option value="{{ residence.id }}">{{ residence.nomResidence }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-info" type="submit">Choisir</button>
+    </form>
+
+    <h2 class="text-center">{{ residence.nomResidence }}</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -54,6 +65,17 @@
                     <th>221</th>
                     <td>Frais d'administration et de gestion</td>
                     <td>{{ montant221 }}</td>
+                </tr>
+                {% set nbLot = residence.lot|length %}
+                <tr>
+                    <th>222</th>
+                    <td>Autres frais de gestion</td>
+                    <td>{{ nbLot * 20 }}</td>
+                </tr>
+                <tr>
+                    <th>223</th>
+                    <td>Primes d'assurance</td>
+                    <td>{{ montant223 }}</td>
                 </tr>
             </tbody>
         </table>

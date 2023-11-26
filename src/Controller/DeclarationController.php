@@ -8,6 +8,7 @@ use App\Repository\LocationRepository;
 use App\Repository\LotRepository;
 use App\Repository\LoyerRepository;
 use App\Repository\MandatGestionnaireRepository;
+use App\Repository\PrimeAssuranceRepository;
 use App\Repository\ResidenceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,17 +26,20 @@ class DeclarationController extends AbstractController
         LoyerRepository $loyerRepository,
         CafRepository $cafRepository,
         MandatGestionnaireRepository $mandatGestionnaireRepository,
-        FraisGestionRepository $fraisGestionRepository
+        FraisGestionRepository $fraisGestionRepository,
+        PrimeAssuranceRepository $primeAssuranceRepository
     ): Response
     {
-        //Récupération de la résidence
-        $residence = $residenceRepository->findOneBy(['id' => 1]);
+        $idResidence = $request->request->get('choix-residence', "1");
+        //Récupération de la résidence en fonction de l'idResidence demandé
+        $residence = $residenceRepository->findOneBy(['id' => $idResidence]);
         //Récupération de tous les lots liés à la résidence
         $lots = $lotRepository->findBy(['residence' => $residence]);
         
         $sommeLoyer = 0;
         $sommeCaf = 0;
         $sommeMandatGestion = 0;
+        $sommePrimesAssurance = 0;
         foreach ($lots as $lot) {
             //Récupération des montants des loyers et de la CAF
             $locations = $locationRepository->findBy(['lot' => $lot]);
@@ -57,14 +61,20 @@ class DeclarationController extends AbstractController
                     $sommeMandatGestion = $sommeMandatGestion + $fraisGestion->getMontant();
                 }
             }
+            //Récupération des primes d'assurance
+            $primesAssurance = $primeAssuranceRepository->findBy(['lot' => $lot]);
+            foreach ($primesAssurance as $prime) {
+                $sommePrimesAssurance = $sommePrimesAssurance + $prime->getMontant();
+            }
         }
         $montant211 = $sommeLoyer + $sommeCaf;
 
         return $this->render('declaration/index.html.twig', [
-            'controller_name' => 'DeclarationController',
+            'residences' => $residenceRepository->findAll(),
             'residence' => $residence,
             'montant211' => $montant211,
-            'montant221' => $sommeMandatGestion
+            'montant221' => $sommeMandatGestion,
+            'montant223' => $sommePrimesAssurance
         ]);
     }
 }
