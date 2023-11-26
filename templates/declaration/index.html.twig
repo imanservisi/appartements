@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DeclarationController!{% endblock %}
+{% block title %}Declaration{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -10,15 +10,50 @@
                 <tr>
                     <th scope="col">N° ligne</th>
                     <th scope="col">Intitulé</th>
-                    <th scope="col">Nom Résidence</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
                 
             <tbody >
                 <tr>
                     <th>210</th>
-                    <th>Recettes</th>
-                    <th>chiffre</th>
+                    <td>RECETTES</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>211</th>
+                    <td>Loyers</td>
+                    <td>{{ montant211 }}</td>
+                </tr>
+                <tr>
+                    <th>212</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>213</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>214</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>215</th>
+                    <td>TOTAL DES RECETTES</td>
+                    <td>{{ montant211 }}</td>
+                </tr>
+                <tr>
+                    <th>220</th>
+                    <td>FRAIS ET CHARGES</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>221</th>
+                    <td>Frais d'administration et de gestion</td>
+                    <td>{{ montant221 }}</td>
                 </tr>
             </tbody>
         </table>
