@@ -9,6 +9,7 @@ use App\Repository\MandatSyndicRepository;
 use App\Repository\ResidenceRepository;
 use App\Repository\TaxeFonciereRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,12 +86,15 @@ class ResidenceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_residence_delete', methods: ['POST'])]
-    public function delete(Request $request, Residence $residence, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_residence_delete', methods: ['GET','POST'])]
+    public function delete(Residence $residence, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$residence->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($residence);
             $entityManager->flush();
+            $this->addFlash('success', 'Résidence supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_residence_index', [], Response::HTTP_SEE_OTHER);
