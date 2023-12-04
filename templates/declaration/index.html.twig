@@ -6,13 +6,19 @@
     <div class="container">
     <h1 class="text-center">Déclaration</h1>
     <form method="post">
-        <select class="form-select" aria-label="Choix residence" id="choix-residence" name="choix-residence">
+        <select class="form-select" aria-label="Choix residence" id="choix-residence" name="choix-residence" required>
             <option value="">Choisir une résidence</option>
             {% for residence in residences %}
                 <option value="{{ residence.id }}">{{ residence.nomResidence }}</option>
             {% endfor %}
         </select>
-        <button class="btn btn-info" type="submit">Choisir</button>
+        <select class="mt-2 form-select" aria-label="Choix année" id="choix-annee" name="choix-annee" required>
+            <option value="">Choisir une année</option>
+            {% for annee in annees %}
+                <option value="{{ annee }}">{{ annee }}</option>
+            {% endfor %}
+        </select>
+        <button class="mt-2 btn btn-info" type="submit">Choisir</button>
     </form>
 
     <h2 class="text-center">{{ residence.nomResidence }}</h2>
@@ -21,7 +27,7 @@
                 <tr>
                     <th scope="col">N° ligne</th>
                     <th scope="col">Intitulé</th>
-                    <th scope="col"></th>
+                    <th scope="col">Montant</th>
                 </tr>
             </thead>
                 
@@ -66,16 +72,80 @@
                     <td>Frais d'administration et de gestion</td>
                     <td>{{ montant221 }}</td>
                 </tr>
-                {% set nbLot = residence.lot|length %}
                 <tr>
                     <th>222</th>
                     <td>Autres frais de gestion</td>
-                    <td>{{ nbLot * 20 }}</td>
+                    <td>{{ montant222 }}</td>
                 </tr>
                 <tr>
                     <th>223</th>
                     <td>Primes d'assurance</td>
                     <td>{{ montant223 }}</td>
+                </tr>
+                <tr>
+                    <th>224</th>
+                    <td>Dépenses de réparation</td>
+                    <td>{{ montant224 }}</td>
+                </tr>
+                <tr>
+                    <th>225</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>226</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>227</th>
+                    <td>Taxes foncières</td>
+                    <td>{{ montant227 }}</td>
+                </tr>
+                <tr>
+                    <th>228</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>229</th>
+                    <td>Provisions pour charges</td>
+                    <td>{{ montant229 }}</td>
+                </tr>
+                <tr>
+                    <th>229 bis</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>230</th>
+                    <td>Régularisation des provisions</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>230 bis</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>240</th>
+                    <td>Total des frais et charges</td>
+                    <td>{{ montant240 }}</td>
+                </tr>
+                <tr>
+                    <th>250</th>
+                    <td>Intérêts d'emprunt</td>
+                    <td>{{ montant250 }}</td>
+                </tr>
+                <tr>
+                    <th>260</th>
+                    <td>REVENUS FONCIERS</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>261</th>
+                    <td></td>
+                    <td>{{ montant261 }}</td>
                 </tr>
             </tbody>
         </table>

@@ -55,14 +55,14 @@ class ResidenceController extends AbstractController
         //Récupération des lots liés à la résidence
         $lots = $lotRepository->findBy(['residence' => $residence]);
         //récupération de la taxe foncière liée à la résidence
-        $taxeFonciere = $taxeFonciereRepository->findOneBy(['residence' => $residence]);
+        $taxesFoncieres = $taxeFonciereRepository->findBy(['residence' => $residence]);
         //récupération des mandats des syndics liés à la résidence
         $mandatsSyndic = $mandatSyndicRepository->findBy(['residence' => $residence]);
         
         return $this->render('residence/show.html.twig', [
             'residence' => $residence,
             'lots' => $lots,
-            'taxe_fonciere' => $taxeFonciere,
+            'taxes_foncieres' => $taxesFoncieres,
             'mandats_syndic' => $mandatsSyndic
         ]);
     }

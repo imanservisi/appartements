@@ -21,6 +21,9 @@ class TravauxType extends AbstractType
                 'label' => 'Date Travaux',
                 'widget' => 'single_text'
             ])
+            ->add('annee', TextType::class, [
+                'label' => 'Année'
+            ])
             ->add('typeTravaux', TextType::class, [
                 'label' => 'Type travaux'
             ])

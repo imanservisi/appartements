@@ -29,6 +29,9 @@ class Travaux
     #[ORM\ManyToOne(inversedBy: 'travauxes')]
     private ?Entreprise $entreprise = null;
 
+    #[ORM\Column(length: 5)]
+    private ?string $annee = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class Travaux
     public function setEntreprise(?Entreprise $entreprise): static
     {
         $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getAnnee(): ?string
+    {
+        return $this->annee;
+    }
+
+    public function setAnnee(string $annee): static
+    {
+        $this->annee = $annee;
 
         return $this;
     }

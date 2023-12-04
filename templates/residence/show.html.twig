@@ -6,16 +6,44 @@
     <h1 class="text-center">{{ residence.nomResidence }}</h1>
     <h3 class="text-center">{{ residence.addresse }}</h3>
     
-    {% if taxe_fonciere %}
-    <div class="col-3 m-3 card">
-        <div class="card-header text-center h3">
-            Taxe foncière {{ taxe_fonciere.annee}}
+    {% if taxes_foncieres %}
+    <div class="col m-3 card">
+        <div class="card-header text-center">
+            <h3 class="text-center">Taxe foncière</h3>
         </div>
         <div class="card-body">
-            <p>Montant : {{ taxe_fonciere.montant }} €</p>
+            <table class="table card-table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Annee</th>
+                        <th class="text-center">Montant</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for taxe in taxes_foncieres %}
+                    <tr>
+                        <td class="text-center">{{ taxe.annee }}</td>
+                        <td class="text-center">{{ taxe.montant }}</td>
+                        <td class="text-center align-middle">
+                            <div class="form-row">
+                            <button class="btn btn-success"><a href={{ path('app_taxe_fonciere_edit', {residenceId: residence.id, id: taxe.id})}}><i class="fa-solid fa-pen-to-square"></i></a></button>
+                            {{ include('taxe_fonciere/_delete_form.html.twig', {residenceId: residence.id}) }}
+                            </div>
+                            
+                            
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">aucune donnée</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
         <div class="card-footer text-center">
-            <button class="btn btn-info"><a href="{{ path('app_taxe_fonciere_edit', {residenceId: residence.id, id: taxe_fonciere.id }) }}">Modifier Taxe Foncière</a></button>
+            <button class="btn btn-info"><a href="{{ path('app_taxe_fonciere_new', {residenceId: residence.id})}}">Ajouter taxe foncière</a></button>
         </div>
     </div>
     {% else %}
