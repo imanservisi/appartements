@@ -24,7 +24,7 @@
             <table class="table card-table">
                 <thead>
                     <tr>
-                        <th class="text-center">Annee</th>
+                        <th class="text-center">Année</th>
                         <th class="text-center">Montant</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -46,14 +46,14 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5">aucune donnée</td>
+                        <td colspan="5">Aucune donnée</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
         <div class="card-footer text-center">
-            <button class="btn btn-info"><a href="{{ path('app_taxe_fonciere_new', {residenceId: residence.id})}}">Ajouter taxe foncière</a></button>
+            <button class="btn btn-primary"><a href="{{ path('app_taxe_fonciere_new', {residenceId: residence.id})}}">Ajouter taxe foncière</a></button>
         </div>
     </div>
     {% else %}
@@ -62,26 +62,36 @@
         </div>
     {% endif %}
     {% if mandats_syndic %}
+        <div class="row row-cols-3">
         {% for mandat_syndic in mandats_syndic %}
-            <div class="col-3 m-3 card">
-                <div class="card-header text-center h3">
-                    Mandat Syndic {{ mandat_syndic.syndic.nomSyndic }}
-                </div>
-                <div class="card-body">
-                    <p>Date début : {{ mandat_syndic.debutMandat|date('d/m/Y')}}</p>
-                    <p>Date fin : {{ mandat_syndic.finMandat is empty ? "--" : mandat_syndic.finMandat|date('d/m/Y')}}</p>
-                </div>
-                <div class="card-footer text-center">
-                    <button class="btn btn-info"><a href="{{ path('app_mandat_syndic_edit', {residenceId: residence.id, id: mandat_syndic.id }) }}">Modifier Mandat Syndic</a></button>
-                    {% if mandat_syndic.finMandat %}
-                        <div class="mt-3">
-                            <button class="m-3 btn btn-primary"><a href="{{ path('app_mandat_syndic_new', {residenceId: residence.id}) }}">Ajouter Mandat Syndic</a></button>
-                            {{ include('mandat_syndic/_delete_form.html.twig', {residenceId: residence.id, id: mandat_syndic.id}) }}
+            <div class="col">
+                <div class="mt-3 mb-3 me-3 card">
+                    <div class="card-header text-center h3">
+                        Mandat Syndic {{ mandat_syndic.syndic.nomSyndic }}
+                    </div>
+                    <div class="card-body">
+                        <p>Date début : {{ mandat_syndic.debutMandat|date('d/m/Y')}}</p>
+                        <p>Date fin : {{ mandat_syndic.finMandat is empty ? "--" : mandat_syndic.finMandat|date('d/m/Y')}}</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <div class="form-row">
+                            <a data-toggle="tooltip" data-placement="top" title="modifier le mandat syndic" type="button" class="btn btn-success" href="{{ path('app_mandat_syndic_edit', {residenceId: residence.id, id: mandat_syndic.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        {% if mandat_syndic.finMandat %}
+                            <a data-toggle="tooltip" data-placement="top" title="créer le mandat syndic" type="button" class="btn btn-primary" href="{{ path('app_mandat_syndic_new', {residenceId: residence.id})}}"><i class="fa-solid fa-square-plus"></i></a>
+                            <span data-toggle="tooltip" data-placement="top" title="supprimer le mandat syndic" type="button" class="btn btn-danger deleteResidenceChild" 
+                            data-id="{{ mandat_syndic.id }}" data-residence-id="{{ residence.id }}" data-url="{{ domain_name }}" data-keyword="mandat-syndic">
+                            <i class="fa-solid fa-trash"></i>
+                            </span>                        
+                        {% endif %}
                         </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
+
+            
         {% endfor %}
+        </div>
+        
     {% else %}
         <div class="m-3">
             <button class="m-3 btn btn-primary"><a href="{{ path('app_mandat_syndic_new', {residenceId: residence.id}) }}">Ajouter Mandat Syndic</a></button>
@@ -99,8 +109,13 @@
                         <p>Date vente : {{ lot.dateVente ? lot.dateVente|date('d/m/Y') : '-' }}</p>
                     </div>
                     <div class="card-footer text-center">
-                        <button class="btn btn-info"><a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id})}}">Modifier Lot</a></button>
-                        {{ include('lot/_delete_form.html.twig', {residenceId: residence.id, id: lot.id}) }}
+                        <div class="form-row">
+                            <a data-toggle="tooltip" data-placement="top" title="modifier le lot" type="button" class="btn btn-success" href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <span data-toggle="tooltip" data-placement="top" title="supprimer le lot" type="button" class="btn btn-danger deleteResidenceChild" 
+                            data-id="{{ lot.id }}" data-residence-id="{{ residence.id }}" data-url="{{ domain_name }}" data-keyword="lot">
+                                <i class="fa-solid fa-trash"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -108,13 +123,5 @@
     </div>
     <button class="ms-3 btn btn-primary"><a href="{{ path('app_lot_new', {residenceId: residence.id})}}">Créer lot</a></button>
     <button class="ms-3 btn btn-secondary"><a href="{{ path('app_residence_index') }}">Liste résidences</a></button>
-    <button class="ms-3 btn btn-info"><a href="{{ path('app_residence_edit', {'id': residence.id}) }}">Modifier Résidence</a></button>
-
-    {{ include('residence/_delete_form.html.twig') }}
-
 {% endblock %}
-{# {% block javascripts %}
-<script>
-    var deleteUrl = "{{ domain_name }}"; 
-</script>
-{% endblock %} #}
+

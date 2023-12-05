@@ -15,11 +15,23 @@ jQuery('.deleteResidenceChild').on('click', function() {
     let residenceId = jQuery(this).attr('data-residence-id');
     let url = jQuery(this).attr('data-url');
     let keyword = jQuery(this).attr('data-keyword');
-    deleteUrl = url + '/residence/' + residenceId + '/' + keyword + '/' + id + '/delete';
+    let deleteUrl = url + '/residence/' + residenceId + '/' + keyword + '/' + id + '/delete';
     if (confirm(deleteText)) {
         ajaxRequest(deleteUrl, id);
     }
 
+});
+
+jQuery('.deleteResidenceLotChild').on('click', function() {
+    let id = jQuery(this).attr('data-id');
+    let residenceId = jQuery(this).attr('data-residence-id');
+    let lotId = jQuery(this).attr('data-lot-id');
+    let url = jQuery(this).attr('data-url');
+    let keyword = jQuery(this).attr('data-keyword');
+    let deleteUrl = url + '/residence/' + residenceId + '/lot/' + lotId + '/' + keyword + '/' + id + '/delete';
+    if (confirm(deleteText)) {
+        ajaxRequest(deleteUrl, id);
+    }
 })
 
 function ajaxRequest(url, id)

@@ -15,6 +15,7 @@ use App\Repository\MandatGestionnaireRepository;
 use App\Repository\PrimeAssuranceRepository;
 use App\Repository\TravauxRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('residence/{residenceId}/lot')]
 class LotController extends AbstractController
 {
+    private string $domainName;
+
+    public function __construct(string $domainName)
+    {
+        $this->domainName = $domainName;
+    }
+
     #[Route('/', name: 'app_lot_index', methods: ['GET'])]
     public function index(LotRepository $lotRepository): Response
     {
@@ -56,14 +64,14 @@ class LotController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_lot_show', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function show(Lot $lot): Response
-    {
-        return $this->render('lot/show.html.twig', [
-            'lot' => $lot,
-        ]);
-    }
+    // #[Route('/{id}', name: 'app_lot_show', methods: ['GET'])]
+    // #[ParamConverter('residence', options: ['id' => 'residenceId'])]
+    // public function show(Lot $lot): Response
+    // {
+    //     return $this->render('lot/show.html.twig', [
+    //         'lot' => $lot,
+    //     ]);
+    // }
 
     #[Route('/{id}/edit', name: 'app_lot_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
@@ -112,17 +120,25 @@ class LotController extends AbstractController
             'mandat_gestionnaires' => $mandatGestionnaires,
             'emprunts' => $emprunts,
             'travauxes' => $travauxes,
-            'locations' => $locations
+            'locations' => $locations,
+            'domain_name' => $this->domainName
         ]);
     }
 
-    #[Route('/{id}', name: 'app_lot_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_lot_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     public function delete(Request $request, Residence $residence, Lot $lot, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$lot->getId(), $request->request->get('_token'))) {
+        // if ($this->isCsrfTokenValid('delete'.$lot->getId(), $request->request->get('_token'))) {
+        //     $entityManager->remove($lot);
+        //     $entityManager->flush();
+        // }
+        try {
             $entityManager->remove($lot);
             $entityManager->flush();
+            $this->addFlash('success', 'Lot supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_residence_show', [

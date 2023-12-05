@@ -8,6 +8,7 @@ use App\Entity\Residence;
 use App\Form\ChargeType;
 use App\Repository\ChargeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +56,13 @@ class ChargeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_charge_show', methods: ['GET'])]
-    public function show(Charge $charge): Response
-    {
-        return $this->render('charge/show.html.twig', [
-            'charge' => $charge,
-        ]);
-    }
+    // #[Route('/{id}', name: 'app_charge_show', methods: ['GET'])]
+    // public function show(Charge $charge): Response
+    // {
+    //     return $this->render('charge/show.html.twig', [
+    //         'charge' => $charge,
+    //     ]);
+    // }
 
     #[Route('/{id}/edit', name: 'app_charge_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
@@ -88,14 +89,17 @@ class ChargeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_charge_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_charge_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function delete(Request $request, Residence $residence, Lot $lot, Charge $charge, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$charge->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($charge);
             $entityManager->flush();
+            $this->addFlash('success', 'Charge supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_lot_edit', [

@@ -1,5 +1,4 @@
 {% block body %}
-<div class="m-3 col-6 card">
     <div class="card-header">
         <h1 class="text-center">Charges</h1>
     </div>
@@ -7,37 +6,36 @@
         <table class="table card-table">
             <thead>
                 <tr>
-                    <th>Annee</th>
-                    <th>Mois</th>
-                    <th>Montant</th>
-                    <th>actions</th>
+                    <th>Année</th>
+                    <th class="text-center">Mois</th>
+                    <th class="text-center">Montant</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-            {% set sommeCharges = 0 %}
             {% for charge in charges %}
                 <tr>
                     <td>{{ charge.annee }}</td>
-                    <td>{{ charge.mois }}</td>
-                    <td>{{ charge.montant }}</td>
-                    <td>
-                        <button class="btn btn-success"><a href={{ path('app_charge_edit', {residenceId: residence.id, lotId: lot.id, id: charge.id})}}><i class="fa-solid fa-pen-to-square"></i></a></button>
-                        {{ include('charge/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+                    <td class="text-center">{{ charge.mois }}</td>
+                    <td class="text-center">{{ charge.montant }}</td>
+                    <td class="text-center">
+                        <a data-toggle="tooltip" data-placement="top" title="modifier la charge" type="button" class="btn btn-success" href="{{ path('app_charge_edit', {residenceId: residence.id, lotId: lot.id, id: charge.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <span data-toggle="tooltip" data-placement="top" title="supprimer la charge" type="button" class="btn btn-danger deleteResidenceLotChild" 
+                            data-id="{{ charge.id }}" data-residence-id="{{ residence.id }}" data-lot-id="{{ lot.id }}" data-url="{{ domain_name }}" data-keyword="charge">
+                            <i class="fa-solid fa-trash"></i>
+                        </span> 
                     </td>
                 </tr>
-                {% set sommeCharges = sommeCharges + charge.montant %}
             {% else %}
                 <tr>
-                    <td colspan="5">aucune donnée</td>
+                    <td colspan="5">Aucune donnée</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <p><strong>Somme des charges : {{ sommeCharges }}</strong></p>
         <div class="text-center">
             <button class="btn btn-primary"><a href="{{ path('app_charge_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter charge</a></button>
         </div>
     </div>
-</div>
     
 {% endblock %}

@@ -7,6 +7,7 @@ use App\Entity\Residence;
 use App\Form\MandatSyndicType;
 use App\Repository\MandatSyndicRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,14 +51,14 @@ class MandatSyndicController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_mandat_syndic_show', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function show(MandatSyndic $mandatSyndic): Response
-    {
-        return $this->render('mandat_syndic/show.html.twig', [
-            'mandat_syndic' => $mandatSyndic,
-        ]);
-    }
+    // #[Route('/{id}', name: 'app_mandat_syndic_show', methods: ['GET'])]
+    // #[ParamConverter('residence', options: ['id' => 'residenceId'])]
+    // public function show(MandatSyndic $mandatSyndic): Response
+    // {
+    //     return $this->render('mandat_syndic/show.html.twig', [
+    //         'mandat_syndic' => $mandatSyndic,
+    //     ]);
+    // }
 
     #[Route('/{id}/edit', name: 'app_mandat_syndic_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
@@ -81,13 +82,16 @@ class MandatSyndicController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_mandat_syndic_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_mandat_syndic_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function delete(Request $request, MandatSyndic $mandatSyndic, EntityManagerInterface $entityManager, Residence $residence): Response
+    public function delete(MandatSyndic $mandatSyndic, EntityManagerInterface $entityManager, Residence $residence): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$mandatSyndic->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($mandatSyndic);
             $entityManager->flush();
+            $this->addFlash('success', 'Mandat syndic supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_residence_show', [
