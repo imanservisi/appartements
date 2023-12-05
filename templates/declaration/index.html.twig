@@ -20,6 +20,7 @@
                 {% endfor %}
             </select>
         </div>
+
         <button class="mt-2 btn btn-info" type="submit">Choisir</button>
     </form>
 
@@ -30,6 +31,7 @@
                     <th scope="col">N° ligne</th>
                     <th scope="col">Intitulé</th>
                     <th scope="col">Montant</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
                 
@@ -38,14 +40,17 @@
                     <th>210</th>
                     <td>RECETTES</td>
                     <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>211</th>
                     <td>Loyers</td>
                     <td>{{ montant211 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>212</th>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -53,9 +58,11 @@
                     <th>213</th>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>214</th>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -63,34 +70,45 @@
                     <th>215</th>
                     <td>TOTAL DES RECETTES</td>
                     <td>{{ montant211 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>220</th>
                     <td>FRAIS ET CHARGES</td>
+                    <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>221</th>
                     <td>Frais d'administration et de gestion</td>
                     <td>{{ montant221 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>222</th>
                     <td>Autres frais de gestion</td>
                     <td>{{ montant222 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>223</th>
                     <td>Primes d'assurance</td>
                     <td>{{ montant223 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>224</th>
                     <td>Dépenses de réparation</td>
                     <td>{{ montant224 }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTravaux">
+                            Détail des travaux
+                        </button>
+                    </td>
                 </tr>
                 <tr>
                     <th>225</th>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -98,14 +116,17 @@
                     <th>226</th>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>227</th>
                     <td>Taxes foncières</td>
                     <td>{{ montant227 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>228</th>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -113,9 +134,11 @@
                     <th>229</th>
                     <td>Provisions pour charges</td>
                     <td>{{ montant229 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>229 bis</th>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -123,9 +146,11 @@
                     <th>230</th>
                     <td>Régularisation des provisions</td>
                     <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>230 bis</th>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -133,24 +158,67 @@
                     <th>240</th>
                     <td>Total des frais et charges</td>
                     <td>{{ montant240 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>250</th>
                     <td>Intérêts d'emprunt</td>
                     <td>{{ montant250 }}</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <th>260</th>
                     <td>REVENUS FONCIERS</td>
+                    <td></td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>261</th>
                     <td></td>
                     <td>{{ montant261 }}</td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalTravaux" tabindex="-1" aria-labelledby="modalTravauxLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTravauxLabel">Récap travaux {{annee_choisie }}</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Entreprise</th>
+                    <th class="text-center" scope="col">Adresse</th>
+                    <th class="text-center" scope="col">Date</th>
+                    <th class="text-center" scope="col">Type</th>
+                    <th class="text-center" scope="col">Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for travaux in allTravaux %}
+                <tr>
+                    <td>{{ travaux.entreprise.nomEntreprise }}</td>
+                    <td class="text-center">{{ travaux.entreprise.adresseEntreprise }}</td>
+                    <td class="text-center">{{ travaux.dateTravaux|date('d/m/Y') }}</td>
+                    <td class="text-center">{{ travaux.typeTravaux }}</td>
+                    <td class="text-center">{{travaux.montantTravaux }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

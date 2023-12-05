@@ -60,7 +60,10 @@ class DeclarationController extends AbstractController
         $sommeTravaux = 0;
         $sommeCharges = 0;
         $sommeEmprunt = 0;
+        $lotsId = [];
         foreach ($lots as $lot) {
+            //Récupération de la liste des ids des lots
+            $lotsId[] = $lot->getId();
             //Récupération des montants des loyers et de la CAF
             $locations = $locationRepository->findBy([
                 'lot' => $lot
@@ -145,7 +148,7 @@ class DeclarationController extends AbstractController
 
         //Calcul 215-240-250
         $montant261 = $montant211 - $totalFraisCharges - $sommeEmprunt;
-
+        $AllTravaux = $travauxRepository->findByLotsIdAndYear($lotsId, $anneeChoisie);
         return $this->render('declaration/index.html.twig', [
             'annees' => $annees,
             'residences' => $residenceRepository->findAll(),
@@ -159,7 +162,9 @@ class DeclarationController extends AbstractController
             'montant229' => $sommeCharges,
             'montant240' => $totalFraisCharges,
             'montant250' => $sommeEmprunt,
-            'montant261' => $montant261
+            'montant261' => $montant261,
+            'allTravaux' => $AllTravaux,
+            'annee_choisie' => $anneeChoisie
         ]);
     }
 }
