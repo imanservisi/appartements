@@ -6,6 +6,7 @@ use App\Entity\Entreprise;
 use App\Form\EntrepriseType;
 use App\Repository\EntrepriseRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,14 +43,6 @@ class EntrepriseController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_entreprise_show', methods: ['GET'])]
-    public function show(Entreprise $entreprise): Response
-    {
-        return $this->render('entreprise/show.html.twig', [
-            'entreprise' => $entreprise,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_entreprise_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Entreprise $entreprise, EntityManagerInterface $entityManager): Response
     {
@@ -68,12 +61,15 @@ class EntrepriseController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_entreprise_delete', methods: ['POST'])]
-    public function delete(Request $request, Entreprise $entreprise, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_entreprise_delete', methods: ['GET', 'POST'])]
+    public function delete(Entreprise $entreprise, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$entreprise->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($entreprise);
             $entityManager->flush();
+            $this->addFlash('success', 'Entreprise supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_entreprise_index', [], Response::HTTP_SEE_OTHER);

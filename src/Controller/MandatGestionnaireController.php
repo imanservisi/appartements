@@ -9,6 +9,7 @@ use App\Form\MandatGestionnaireType;
 use App\Repository\FraisGestionRepository;
 use App\Repository\MandatGestionnaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,7 +108,7 @@ class MandatGestionnaireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_mandat_gestionnaire_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_mandat_gestionnaire_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function delete(
@@ -116,10 +117,17 @@ class MandatGestionnaireController extends AbstractController
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot
-        ): Response {
+    ): Response {
         if ($this->isCsrfTokenValid('delete'.$mandatGestionnaire->getId(), $request->request->get('_token'))) {
             $entityManager->remove($mandatGestionnaire);
             $entityManager->flush();
+        }
+        try {
+            $entityManager->remove($mandatGestionnaire);
+            $entityManager->flush();
+            $this->addFlash('success', 'Mandat gestionnaire supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_lot_edit', [

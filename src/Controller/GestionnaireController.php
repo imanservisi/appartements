@@ -61,7 +61,7 @@ class GestionnaireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'app_gestionnaire_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_gestionnaire_delete', methods: ['GET', 'POST'])]
     public function delete(Gestionnaire $gestionnaire, EntityManagerInterface $entityManager): Response
     {
         try {

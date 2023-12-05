@@ -4,7 +4,16 @@
 
 {% block body %}
     <h1 class="text-center">Liste Entreprises</h1>
-
+    {% for message in app.flashes('success') %}
+        <div class="rounded-0 alert alert-info flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="rounded-0 alert alert-danger flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
     <table class="table">
         <thead>
             <tr>
@@ -19,8 +28,8 @@
                 <td>{{ entreprise.nomEntreprise }}</td>
                 <td>{{ entreprise.adresseEntreprise }}</td>
                 <td>
-                    <a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}">edit</a>
-                    {{ include('entreprise/_delete_form.html.twig') }}
+                    <a data-toggle="tooltip" data-placement="top" title="modifier l'entreprise" type="button" class="btn btn-success" href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <span data-toggle="tooltip" data-placement="top" title="supprimer l'entreprise" type="button" class="btn btn-danger delete" data-id="{{ entreprise.id }}"><i class="fa-solid fa-trash"></i></span>
                 </td>
             </tr>
         {% else %}

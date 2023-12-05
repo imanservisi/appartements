@@ -6,6 +6,7 @@ use App\Entity\Banque;
 use App\Form\BanqueType;
 use App\Repository\BanqueRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,14 +43,6 @@ class BanqueController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_banque_show', methods: ['GET'])]
-    public function show(Banque $banque): Response
-    {
-        return $this->render('banque/show.html.twig', [
-            'banque' => $banque,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_banque_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Banque $banque, EntityManagerInterface $entityManager): Response
     {
@@ -68,12 +61,15 @@ class BanqueController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_banque_delete', methods: ['POST'])]
-    public function delete(Request $request, Banque $banque, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_banque_delete', methods: ['GET', 'POST'])]
+    public function delete(Banque $banque, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$banque->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($banque);
             $entityManager->flush();
+            $this->addFlash('success', 'Banque supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_banque_index', [], Response::HTTP_SEE_OTHER);

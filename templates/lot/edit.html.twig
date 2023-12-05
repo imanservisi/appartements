@@ -4,7 +4,16 @@
 
 {% block body %}
     <h1 class="text-center">Modification {{ lot.nomLot }}</h1>
-    
+    {% for message in app.flashes('success') %}
+        <div class="rounded-0 alert alert-info flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="rounded-0 alert alert-danger flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
     <button class="mt-3 mb-3 btn btn-secondary"><a href="{{ path('app_residence_show', {id: residence.id}) }}">Retour résidence {{residence.nomResidence}}</a></button>
 
     {{ include('lot/_form.html.twig', {'button_label': 'Mise à jour'}) }}
