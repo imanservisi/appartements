@@ -18,6 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/residence')]
 class ResidenceController extends AbstractController
 {
+    private string $domainName;
+
+    public function __construct(string $domainName)
+    {
+        $this->domainName = $domainName;
+    }
+
     #[Route('/', name: 'app_residence_index', methods: ['GET'])]
     public function index(ResidenceRepository $residenceRepository): Response
     {
@@ -64,7 +71,8 @@ class ResidenceController extends AbstractController
             'residence' => $residence,
             'lots' => $lots,
             'taxes_foncieres' => $taxesFoncieres,
-            'mandats_syndic' => $mandatsSyndic
+            'mandats_syndic' => $mandatsSyndic,
+            'domain_name' => $this->domainName
         ]);
     }
 

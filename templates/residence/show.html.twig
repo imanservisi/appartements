@@ -5,7 +5,16 @@
 {% block body %}
     <h1 class="text-center">{{ residence.nomResidence }}</h1>
     <h3 class="text-center">{{ residence.addresse }}</h3>
-    
+    {% for message in app.flashes('success') %}
+        <div class="rounded-0 alert alert-info flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="rounded-0 alert alert-danger flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
     {% if taxes_foncieres %}
     <div class="col m-3 card">
         <div class="card-header text-center">
@@ -27,11 +36,12 @@
                         <td class="text-center">{{ taxe.montant }}</td>
                         <td class="text-center align-middle">
                             <div class="form-row">
-                            <button class="btn btn-success"><a href={{ path('app_taxe_fonciere_edit', {residenceId: residence.id, id: taxe.id})}}><i class="fa-solid fa-pen-to-square"></i></a></button>
-                            {{ include('taxe_fonciere/_delete_form.html.twig', {residenceId: residence.id}) }}
+                                <a data-toggle="tooltip" data-placement="top" title="modifier la taxe foncière" type="button" class="btn btn-success" href="{{ path('app_taxe_fonciere_edit', {residenceId: residence.id, id: taxe.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <span data-toggle="tooltip" data-placement="top" title="supprimer la taxe foncière" type="button" class="btn btn-danger deleteResidenceChild" 
+                                data-id="{{ taxe.id }}" data-residence-id="{{ residence.id }}" data-url="{{ domain_name }}" data-keyword="taxe-fonciere">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
                             </div>
-                            
-                            
                         </td>
                     </tr>
                 {% else %}
@@ -101,4 +111,10 @@
     <button class="ms-3 btn btn-info"><a href="{{ path('app_residence_edit', {'id': residence.id}) }}">Modifier Résidence</a></button>
 
     {{ include('residence/_delete_form.html.twig') }}
+
 {% endblock %}
+{# {% block javascripts %}
+<script>
+    var deleteUrl = "{{ domain_name }}"; 
+</script>
+{% endblock %} #}

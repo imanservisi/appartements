@@ -122,13 +122,13 @@ class MandatGestionnaireController extends AbstractController
             $entityManager->remove($mandatGestionnaire);
             $entityManager->flush();
         }
-        try {
-            $entityManager->remove($mandatGestionnaire);
-            $entityManager->flush();
-            $this->addFlash('success', 'Mandat gestionnaire supprimé');
-        } catch (Exception $e) {
-            $this->addFlash('error', 'Suppression non possible.');
-        }
+        // try {
+        //     $entityManager->remove($mandatGestionnaire);
+        //     $entityManager->flush();
+        //     $this->addFlash('success', 'Mandat gestionnaire supprimé');
+        // } catch (Exception $e) {
+        //     $this->addFlash('error', 'Suppression non possible.');
+        // }
 
         return $this->redirectToRoute('app_lot_edit', [
             'residenceId' => $residence->getId(),

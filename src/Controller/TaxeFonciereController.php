@@ -7,6 +7,7 @@ use App\Entity\TaxeFonciere;
 use App\Form\TaxeFonciereType;
 use App\Repository\TaxeFonciereRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,15 +51,6 @@ class TaxeFonciereController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_taxe_fonciere_show', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function show(TaxeFonciere $taxeFonciere): Response
-    {
-        return $this->render('taxe_fonciere/show.html.twig', [
-            'taxe_fonciere' => $taxeFonciere,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_taxe_fonciere_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     public function edit(Request $request, TaxeFonciere $taxeFonciere, EntityManagerInterface $entityManager, Residence $residence): Response
@@ -81,13 +73,16 @@ class TaxeFonciereController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_taxe_fonciere_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_taxe_fonciere_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function delete(Request $request, TaxeFonciere $taxeFonciere, EntityManagerInterface $entityManager, Residence $residence): Response
+    public function delete(TaxeFonciere $taxeFonciere, EntityManagerInterface $entityManager, Residence $residence): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$taxeFonciere->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($taxeFonciere);
             $entityManager->flush();
+            $this->addFlash('success', 'Taxe foncière supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_residence_show', [
