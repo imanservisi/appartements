@@ -4,7 +4,16 @@
 
 {% block body %}
     <h1 class="text-center">Liste des Syndics</h1>
-
+    {% for message in app.flashes('success') %}
+        <div class="rounded-0 alert alert-info flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="rounded-0 alert alert-danger flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
     <table class="table">
         <thead>
             <tr>
@@ -19,13 +28,13 @@
                 <td>{{ syndic.nomSyndic }}</td>
                 <td>{{ syndic.adresseSyndic }}</td>
                 <td>
-                    {# <a href="{{ path('app_syndic_show', {'id': syndic.id}) }}">show</a> #}
-                    <button class="btn btn-info"><a href="{{ path('app_syndic_edit', {'id': syndic.id}) }}">Modifier</a></button>
+                    <a data-toggle="tooltip" data-placement="top" title="modifier le syndic" type="button" class="btn btn-success" href="{{ path('app_syndic_edit', {'id': syndic.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <span data-toggle="tooltip" data-placement="top" title="supprimer le syndic" type="button" class="btn btn-danger delete" data-id="{{ syndic.id }}"><i class="fa-solid fa-trash"></i></span>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="4">Aucune donnée</td>
             </tr>
         {% endfor %}
         </tbody>

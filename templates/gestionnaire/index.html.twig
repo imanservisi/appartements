@@ -1,15 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Gestionnaire index{% endblock %}
+{% block title %}Gestionnaires{% endblock %}
 
 {% block body %}
     <h1 class="text-center">Liste des gestionnaires</h1>
-
+    {% for message in app.flashes('success') %}
+        <div class="rounded-0 alert alert-info flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="rounded-0 alert alert-danger flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
     <table class="table">
         <thead>
             <tr>
-                <th>NomGestionnaire</th>
-                <th>AdresseGestionnaire</th>
+                <th>Nom Gestionnaire</th>
+                <th>Adresse Gestionnaire</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -19,13 +28,13 @@
                 <td>{{ gestionnaire.nomGestionnaire }}</td>
                 <td>{{ gestionnaire.adresseGestionnaire }}</td>
                 <td>
-                    <a href="{{ path('app_gestionnaire_show', {'id': gestionnaire.id}) }}">show</a>
-                    <a href="{{ path('app_gestionnaire_edit', {'id': gestionnaire.id}) }}">edit</a>
+                    <a data-toggle="tooltip" data-placement="top" title="modifier le gestionnaire" type="button" class="btn btn-success" href="{{ path('app_gestionnaire_edit', {'id': gestionnaire.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <span data-toggle="tooltip" data-placement="top" title="supprimer le gestionnaire" type="button" class="btn btn-danger delete" data-id="{{ gestionnaire.id }}"><i class="fa-solid fa-trash"></i></span>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="4">Aucune donnée</td>
             </tr>
         {% endfor %}
         </tbody>

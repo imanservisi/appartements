@@ -6,6 +6,7 @@ use App\Entity\Syndic;
 use App\Form\SyndicType;
 use App\Repository\SyndicRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,14 +43,6 @@ class SyndicController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_syndic_show', methods: ['GET'])]
-    public function show(Syndic $syndic): Response
-    {
-        return $this->render('syndic/show.html.twig', [
-            'syndic' => $syndic,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_syndic_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Syndic $syndic, EntityManagerInterface $entityManager): Response
     {
@@ -68,12 +61,15 @@ class SyndicController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_syndic_delete', methods: ['POST'])]
-    public function delete(Request $request, Syndic $syndic, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_syndic_delete', methods: ['GET', 'POST'])]
+    public function delete(Syndic $syndic, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$syndic->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($syndic);
             $entityManager->flush();
+            $this->addFlash('success', 'Syndic supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_syndic_index', [], Response::HTTP_SEE_OTHER);

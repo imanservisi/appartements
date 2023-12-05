@@ -6,6 +6,7 @@ use App\Entity\Gestionnaire;
 use App\Form\GestionnaireType;
 use App\Repository\GestionnaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,14 +43,6 @@ class GestionnaireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_gestionnaire_show', methods: ['GET'])]
-    public function show(Gestionnaire $gestionnaire): Response
-    {
-        return $this->render('gestionnaire/show.html.twig', [
-            'gestionnaire' => $gestionnaire,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_gestionnaire_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Gestionnaire $gestionnaire, EntityManagerInterface $entityManager): Response
     {
@@ -68,12 +61,15 @@ class GestionnaireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_gestionnaire_delete', methods: ['POST'])]
-    public function delete(Request $request, Gestionnaire $gestionnaire, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_gestionnaire_delete', methods: ['POST'])]
+    public function delete(Gestionnaire $gestionnaire, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$gestionnaire->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($gestionnaire);
             $entityManager->flush();
+            $this->addFlash('success', 'Gestionnaire supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_gestionnaire_index', [], Response::HTTP_SEE_OTHER);

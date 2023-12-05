@@ -6,6 +6,7 @@ use App\Entity\Locataire;
 use App\Form\LocataireType;
 use App\Repository\LocataireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,14 +43,6 @@ class LocataireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_locataire_show', methods: ['GET'])]
-    public function show(Locataire $locataire): Response
-    {
-        return $this->render('locataire/show.html.twig', [
-            'locataire' => $locataire,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_locataire_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Locataire $locataire, EntityManagerInterface $entityManager): Response
     {
@@ -68,12 +61,15 @@ class LocataireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_locataire_delete', methods: ['POST'])]
-    public function delete(Request $request, Locataire $locataire, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_locataire_delete', methods: ['GET', 'POST'])]
+    public function delete(Locataire $locataire, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$locataire->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($locataire);
             $entityManager->flush();
+            $this->addFlash('success', 'Locataire supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_locataire_index', [], Response::HTTP_SEE_OTHER);
