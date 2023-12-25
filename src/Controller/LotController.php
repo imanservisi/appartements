@@ -64,15 +64,6 @@ class LotController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}', name: 'app_lot_show', methods: ['GET'])]
-    // #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    // public function show(Lot $lot): Response
-    // {
-    //     return $this->render('lot/show.html.twig', [
-    //         'lot' => $lot,
-    //     ]);
-    // }
-
     #[Route('/{id}/edit', name: 'app_lot_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     public function edit(

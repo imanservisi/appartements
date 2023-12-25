@@ -19,6 +19,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('residence/{residenceId}/lot/{lotId}/mandatGestionnaire')]
 class MandatGestionnaireController extends AbstractController
 {
+    private string $domainName;
+
+    public function __construct(string $domainName)
+    {
+        $this->domainName = $domainName;
+    }
+
     #[Route('/', name: 'app_mandat_gestionnaire_index', methods: ['GET'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -94,7 +101,8 @@ class MandatGestionnaireController extends AbstractController
             'form' => $form,
             'residence' => $residence,
             'lot' => $lot,
-            'frais_gestions' => $frais_gestions
+            'frais_gestions' => $frais_gestions,
+            'domain_name' => $this->domainName
         ]);
     }
 

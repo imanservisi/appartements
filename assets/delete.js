@@ -32,6 +32,17 @@ jQuery('.deleteResidenceLotChild').on('click', function() {
     if (confirm(deleteText)) {
         ajaxRequest(deleteUrl, id);
     }
+});
+
+jQuery('.deleteResidenceLotOtherChild').on('click', function() {
+    let id = jQuery(this).attr('data-id');
+    let residenceId = jQuery(this).attr('data-residence-id');
+    let lotId = jQuery(this).attr('data-lot-id');
+    let url = jQuery(this).attr('data-url');
+    let keyword = jQuery(this).attr('data-keyword');
+    let childKeyword = jQuery(this).attr('child-keyword');
+    let childId = jQuery(this).attr('child-id');
+    let deleteUrl = url + '/residence/' + residenceId + '/lot/' + lotId + '/' + childKeyword + '/' + childId + '/' + keyword + '/' + id + '/delete';
 })
 
 function ajaxRequest(url, id)
