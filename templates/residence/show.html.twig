@@ -26,6 +26,7 @@
                     <tr>
                         <th class="text-center">Année</th>
                         <th class="text-center">Montant</th>
+                        <th class="text-center">Commentaire</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
@@ -34,6 +35,7 @@
                     <tr>
                         <td class="text-center">{{ taxe.annee }}</td>
                         <td class="text-center">{{ taxe.montant }}</td>
+                        <td class="text-center">{{ taxe.commentaire }}</td>
                         <td class="text-center align-middle">
                             <div class="form-row">
                                 <a data-toggle="tooltip" data-placement="top" title="modifier la taxe foncière" type="button" class="btn btn-success" href="{{ path('app_taxe_fonciere_edit', {residenceId: residence.id, id: taxe.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>

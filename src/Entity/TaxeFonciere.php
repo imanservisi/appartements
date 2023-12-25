@@ -22,6 +22,9 @@ class TaxeFonciere
     #[ORM\ManyToOne(inversedBy: 'taxeFoncieres')]
     private ?Residence $residence = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $commentaire = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class TaxeFonciere
     public function setResidence(?Residence $residence): static
     {
         $this->residence = $residence;
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(?string $commentaire): static
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }
