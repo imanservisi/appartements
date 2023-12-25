@@ -9,6 +9,7 @@ use App\Entity\Residence;
 use App\Form\InteretType;
 use App\Repository\InteretRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,21 +100,23 @@ class InteretController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_interet_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_interet_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     #[ParamConverter('emprunt', options: ['id' => 'empruntId'])]
     public function delete(
-        Request $request,
         Interet $interet,
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot,
         Emprunt $emprunt  
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$interet->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($interet);
             $entityManager->flush();
+            $this->addFlash('success', 'Intérêt supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_emprunt_edit', [
