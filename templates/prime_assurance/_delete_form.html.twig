@@ -1,4 +1,0 @@
-<form method="post" action="{{ path('app_prime_assurance_delete', {'residenceId': residence.id, 'lotId': lot.id, 'id': prime_assurance.id}) }}" onsubmit="return confirm('Etes vous sûr de vouloir supprimer cette prime d'assurance ?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ prime_assurance.id) }}">
-    <button class="btn btn-danger">Supprimer</button>
-</form>

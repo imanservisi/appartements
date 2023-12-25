@@ -92,7 +92,7 @@ class ChargeController extends AbstractController
     #[Route('/{id}/delete', name: 'app_charge_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    public function delete(Request $request, Residence $residence, Lot $lot, Charge $charge, EntityManagerInterface $entityManager): Response
+    public function delete(Residence $residence, Lot $lot, Charge $charge, EntityManagerInterface $entityManager): Response
     {
         try {
             $entityManager->remove($charge);

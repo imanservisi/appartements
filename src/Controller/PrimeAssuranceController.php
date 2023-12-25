@@ -8,6 +8,7 @@ use App\Entity\Residence;
 use App\Form\PrimeAssuranceType;
 use App\Repository\PrimeAssuranceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,14 +91,17 @@ class PrimeAssuranceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_prime_assurance_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_prime_assurance_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    public function delete(Request $request, PrimeAssurance $primeAssurance, EntityManagerInterface $entityManager, Residence $residence, Lot $lot): Response
+    public function delete(PrimeAssurance $primeAssurance, EntityManagerInterface $entityManager, Residence $residence, Lot $lot): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$primeAssurance->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($primeAssurance);
             $entityManager->flush();
+            $this->addFlash('success', 'Charge supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_lot_edit', [

@@ -1,5 +1,4 @@
 {% block body %}
-<div class="m-3 col-6 card">
     <div class="card-header">
         <h1 class="text-center">Mandat Gestionnaire</h1>
     </div>
@@ -21,9 +20,10 @@
                     <td>{{ mandat_gestionnaire.finMandat ? mandat_gestionnaire.finMandat|date('d/m/Y') : '-' }}</td>
                     <td>
                         <a data-toggle="tooltip" data-placement="top" title="modifier le mandat gestionnaire" type="button" class="btn btn-success" href="{{ path('app_mandat_gestionnaire_edit', {residenceId: residence.id, lotId: lot.id, id: mandat_gestionnaire.id })}}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        {# <span data-toggle="tooltip" data-placement="top" title="supprimer le mandat gestionnaire" type="button" class="btn btn-danger delete" data-id="{{ mandat_gestionnaire.id }}"><i class="fa-solid fa-trash"></i></span> #}
-
-                        {{ include('mandat_gestionnaire/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+                        <span data-toggle="tooltip" data-placement="top" title="supprimer le mandat gestionnaire" type="button" class="btn btn-danger deleteResidenceLotChild" 
+                            data-id="{{ mandat_gestionnaire.id }}" data-residence-id="{{ residence.id }}" data-lot-id="{{ lot.id }}" data-url="{{ domain_name }}" data-keyword="mandatGestionnaire">
+                            <i class="fa-solid fa-trash"></i>
+                        </span> 
                     </td>
                 </tr>
             {% else %}
@@ -37,5 +37,4 @@
             <button class="btn btn-primary"><a href="{{ path('app_mandat_gestionnaire_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter un mandat de gestion</a></button>
         </div>
     </div>
-</div>
 {% endblock %}

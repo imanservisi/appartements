@@ -6,10 +6,4 @@
     <h1 class="text-center">Modifier Syndic</h1>
 
     {{ include('syndic/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <button class="mt-3 btn btn-secondary">
-        <a href="{{ path('app_syndic_index') }}">Retour liste syndics</a>
-    </button>
-    
-    {{ include('syndic/_delete_form.html.twig') }}
 {% endblock %}

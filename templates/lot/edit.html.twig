@@ -23,11 +23,13 @@
     <div class="mt-3 card">
         {{ include('charge/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
     </div>
-
-    {{ include('prime_assurance/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
-    
+    <div class="mt-3 card">
+        {{ include('prime_assurance/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
+    </div>
     {% if mandat_gestionnaires %}
-        {{ include('mandat_gestionnaire/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
+        <div class="mt-3 card">
+            {{ include('mandat_gestionnaire/index.html.twig', {residenceId: residence.id, lotId: lot.id})}}
+        </div>
     {% else %}
         <div class="m-3">
             <button class="m-3 btn btn-primary"><a href="{{ path('app_mandat_gestionnaire_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter Mandat Gestion</a></button>

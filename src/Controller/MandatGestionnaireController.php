@@ -64,16 +64,6 @@ class MandatGestionnaireController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_mandat_gestionnaire_show', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    public function show(MandatGestionnaire $mandatGestionnaire): Response
-    {
-        return $this->render('mandat_gestionnaire/show.html.twig', [
-            'mandat_gestionnaire' => $mandatGestionnaire,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_mandat_gestionnaire_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -112,23 +102,18 @@ class MandatGestionnaireController extends AbstractController
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function delete(
-        Request $request,
         MandatGestionnaire $mandatGestionnaire,
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$mandatGestionnaire->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($mandatGestionnaire);
             $entityManager->flush();
+            $this->addFlash('success', 'Mandat gestionnaire supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
-        // try {
-        //     $entityManager->remove($mandatGestionnaire);
-        //     $entityManager->flush();
-        //     $this->addFlash('success', 'Mandat gestionnaire supprimé');
-        // } catch (Exception $e) {
-        //     $this->addFlash('error', 'Suppression non possible.');
-        // }
 
         return $this->redirectToRoute('app_lot_edit', [
             'residenceId' => $residence->getId(),

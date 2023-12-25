@@ -6,8 +6,6 @@
 
     {{ include('mandat_gestionnaire/_form.html.twig', {'button_label': 'Mise à jour'}) }}
 
-    {{ include('mandat_gestionnaire/_delete_form.html.twig') }}
-
     {{ include('frais_gestion/index.html.twig', {mandatGestionnaireId: mandat_gestionnaire.id}) }}
 
     <button class="btn btn-secondary" type="button">
