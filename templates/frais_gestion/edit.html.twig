@@ -7,8 +7,6 @@
 
     {{ include('frais_gestion/_form.html.twig', {'button_label': 'Mise à jour'}) }}
 
-    {{ include('frais_gestion/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id, mandatGestionnaireId: mandat_gestionnaire.id, id: frais_gestion.id}) }}
-
     <button class="btn btn-secondary" type="button">
         <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
     </button>

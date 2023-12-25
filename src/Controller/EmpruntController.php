@@ -9,6 +9,7 @@ use App\Form\EmpruntType;
 use App\Repository\EmpruntRepository;
 use App\Repository\InteretRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,14 +61,6 @@ class EmpruntController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_emprunt_show', methods: ['GET'])]
-    public function show(Emprunt $emprunt): Response
-    {
-        return $this->render('emprunt/show.html.twig', [
-            'emprunt' => $emprunt,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_emprunt_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -103,19 +96,21 @@ class EmpruntController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_emprunt_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_emprunt_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function delete(
-        Request $request,
         Emprunt $emprunt,
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot
         ): Response {
-        if ($this->isCsrfTokenValid('delete'.$emprunt->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($emprunt);
             $entityManager->flush();
+            $this->addFlash('success', 'Emprunt supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_lot_edit', [

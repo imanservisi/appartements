@@ -40,9 +40,12 @@ jQuery('.deleteResidenceLotOtherChild').on('click', function() {
     let lotId = jQuery(this).attr('data-lot-id');
     let url = jQuery(this).attr('data-url');
     let keyword = jQuery(this).attr('data-keyword');
-    let childKeyword = jQuery(this).attr('child-keyword');
-    let childId = jQuery(this).attr('child-id');
+    let childKeyword = jQuery(this).attr('data-child-keyword');
+    let childId = jQuery(this).attr('data-child-id');
     let deleteUrl = url + '/residence/' + residenceId + '/lot/' + lotId + '/' + childKeyword + '/' + childId + '/' + keyword + '/' + id + '/delete';
+    if (confirm(deleteText)) {
+        ajaxRequest(deleteUrl, id);
+    }
 })
 
 function ajaxRequest(url, id)

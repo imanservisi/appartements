@@ -1,4 +1,0 @@
-<form method="post" action="{{ path('app_mandat_gestionnaire_delete', {'residenceId': residence.id, 'lotId': lot.id, 'id': mandat_gestionnaire.id}) }}" onsubmit="return confirm('Etes vous sûr de vouloir supprimer ce mandat de gestion ?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ mandat_gestionnaire.id) }}">
-    <button class="btn btn-danger">Supprimer</button>
-</form>

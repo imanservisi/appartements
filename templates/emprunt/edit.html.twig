@@ -7,8 +7,6 @@
 
     {{ include('emprunt/_form.html.twig', {'button_label': 'Mise à jour'}) }}
 
-    {{ include('emprunt/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
-
     {{ include('interet/index.html.twig', {empruntId: emprunt.id}) }}
 
     <button class="btn btn-secondary" type="button">

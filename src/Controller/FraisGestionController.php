@@ -71,14 +71,6 @@ class FraisGestionController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_frais_gestion_show', methods: ['GET'])]
-    public function show(FraisGestion $fraisGestion): Response
-    {
-        return $this->render('frais_gestion/show.html.twig', [
-            'frais_gestion' => $fraisGestion,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_frais_gestion_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -122,10 +114,6 @@ class FraisGestionController extends AbstractController
         Lot $lot,
         MandatGestionnaire $mandatGestionnaire
         ): Response {
-        // if ($this->isCsrfTokenValid('delete'.$fraisGestion->getId(), $request->request->get('_token'))) {
-        //     $entityManager->remove($fraisGestion);
-        //     $entityManager->flush();
-        // }
         try {
             $this->em->remove($fraisGestion);
             $this->em->flush();

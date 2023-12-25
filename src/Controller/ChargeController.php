@@ -56,14 +56,6 @@ class ChargeController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}', name: 'app_charge_show', methods: ['GET'])]
-    // public function show(Charge $charge): Response
-    // {
-    //     return $this->render('charge/show.html.twig', [
-    //         'charge' => $charge,
-    //     ]);
-    // }
-
     #[Route('/{id}/edit', name: 'app_charge_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]

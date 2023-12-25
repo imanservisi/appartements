@@ -20,7 +20,7 @@
                     <td>{{ frais_gestion.montant }}</td>
                     <td>
                         <a data-toggle="tooltip" data-placement="top" title="modifier le frais de gestion" class="btn btn-success"href="{{ path('app_frais_gestion_edit', {residenceId: residence.id, lotId: lot.id, mandatGestionnaireId: mandat_gestionnaire.id, id: frais_gestion.id })}}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <span data-toggle="tooltip" data-placement="top" title="supprimer le frais de gestion" type="button" class="btn btn-danger deleteResidenceLotChild" 
+                        <span data-toggle="tooltip" data-placement="top" title="supprimer le frais de gestion" type="button" class="btn btn-danger deleteResidenceLotOtherChild" 
                             data-id="{{ frais_gestion.id }}" data-residence-id="{{ residence.id }}" data-lot-id="{{ lot.id }}" data-child-keyword="mandatGestionnaire" data-child-id="{{ mandat_gestionnaire.id }}" data-url="{{ domain_name }}" data-keyword="fraisGestion">
                             <i class="fa-solid fa-trash"></i>
                         </span> 
