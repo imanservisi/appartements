@@ -111,10 +111,6 @@ class CafController extends AbstractController
         Lot $lot,
         Location $location
     ): Response {
-        // if ($this->isCsrfTokenValid('delete'.$caf->getId(), $request->request->get('_token'))) {
-        //     $entityManager->remove($caf);
-        //     $entityManager->flush();
-        // }
         try {
             $entityManager->remove($caf);
             $entityManager->flush();

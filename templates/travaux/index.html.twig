@@ -1,5 +1,4 @@
 {% block body %}
-<div class="m-3 col-6 card">
     <div class="card-header">
         <h1 class="text-center">Travaux</h1>
     </div>
@@ -22,8 +21,11 @@
                     <td>{{ travaux.typeTravaux }}</td>
                     <td>{{ travaux.montantTravaux }}</td>
                     <td>
-                        <button class="btn btn-info"><a href="{{ path('app_travaux_edit', {residenceId: residence.id, lotId: lot.id, id: travaux.id })}}">Modifier</a></button>
-                        {{ include('travaux/_delete_form.html.twig', {residenceId: residence.id, lotId: lot.id}) }}
+                        <a data-toggle="tooltip" data-placement="top" title="modifier" type="button" class="btn btn-success" href="{{ path('app_travaux_edit', {residenceId: residence.id, lotId: lot.id, id: travaux.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <span data-toggle="tooltip" data-placement="top" title="supprimer" type="button" class="btn btn-danger deleteResidenceLotChild" 
+                            data-id="{{ travaux.id }}" data-residence-id="{{ residence.id }}" data-lot-id="{{ lot.id }}" data-url="{{ domain_name }}" data-keyword="travaux">
+                            <i class="fa-solid fa-trash"></i>
+                        </span> 
                     </td>
                 </tr>
             {% else %}
@@ -37,5 +39,4 @@
             <button class="btn btn-primary"><a href="{{ path('app_travaux_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter des travaux</a></button>
         </div>
     </div>
-</div>
 {% endblock %}

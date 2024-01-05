@@ -9,6 +9,7 @@ use App\Entity\Residence;
 use App\Form\LoyerType;
 use App\Repository\LoyerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,14 +66,6 @@ class LoyerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_loyer_show', methods: ['GET'])]
-    public function show(Loyer $loyer): Response
-    {
-        return $this->render('loyer/show.html.twig', [
-            'loyer' => $loyer,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_loyer_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -107,21 +100,23 @@ class LoyerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_loyer_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_loyer_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     #[ParamConverter('location', options: ['id' => 'locationId'])]
     public function delete(
-        Request $request,
         Loyer $loyer,
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot,
         Location $location
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$loyer->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($loyer);
             $entityManager->flush();
+            $this->addFlash('success', 'Loyer supprimé');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_location_edit', [
