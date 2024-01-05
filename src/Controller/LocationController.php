@@ -10,6 +10,7 @@ use App\Repository\CafRepository;
 use App\Repository\LocationRepository;
 use App\Repository\LoyerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,14 +62,6 @@ class LocationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_location_show', methods: ['GET'])]
-    public function show(Location $location): Response
-    {
-        return $this->render('location/show.html.twig', [
-            'location' => $location,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_location_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -107,19 +100,21 @@ class LocationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_location_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_location_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function delete(
-        Request $request,
         Location $location,
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$location->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($location);
             $entityManager->flush();
+            $this->addFlash('success', 'Location supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_lot_edit', [

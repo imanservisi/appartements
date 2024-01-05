@@ -6,26 +6,21 @@
     <h1 class="text-center">Modifier Location</h1>
 
     {{ include('location/_form.html.twig', {'button_label': 'Mise à jour'}) }}
+    <div class="mt-3">
+        {% if cafs %}
+            {{ include('caf/index.html.twig', {residenceId: residence.id, lotId: lot.id, id: location.id }) }}
+        {% else %}
+                <button class="btn btn-primary"><a href="{{ path('app_caf_new', {residenceId: residence.id, lotId: lot.id, locationId: location.id}) }}">Ajouter CAF</a></button>
+        {% endif %}
+            
+        {% if loyers %}
+            {{ include('loyer/index.html.twig', {residenceId: residence.id, lotId: lot.id, id: location.id }) }}
+        {% else %}
+                <button class="m-3 btn btn-primary"><a href="{{ path('app_loyer_new', {residenceId: residence.id, lotId: lot.id, locationId: location.id}) }}">Ajouter Loyer</a></button>
+        {% endif %}
 
-    {{ include('location/_delete_form.html.twig') }}
-
-    {% if cafs %}
-        {{ include('caf/index.html.twig', {residenceId: residence.id, lotId: lot.id, id: location.id }) }}
-    {% else %}
-        <div class="m-3">
-            <button class="m-3 btn btn-primary"><a href="{{ path('app_caf_new', {residenceId: residence.id, lotId: lot.id, locationId: location.id}) }}">Ajouter CAF</a></button>
-        </div>
-    {% endif %}
-        
-    {% if loyers %}
-        {{ include('loyer/index.html.twig', {residenceId: residence.id, lotId: lot.id, id: location.id }) }}
-    {% else %}
-        <div class="m-3">
-            <button class="m-3 btn btn-primary"><a href="{{ path('app_loyer_new', {residenceId: residence.id, lotId: lot.id, locationId: location.id}) }}">Ajouter Loyer</a></button>
-        </div>
-    {% endif %}
-
-    <button class="btn btn-secondary" type="button">
-        <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
-    </button>
+        <button class="btn btn-secondary" type="button">
+            <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
+        </button>
+    </div>
 {% endblock %}
