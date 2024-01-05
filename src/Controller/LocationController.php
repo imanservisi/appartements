@@ -20,6 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('residence/{residenceId}/lot/{lotId}/location')]
 class LocationController extends AbstractController
 {
+    private string $domainName;
+
+    public function __construct(string $domainName)
+    {
+        $this->domainName = $domainName;
+    }
+
     #[Route('/', name: 'app_location_index', methods: ['GET'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -96,7 +103,8 @@ class LocationController extends AbstractController
             'residence' => $residence,
             'lot' => $lot,
             'cafs' => $cafs,
-            'loyers' => $loyers
+            'loyers' => $loyers,
+            'domain_name' => $this->domainName
         ]);
     }
 

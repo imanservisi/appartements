@@ -9,6 +9,7 @@ use App\Entity\Residence;
 use App\Form\CafType;
 use App\Repository\CafRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,14 +66,6 @@ class CafController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_caf_show', methods: ['GET'])]
-    public function show(Caf $caf): Response
-    {
-        return $this->render('caf/show.html.twig', [
-            'caf' => $caf,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_caf_edit', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
@@ -107,21 +100,27 @@ class CafController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_caf_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_caf_delete', methods: ['GET', 'POST'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
     #[ParamConverter('location', options: ['id' => 'locationId'])]
     public function delete(
-        Request $request,
         Caf $caf,
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot,
         Location $location
     ): Response {
-        if ($this->isCsrfTokenValid('delete'.$caf->getId(), $request->request->get('_token'))) {
+        // if ($this->isCsrfTokenValid('delete'.$caf->getId(), $request->request->get('_token'))) {
+        //     $entityManager->remove($caf);
+        //     $entityManager->flush();
+        // }
+        try {
             $entityManager->remove($caf);
             $entityManager->flush();
+            $this->addFlash('success', 'CAF supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible.');
         }
 
         return $this->redirectToRoute('app_location_edit', [
