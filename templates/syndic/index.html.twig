@@ -25,7 +25,7 @@
         <tbody>
         {% for syndic in syndics %}
             <tr>
-                <td>{{ syndic.nomSyndic }}</td>
+                <td>{{ syndic.nomSyndic|upper }}</td>
                 <td>{{ syndic.adresseSyndic }}</td>
                 <td>
                     <a data-toggle="tooltip" data-placement="top" title="modifier le syndic" type="button" class="btn btn-success" href="{{ path('app_syndic_edit', {'id': syndic.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -40,7 +40,7 @@
         </tbody>
     </table>
 
-    <div>
+    <div class="text-center">
         <button class="btn btn-primary">
             <a href="{{ path('app_syndic_new') }}">Ajouter un syndic</a>
         </button>

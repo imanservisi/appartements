@@ -3,6 +3,16 @@
 
 {% block body %}
     <h1 class="text-center">Modifier Mandat de Gestion</h1>
+    {% for message in app.flashes('success') %}
+        <div class="rounded-0 alert alert-info flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="rounded-0 alert alert-danger flash-error">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     {{ include('mandat_gestionnaire/_form.html.twig', {'button_label': 'Mise à jour'}) }}
     

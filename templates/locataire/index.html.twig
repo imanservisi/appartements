@@ -19,7 +19,7 @@
         <thead>
             <tr>
                 <th>Nom Locataire</th>
-                <th>Date Naissance</th>
+                <th class="text-center">Date Naissance</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -27,7 +27,7 @@
         {% for locataire in locataires %}
             <tr>
                 <td>{{ locataire.nomLocataire }}</td>
-                <td>{{ locataire.dateNaissance ? locataire.dateNaissance|date('d/m/Y') : '-' }}</td>
+                <td class="text-center">{{ locataire.dateNaissance ? locataire.dateNaissance|date('d/m/Y') : '-' }}</td>
                 <td>
                     <a data-toggle="tooltip" data-placement="top" title="modifier le locataire" type="button" class="btn btn-success" href="{{ path('app_locataire_edit', {'id': locataire.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
                     <span data-toggle="tooltip" data-placement="top" title="supprimer le locataire" type="button" class="btn btn-danger delete" data-id="{{ locataire.id }}"><i class="fa-solid fa-trash"></i></span>
@@ -35,12 +35,12 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="4">Aucune donnée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <div>
+    <div class="text-center">
         <button class="btn btn-primary">
             <a href="{{ path('app_locataire_new') }}">Ajouter un locataire</a>
         </button>

@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Residence{% endblock %}
+{% block title %}Résidence{% endblock %}
 
 {% block body %}
-    <h1>Edit Residence</h1>
+    <h1>Modification Résidence</h1>
 
-    {{ include('residence/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('residence/_form.html.twig', {'button_label': 'Mise à jour'}) }}
 
     <a href="{{ path('app_residence_index') }}">back to list</a>
 
-    {{ include('residence/_delete_form.html.twig') }}
 {% endblock %}

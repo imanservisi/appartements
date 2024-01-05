@@ -22,10 +22,9 @@ class TaxeFonciereType extends AbstractType
             ->add('montant', MoneyType::class, [
                 'currency' => 'EUR'
             ])
-            // ->add('residence', EntityType::class, [
-            //     'class' => Residence::class,
-            //     'choice_label' => 'nomResidence'
-            // ])
+            ->add('commentaire', TextType::class, [
+                
+            ])
         ;
     }
 

@@ -117,7 +117,7 @@ class FraisGestionController extends AbstractController
         try {
             $this->em->remove($fraisGestion);
             $this->em->flush();
-            $this->addFlash('success', 'Charge supprimée');
+            $this->addFlash('success', 'Frais gestion supprimé');
         } catch (Exception $e) {
             $this->addFlash('error', 'Suppression non possible.');
         }

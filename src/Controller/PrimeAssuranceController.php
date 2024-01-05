@@ -99,7 +99,7 @@ class PrimeAssuranceController extends AbstractController
         try {
             $entityManager->remove($primeAssurance);
             $entityManager->flush();
-            $this->addFlash('success', 'Charge supprimée');
+            $this->addFlash('success', 'Prime supprimée');
         } catch (Exception $e) {
             $this->addFlash('error', 'Suppression non possible.');
         }
