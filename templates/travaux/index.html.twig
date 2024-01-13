@@ -17,7 +17,7 @@
             {% for travaux in travauxes %}
                 <tr>
                     <td>{{ travaux.entreprise.nomEntreprise }}</td>
-                    <td>{{ travaux.dateTravaux ? travaux.dateTravaux|date('Y-m-d') : '' }}</td>
+                    <td>{{ travaux.dateTravaux ? travaux.dateTravaux|date('d/m/Y') : '' }}</td>
                     <td>{{ travaux.typeTravaux }}</td>
                     <td>{{ travaux.montantTravaux }}</td>
                     <td>
@@ -30,7 +30,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">aucune donnée</td>
+                    <td colspan="5">Aucune donnée</td>
                 </tr>
             {% endfor %}
             </tbody>
