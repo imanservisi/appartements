@@ -4,11 +4,6 @@ namespace App\Service;
 
 class DeclarationService
 {
-    public function __construct()
-    {
-        
-    }
-
     public function createYearsArray(): array
     {
         $dateArray = [];

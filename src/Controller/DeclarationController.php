@@ -15,6 +15,7 @@ use App\Repository\PrimeAssuranceRepository;
 use App\Repository\ResidenceRepository;
 use App\Repository\TaxeFonciereRepository;
 use App\Repository\TravauxRepository;
+use App\Service\DeclarationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,13 +39,15 @@ class DeclarationController extends AbstractController
         ChargeRepository $chargeRepository,
         EmpruntRepository $empruntRepository,
         InteretRepository $interetRepository,
+        DeclarationService $declarationService
     ): Response {
         //Récupération du tableau des années pour sélectionner la bonne année
-        for ($i=0; $i <= 4; $i++) {
-            $dateArray[] = date('Y', strtotime('-'.$i.' years'));
-        }
-        sort($dateArray);
-        $annees = $dateArray;
+        // for ($i=0; $i <= 4; $i++) {
+        //     $dateArray[] = date('Y', strtotime('-'.$i.' years'));
+        // }
+        // sort($dateArray);
+        // $annees = $dateArray;
+        $annees = $declarationService->createYearsArray();
         $idResidence = $request->request->get('choix-residence', "1");
         $anneeChoisie = $request->request->get('choix-annee', date('Y'));
         //Récupération de la résidence en fonction de l'idResidence demandé
