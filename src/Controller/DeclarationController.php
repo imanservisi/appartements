@@ -41,12 +41,6 @@ class DeclarationController extends AbstractController
         InteretRepository $interetRepository,
         DeclarationService $declarationService
     ): Response {
-        //Récupération du tableau des années pour sélectionner la bonne année
-        // for ($i=0; $i <= 4; $i++) {
-        //     $dateArray[] = date('Y', strtotime('-'.$i.' years'));
-        // }
-        // sort($dateArray);
-        // $annees = $dateArray;
         $annees = $declarationService->createYearsArray();
         $idResidence = $request->request->get('choix-residence', "1");
         $anneeChoisie = $request->request->get('choix-annee', date('Y'));
