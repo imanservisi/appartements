@@ -86,18 +86,18 @@ class LotController extends AbstractController
         $charges = $chargeRepository->findBy([
             'lot' => $lot,
             'annee' => $anneeChoisie
-        ]);
+        ], ['mois' => 'ASC']);
         //Récupération des primes d'assurance liés au lot
         $primesAssurance = $primeAssuranceRepository->findBy(['lot' => $lot]);
         //Récupération des mandats de gestion liés au lot
         $mandatGestionnaires = $mandatGestionnaireRepository->findBy(['lot' => $lot]);
         //Récupération des emprunts liés au lot
         $emprunts = $empruntRepository->findBy(['lot' => $lot]);
-        //Récupération des emprunts liés au lot
+        //Récupération des travaux liés au lot
         $travauxes = $travauxRepository->findBy([
             'lot' => $lot,
             'annee' => $anneeChoisie
-        ]);
+        ], ['mois' => 'ASC']);
         //Récupération des locations liés au lot
         $locations = $locationRepository->findBy(['lot' => $lot]);
 

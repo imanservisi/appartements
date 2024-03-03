@@ -89,12 +89,12 @@ class LocationController extends AbstractController
         $cafs = $cafRepository->findBy([
             'location' => $location,
             'annee' => $anneeChoisie
-        ]);
+        ], ['mois' => 'ASC']);
         //Récupération des loyers liés à cette location
         $loyers = $loyerRepository->findBy([
             'location' => $location,
             'annee' => $anneeChoisie
-        ]);
+        ], ['mois' => 'ASC']);
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
