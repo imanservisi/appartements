@@ -43,7 +43,7 @@ class DeclarationController extends AbstractController
     ): Response {
         $annees = $declarationService->createYearsArray();
         $idResidence = $request->request->get('choix-residence', "1");
-        $anneeChoisie = $request->request->get('choix-annee', date('Y'));
+        $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
         //Récupération de la résidence en fonction de l'idResidence demandé
         $residence = $residenceRepository->findOneBy(['id' => $idResidence]);
         $nbLots = count($residence->getLot());

@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1 class="text-center">Modification {{ lot.nomLot }}</h1>
+     {{  include('years_form.html.twig') }}
     {% for message in app.flashes('success') %}
         <div class="rounded-0 alert alert-info flash-success">
             {{ message }}
@@ -20,6 +21,7 @@
             {{ include('lot/_form.html.twig', {'button_label': 'Mise à jour'}) }}
         </div>
     </div>
+       
 
     {% if locations %}
         <div class="mt-3 card">

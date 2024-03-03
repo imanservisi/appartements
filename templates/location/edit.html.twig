@@ -3,7 +3,8 @@
 {% block title %}Location{% endblock %}
 
 {% block body %}
-    <h1 class="text-center">Modifier Location</h1>
+    <h1 class="text-center">Modifier Location {{ annee_choisie }}</h1>
+    {{  include('years_form.html.twig') }}
     {% for message in app.flashes('success') %}
         <div class="rounded-0 alert alert-info flash-success">
             {{ message }}

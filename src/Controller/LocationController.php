@@ -9,6 +9,7 @@ use App\Form\LocationType;
 use App\Repository\CafRepository;
 use App\Repository\LocationRepository;
 use App\Repository\LoyerRepository;
+use App\Service\DeclarationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -30,7 +31,7 @@ class LocationController extends AbstractController
     #[Route('/', name: 'app_location_index', methods: ['GET'])]
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    public function index(LocationRepository $locationRepository): Response
+    public function index(LocationRepository $locationRepository, DeclarationService $declarationService): Response
     {
         return $this->render('location/index.html.twig', [
             'locations' => $locationRepository->findAll(),
@@ -79,12 +80,21 @@ class LocationController extends AbstractController
         Residence $residence,
         Lot $lot,
         CafRepository $cafRepository,
-        LoyerRepository $loyerRepository
+        LoyerRepository $loyerRepository,
+        DeclarationService $declarationService
     ): Response {
+        $annees = $declarationService->createYearsArray();
+        $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
         //Récupération des cafs liées à cette location
-        $cafs = $cafRepository->findBy(['location' => $location]);
+        $cafs = $cafRepository->findBy([
+            'location' => $location,
+            'annee' => $anneeChoisie
+        ]);
         //Récupération des loyers liés à cette location
-        $loyers = $loyerRepository->findBy(['location' => $location]);
+        $loyers = $loyerRepository->findBy([
+            'location' => $location,
+            'annee' => $anneeChoisie
+        ]);
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
@@ -104,7 +114,9 @@ class LocationController extends AbstractController
             'lot' => $lot,
             'cafs' => $cafs,
             'loyers' => $loyers,
-            'domain_name' => $this->domainName
+            'domain_name' => $this->domainName,
+            'annees' => $annees,
+            'annee_choisie' => $anneeChoisie
         ]);
     }
 

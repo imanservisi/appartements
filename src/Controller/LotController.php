@@ -14,6 +14,7 @@ use App\Repository\LotRepository;
 use App\Repository\MandatGestionnaireRepository;
 use App\Repository\PrimeAssuranceRepository;
 use App\Repository\TravauxRepository;
+use App\Service\DeclarationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -76,10 +77,16 @@ class LotController extends AbstractController
         MandatGestionnaireRepository $mandatGestionnaireRepository,
         EmpruntRepository $empruntRepository,
         TravauxRepository $travauxRepository,
-        LocationRepository $locationRepository
+        LocationRepository $locationRepository,
+        DeclarationService $declarationService
         ): Response {
+        $annees = $declarationService->createYearsArray();
+        $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
         //Récupération des charges liées au lot
-        $charges = $chargeRepository->findBy(['lot' => $lot]);
+        $charges = $chargeRepository->findBy([
+            'lot' => $lot,
+            'annee' => $anneeChoisie
+        ]);
         //Récupération des primes d'assurance liés au lot
         $primesAssurance = $primeAssuranceRepository->findBy(['lot' => $lot]);
         //Récupération des mandats de gestion liés au lot
@@ -87,7 +94,10 @@ class LotController extends AbstractController
         //Récupération des emprunts liés au lot
         $emprunts = $empruntRepository->findBy(['lot' => $lot]);
         //Récupération des emprunts liés au lot
-        $travauxes = $travauxRepository->findBy(['lot' => $lot]);
+        $travauxes = $travauxRepository->findBy([
+            'lot' => $lot,
+            'annee' => $anneeChoisie
+        ]);
         //Récupération des locations liés au lot
         $locations = $locationRepository->findBy(['lot' => $lot]);
 
@@ -112,7 +122,8 @@ class LotController extends AbstractController
             'emprunts' => $emprunts,
             'travauxes' => $travauxes,
             'locations' => $locations,
-            'domain_name' => $this->domainName
+            'domain_name' => $this->domainName,
+            'annees' => $annees
         ]);
     }
 
