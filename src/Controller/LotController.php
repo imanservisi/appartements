@@ -97,7 +97,7 @@ class LotController extends AbstractController
         $travauxes = $travauxRepository->findBy([
             'lot' => $lot,
             'annee' => $anneeChoisie
-        ], ['mois' => 'ASC']);
+        ]);
         //Récupération des locations liés au lot
         $locations = $locationRepository->findBy(['lot' => $lot]);
 
