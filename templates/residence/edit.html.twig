@@ -3,10 +3,8 @@
 {% block title %}Résidence{% endblock %}
 
 {% block body %}
-    <h1>Modification Résidence</h1>
+    <h1>Modifier Résidence {{ residence.nomResidence }}</h1>
 
     {{ include('residence/_form.html.twig', {'button_label': 'Mise à jour'}) }}
-
-    <a href="{{ path('app_residence_index') }}">back to list</a>
 
 {% endblock %}

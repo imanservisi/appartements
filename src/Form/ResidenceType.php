@@ -13,7 +13,9 @@ class ResidenceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nomResidence', TextType::class)
+            ->add('nomResidence', TextType::class, [
+                'label' => 'Nom résidence'
+            ])
             ->add('addresse',  TextType::class)
         ;
     }
