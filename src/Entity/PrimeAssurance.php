@@ -19,6 +19,9 @@ class PrimeAssurance
     #[ORM\Column]
     private ?float $montant = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $commentaire = null;
+
     #[ORM\ManyToOne(inversedBy: 'primeAssurances')]
     private ?Lot $lot = null;
 
@@ -59,6 +62,18 @@ class PrimeAssurance
     public function setLot(?Lot $lot): static
     {
         $this->lot = $lot;
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(string $commentaire): static
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }

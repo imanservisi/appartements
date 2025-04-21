@@ -21,7 +21,11 @@
                         <span data-toggle="tooltip" data-placement="top" title="supprimer la charge" type="button" class="btn btn-danger deleteResidenceLotChild" 
                             data-id="{{ prime_assurance.id }}" data-residence-id="{{ residence.id }}" data-lot-id="{{ lot.id }}" data-url="{{ domain_name }}" data-keyword="prime-assurance">
                             <i class="fa-solid fa-trash"></i>
-                        </span> 
+                        </span>
+                        {% if prime_assurance.commentaire %}
+                            <a data-bs-toggle="modal" data-bs-target="#commentairePrimeAssurance" data-commentaire="{{ prime_assurance.commentaire }}" type="button" class="btn btn-info"><i class="fa-solid fa-eye"></i></a>                            
+                        {% endif %}
+                        
                     </td>
                 </tr>
             {% else %}
@@ -34,5 +38,22 @@
         <div class="text-center">
             <button class="btn btn-primary"><a href="{{ path('app_prime_assurance_new', {residenceId: residence.id, lotId: lot.id}) }}">Ajouter une prime d'assurance</a></button>
         </div>
+    </div>
+
+    <div class="modal fade" id="commentairePrimeAssurance" tabindex="-1" aria-labelledby="commentairePrimeAssuranceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="commentairePrimeAssuranceLabel">Commentaire prime d'assurance</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p id="primeCommentaire"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+        </div>
+    </div>
     </div>
 {% endblock %}
