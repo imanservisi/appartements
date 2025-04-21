@@ -125,4 +125,23 @@ class CafController extends AbstractController
             'id' => $location->getId()
         ], Response::HTTP_SEE_OTHER);
     }
+
+    
+    #[Route('/{id}/duplicate', name: 'app_caf_duplicate')]
+    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
+    #[ParamConverter('lot', options: ['id' => 'lotId'])]
+    #[ParamConverter('location', options: ['id' => 'locationId'])]
+    public function duplicate(Caf $caf, Residence $residence, Lot $lot, Location $location, EntityManagerInterface $entityManager)
+    {
+        $newCaf = clone $caf; // Cloner l'objet CAF
+        $newCaf->setMois($caf->getMois() + 1);
+        $entityManager->persist($newCaf);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_location_edit', [
+            'residenceId' => $residence->getId(),
+            'lotId' => $lot->getId(),
+            'id' => $location->getId()
+        ], Response::HTTP_SEE_OTHER);
+    }
 }

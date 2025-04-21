@@ -123,7 +123,8 @@ class LotController extends AbstractController
             'travauxes' => $travauxes,
             'locations' => $locations,
             'domain_name' => $this->domainName,
-            'annees' => $annees
+            'annees' => $annees,
+            'annee_choisie' => $anneeChoisie
         ]);
     }
 

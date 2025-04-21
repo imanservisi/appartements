@@ -3,7 +3,10 @@
             <select class="mt-2 form-select" aria-label="Choix année" id="choix-annee" name="choix-annee" required>
                 <option value="">Choisir une année</option>
                 {% for annee in annees %}
-                    <option value="{{ annee }}">{{ annee }}</option>
+                    <option value="{{ annee }}"
+                        {% if annee == annee_choisie %} selected {% endif %}>
+                        {{ annee }}
+                    </option>
                 {% endfor %}
             </select>
         </div>

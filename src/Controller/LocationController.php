@@ -85,6 +85,7 @@ class LocationController extends AbstractController
     ): Response {
         $annees = $declarationService->createYearsArray();
         $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
+
         //Récupération des cafs liées à cette location
         $cafs = $cafRepository->findBy([
             'location' => $location,

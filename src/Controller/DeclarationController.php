@@ -161,7 +161,8 @@ class DeclarationController extends AbstractController
             'montant250' => $sommeEmprunt,
             'montant261' => $montant261,
             'allTravaux' => $AllTravaux,
-            'annee_choisie' => $anneeChoisie
+            'annee_choisie' => $anneeChoisie,
+            'residence_choisie' => $idResidence
         ]);
     }
 }

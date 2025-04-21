@@ -19,7 +19,7 @@
                     <td class="text-center">{{ location.debutLocation ? location.debutLocation|date('d-m-Y') : '-' }}</td>
                     <td class="text-center">{{ location.finLocation ? location.finLocation|date('d-m-Y') : '-' }}</td>
                     <td class="text-center">
-                        <a data-toggle="tooltip" data-placement="top" title="modifier la location" type="button" class="btn btn-success" href="{{ path('app_location_edit', {residenceId: residence.id, lotId: lot.id, id: location.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="ajout CAF, loyer ou mise à jour locataire" type="button" class="btn btn-success" href="{{ path('app_location_edit', {residenceId: residence.id, lotId: lot.id, id: location.id})}}"><i class="fa-solid fa-pen-to-square"></i></a>
                         <span data-toggle="tooltip" data-placement="top" title="supprimer la location" type="button" class="btn btn-danger deleteResidenceLotChild" 
                             data-id="{{ location.id }}" data-residence-id="{{ residence.id }}" data-lot-id="{{ lot.id }}" data-url="{{ domain_name }}" data-keyword="location">
                             <i class="fa-solid fa-trash"></i>

@@ -125,4 +125,22 @@ class LoyerController extends AbstractController
             'id' => $location->getId()
         ], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/duplicate', name: 'app_loyer_duplicate')]
+    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
+    #[ParamConverter('lot', options: ['id' => 'lotId'])]
+    #[ParamConverter('location', options: ['id' => 'locationId'])]
+    public function duplicate(Loyer $loyer, Residence $residence, Lot $lot, Location $location, EntityManagerInterface $entityManager)
+    {
+        $newloyer = clone $loyer; // Cloner l'objet loyer
+        $newloyer->setMois($loyer->getMois() + 1);
+        $entityManager->persist($newloyer);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_location_edit', [
+            'residenceId' => $residence->getId(),
+            'lotId' => $lot->getId(),
+            'id' => $location->getId()
+        ], Response::HTTP_SEE_OTHER);
+    }
 }
