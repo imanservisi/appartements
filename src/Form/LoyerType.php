@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LoyerType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -21,6 +22,9 @@ class LoyerType extends AbstractType
             ->add('montant', MoneyType::class, [
                 'label' => 'Montant',
                 'currency' => 'EUR'
+            ])
+            ->add('commentaire', TextType::class, [
+                'required' => false
             ])
         ;
     }

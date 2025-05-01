@@ -27,6 +27,9 @@
                         <a data-toggle="tooltip" data-placement="top" title="dupliquer le loyer" type="button" class="btn btn-info" href="{{ path('app_loyer_duplicate', {residenceId: residence.id, lotId: lot.id, locationId: location.id, id: loyer.id}) }}">
                             <i class="fa-solid fa-copy"></i>
                         </a>
+                        {% if loyer.commentaire %}
+                            <a data-bs-toggle="modal" data-bs-target="#commentaireLoyer" data-commentaire="{{ loyer.commentaire }}" type="button" class="btn btn-info"><i class="fa-solid fa-eye"></i></a>                            
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}
@@ -38,6 +41,23 @@
         </table>
         <div class="text-center">
             <button class="btn btn-primary"><a href="{{ path('app_loyer_new', {residenceId: residence.id, lotId: lot.id, locationId: location.id}) }}">Ajouter Loyer</a></button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="commentaireLoyer" tabindex="-1" aria-labelledby="commentaireLoyerLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentaireLoyerLabel">Commentaire loyer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="loyerCommentaire"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+            </div>
         </div>
     </div>
 {% endblock %}
