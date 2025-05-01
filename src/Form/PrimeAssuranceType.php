@@ -18,7 +18,9 @@ class PrimeAssuranceType extends AbstractType
             ->add('montant', MoneyType::class, [
                 'currency' => 'EUR'
             ])
-            ->add('commentaire', TextType::class)
+            ->add('commentaire', TextType::class, [
+                'required' => false
+            ])
         ;
     }
 

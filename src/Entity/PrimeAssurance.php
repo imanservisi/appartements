@@ -19,7 +19,7 @@ class PrimeAssurance
     #[ORM\Column]
     private ?float $montant = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $commentaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'primeAssurances')]
@@ -71,7 +71,7 @@ class PrimeAssurance
         return $this->commentaire;
     }
 
-    public function setCommentaire(string $commentaire): static
+    public function setCommentaire(?string $commentaire): static
     {
         $this->commentaire = $commentaire;
 
