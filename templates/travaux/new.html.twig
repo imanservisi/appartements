@@ -7,7 +7,12 @@
 
     {{ include('travaux/_form.html.twig') }}
 
+    
     <button class="mt-3 btn btn-secondary" type="button">
         <a href="{{ path('app_lot_edit', {residenceId: residence.id, id: lot.id }) }}">Retour {{ lot.nomLot }}</a>
     </button>
+    <button class="ms-2 mt-3 btn btn-success" type="button">
+        <a href="{{ path('app_entreprise_new') }}">Nouvelle entreprise</a>
+    </button>
+    
 {% endblock %}
