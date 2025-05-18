@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Entreprise;
 use App\Entity\Travaux;
+use App\Repository\EntrepriseRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -32,7 +33,11 @@ class TravauxType extends AbstractType
             ])
             ->add('entreprise', EntityType::class, [
                 'class' => Entreprise::class,
-                'choice_label' => 'nomEntreprise'
+                'choice_label' => 'nomEntreprise',
+                'query_builder' => function (EntrepriseRepository $er) {
+                    return $er->createQueryBuilder('e')
+                        ->orderBy('e.nomEntreprise', 'ASC');
+                },
             ])
         ;
     }
