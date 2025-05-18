@@ -19,7 +19,7 @@ class LocataireController extends AbstractController
     public function index(LocataireRepository $locataireRepository): Response
     {
         return $this->render('locataire/index.html.twig', [
-            'locataires' => $locataireRepository->findAll(),
+            'locataires' => $locataireRepository->findAllOrderedByNom(),
         ]);
     }
 

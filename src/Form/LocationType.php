@@ -2,13 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\Locataire;
 use App\Entity\Location;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Locataire;
+use App\Repository\LocataireRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class LocationType extends AbstractType
 {
@@ -26,7 +27,11 @@ class LocationType extends AbstractType
             ])
             ->add('locataire', EntityType::class, [
                 'class' => Locataire::class,
-                'choice_label' => 'nomLocataire'
+                'choice_label' => 'nomLocataire',
+                'query_builder' => function (LocataireRepository $er) {
+                    return $er->createQueryBuilder('l')
+                        ->orderBy('l.nomLocataire', 'ASC');
+                },
             ])
         ;
     }
