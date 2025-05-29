@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RegularisationPonctuelle{% endblock %}
+
+{% block body %}
+    <h1>RegularisationPonctuelle</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ regularisation_ponctuelle.id }}</td>
+            </tr>
+            <tr>
+                <th>Annee</th>
+                <td>{{ regularisation_ponctuelle.annee }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ regularisation_ponctuelle.montant }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_regularisation_ponctuelle_index') }}">back to list</a>
+
+    <a href="{{ path('app_regularisation_ponctuelle_edit', {'id': regularisation_ponctuelle.id}) }}">edit</a>
+
+    {{ include('regularisation_ponctuelle/_delete_form.html.twig') }}
+{% endblock %}

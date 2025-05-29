@@ -59,7 +59,7 @@ class LotController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('lot/new.html.twig', [
+        return $this->render('lot/new.html.twig', [
             'lot' => $lot,
             'form' => $form,
         ]);

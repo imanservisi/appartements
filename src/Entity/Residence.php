@@ -30,6 +30,9 @@ class Residence
     #[ORM\OneToMany(mappedBy: 'residence', targetEntity: TaxeFonciere::class)]
     private Collection $taxeFoncieres;
 
+    #[ORM\OneToOne(mappedBy: 'residence', cascade: ['persist', 'remove'])]
+    private ?RegularisationPonctuelle $regularisationPonctuelle = null;
+
     public function __construct()
     {
         $this->lot = new ArrayCollection();
@@ -152,6 +155,28 @@ class Residence
                 $taxeFonciere->setResidence(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRegularisationPonctuelle(): ?RegularisationPonctuelle
+    {
+        return $this->regularisationPonctuelle;
+    }
+
+    public function setRegularisationPonctuelle(?RegularisationPonctuelle $regularisationPonctuelle): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($regularisationPonctuelle === null && $this->regularisationPonctuelle !== null) {
+            $this->regularisationPonctuelle->setResidence(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($regularisationPonctuelle !== null && $regularisationPonctuelle->getResidence() !== $this) {
+            $regularisationPonctuelle->setResidence($this);
+        }
+
+        $this->regularisationPonctuelle = $regularisationPonctuelle;
 
         return $this;
     }

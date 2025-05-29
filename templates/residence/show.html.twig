@@ -40,7 +40,7 @@
         {% endfor %}
     </div>
     {% if taxes_foncieres %}
-    <div class="col m-3 card">
+    <div class="card">
         <div class="card-header text-center">
             <h3 class="text-center">Taxe foncière</h3>
         </div>
@@ -113,18 +113,16 @@
                     </div>
                 </div>
             </div>
-
-            
         {% endfor %}
         </div>
-        
     {% else %}
         <div class="m-3">
             <button class="m-3 btn btn-primary"><a href="{{ path('app_mandat_syndic_new', {residenceId: residence.id}) }}">Ajouter Mandat Syndic</a></button>
         </div>
     {% endif %}
     
-    <button class="ms-3 btn btn-primary"><a href="{{ path('app_lot_new', {residenceId: residence.id})}}">Créer lot</a></button>
+    <button class="btn btn-primary"><a href="{{ path('app_lot_new', {residenceId: residence.id})}}">Créer lot</a></button>
+    <button class="ms-3 btn btn-primary" data-toggle="tooltip" data-placement="top" title="ajout ligne 229bis, 230 ou 230bis"><a href="{{ path('app_regularisation_ponctuelle_new', {residenceId: residence.id})}}">Ajouter régularisation ponctuelle</a></button>
     <button class="ms-3 btn btn-secondary"><a href="{{ path('app_residence_index') }}">Liste résidences</a></button>
 {% endblock %}
 
