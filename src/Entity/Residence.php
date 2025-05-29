@@ -30,14 +30,15 @@ class Residence
     #[ORM\OneToMany(mappedBy: 'residence', targetEntity: TaxeFonciere::class)]
     private Collection $taxeFoncieres;
 
-    #[ORM\OneToOne(mappedBy: 'residence', cascade: ['persist', 'remove'])]
-    private ?RegularisationPonctuelle $regularisationPonctuelle = null;
+    #[ORM\OneToMany(mappedBy: 'residence', targetEntity: RegularisationPonctuelle::class)]
+    private Collection $regularisationPonctuelles;
 
     public function __construct()
     {
         $this->lot = new ArrayCollection();
         $this->mandatSyndics = new ArrayCollection();
         $this->taxeFoncieres = new ArrayCollection();
+        $this->regularisationPonctuelles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,24 +160,32 @@ class Residence
         return $this;
     }
 
-    public function getRegularisationPonctuelle(): ?RegularisationPonctuelle
+    /**
+     * @return Collection<int, RegularisationPonctuelle>
+     */
+    public function getRegularisationPonctuelles(): Collection
     {
-        return $this->regularisationPonctuelle;
+        return $this->regularisationPonctuelles;
     }
 
-    public function setRegularisationPonctuelle(?RegularisationPonctuelle $regularisationPonctuelle): static
+    public function addRegularisationPonctuelle(RegularisationPonctuelle $regularisationPonctuelle): static
     {
-        // unset the owning side of the relation if necessary
-        if ($regularisationPonctuelle === null && $this->regularisationPonctuelle !== null) {
-            $this->regularisationPonctuelle->setResidence(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($regularisationPonctuelle !== null && $regularisationPonctuelle->getResidence() !== $this) {
+        if (!$this->regularisationPonctuelles->contains($regularisationPonctuelle)) {
+            $this->regularisationPonctuelles->add($regularisationPonctuelle);
             $regularisationPonctuelle->setResidence($this);
         }
 
-        $this->regularisationPonctuelle = $regularisationPonctuelle;
+        return $this;
+    }
+
+    public function removeRegularisationPonctuelle(RegularisationPonctuelle $regularisationPonctuelle): static
+    {
+        if ($this->regularisationPonctuelles->removeElement($regularisationPonctuelle)) {
+            // set the owning side to null (unless already changed)
+            if ($regularisationPonctuelle->getResidence() === $this) {
+                $regularisationPonctuelle->setResidence(null);
+            }
+        }
 
         return $this;
     }

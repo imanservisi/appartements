@@ -25,7 +25,7 @@ class RegularisationPonctuelle
     #[ORM\Column(nullable: true)]
     private ?float $montant230bis = null;
 
-    #[ORM\OneToOne(inversedBy: 'regularisationPonctuelle', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'regularisationPonctuelles')]
     private ?Residence $residence = null;
 
     public function getId(): ?int

@@ -132,10 +132,6 @@ class LotController extends AbstractController
     #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     public function delete(Request $request, Residence $residence, Lot $lot, EntityManagerInterface $entityManager): Response
     {
-        // if ($this->isCsrfTokenValid('delete'.$lot->getId(), $request->request->get('_token'))) {
-        //     $entityManager->remove($lot);
-        //     $entityManager->flush();
-        // }
         try {
             $entityManager->remove($lot);
             $entityManager->flush();

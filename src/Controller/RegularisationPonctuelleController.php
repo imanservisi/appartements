@@ -7,6 +7,8 @@ use App\Entity\Residence;
 use App\Form\RegularisationPonctuelleType;
 use App\Repository\RegularisationPonctuelleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use PhpParser\Node\Stmt\TryCatch;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +52,8 @@ class RegularisationPonctuelleController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_regularisation_ponctuelle_show', methods: ['GET'])]
-    public function show(RegularisationPonctuelle $regularisationPonctuelle): Response
+    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
+    public function show(RegularisationPonctuelle $regularisationPonctuelle, Residence $residence): Response
     {
         return $this->render('regularisation_ponctuelle/show.html.twig', [
             'regularisation_ponctuelle' => $regularisationPonctuelle,
@@ -58,7 +61,8 @@ class RegularisationPonctuelleController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_regularisation_ponctuelle_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, RegularisationPonctuelle $regularisationPonctuelle, EntityManagerInterface $entityManager): Response
+    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
+    public function edit(Residence $residence, Request $request, RegularisationPonctuelle $regularisationPonctuelle, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RegularisationPonctuelleType::class, $regularisationPonctuelle);
         $form->handleRequest($request);
@@ -66,23 +70,32 @@ class RegularisationPonctuelleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_regularisation_ponctuelle_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_residence_show', [
+                'id' => $residence->getId()
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('regularisation_ponctuelle/edit.html.twig', [
             'regularisation_ponctuelle' => $regularisationPonctuelle,
             'form' => $form,
+            'residence' => $residence
         ]);
     }
 
-    #[Route('/{id}', name: 'app_regularisation_ponctuelle_delete', methods: ['POST'])]
-    public function delete(Request $request, RegularisationPonctuelle $regularisationPonctuelle, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/delete', name: 'app_regularisation_ponctuelle_delete', methods: ['GET', 'POST'])]
+    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
+    public function delete(Residence $residence, RegularisationPonctuelle $regularisationPonctuelle, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$regularisationPonctuelle->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager->remove($regularisationPonctuelle);
             $entityManager->flush();
+            $this->addFlash('success', 'Régularisation supprimée');
+        } catch (Exception $e) {
+            $this->addFlash('error', 'Suppression non possible');
         }
 
-        return $this->redirectToRoute('app_regularisation_ponctuelle_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_residence_show', [
+                'id' => $residence->getId()
+            ], Response::HTTP_SEE_OTHER);
     }
 }

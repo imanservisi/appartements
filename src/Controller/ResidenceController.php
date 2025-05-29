@@ -6,6 +6,7 @@ use App\Entity\Residence;
 use App\Form\ResidenceType;
 use App\Repository\LotRepository;
 use App\Repository\MandatSyndicRepository;
+use App\Repository\RegularisationPonctuelleRepository;
 use App\Repository\ResidenceRepository;
 use App\Repository\TaxeFonciereRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,7 +59,8 @@ class ResidenceController extends AbstractController
         Residence $residence,
         LotRepository $lotRepository,
         TaxeFonciereRepository $taxeFonciereRepository,
-        MandatSyndicRepository $mandatSyndicRepository
+        MandatSyndicRepository $mandatSyndicRepository,
+        RegularisationPonctuelleRepository $regularisationPonctuelleRepository
         ): Response {
         //Récupération des lots liés à la résidence
         $lots = $lotRepository->findBy(['residence' => $residence]);
@@ -66,13 +68,16 @@ class ResidenceController extends AbstractController
         $taxesFoncieres = $taxeFonciereRepository->findBy(['residence' => $residence]);
         //récupération des mandats des syndics liés à la résidence
         $mandatsSyndic = $mandatSyndicRepository->findBy(['residence' => $residence]);
-        
+        // Récupération des régularisations ponctuelles
+        $regulsPonctuelles = $regularisationPonctuelleRepository->findBy(['residence' => $residence]);
+
         return $this->render('residence/show.html.twig', [
             'residence' => $residence,
             'lots' => $lots,
             'taxes_foncieres' => $taxesFoncieres,
             'mandats_syndic' => $mandatsSyndic,
-            'domain_name' => $this->domainName
+            'domain_name' => $this->domainName,
+            'regulsPonctuelles' => $regulsPonctuelles
         ]);
     }
 
