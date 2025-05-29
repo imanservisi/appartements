@@ -12,6 +12,7 @@ use App\Repository\LotRepository;
 use App\Repository\LoyerRepository;
 use App\Repository\MandatGestionnaireRepository;
 use App\Repository\PrimeAssuranceRepository;
+use App\Repository\RegularisationPonctuelleRepository;
 use App\Repository\ResidenceRepository;
 use App\Repository\TaxeFonciereRepository;
 use App\Repository\TravauxRepository;
@@ -39,6 +40,7 @@ class DeclarationController extends AbstractController
         ChargeRepository $chargeRepository,
         EmpruntRepository $empruntRepository,
         InteretRepository $interetRepository,
+        RegularisationPonctuelleRepository $regularisationPonctuelleRepository,
         DeclarationService $declarationService
     ): Response {
         $annees = $declarationService->createYearsArray();
@@ -139,13 +141,21 @@ class DeclarationController extends AbstractController
         ]);
         $montantTaxeFonciere = !empty($taxeFonciere) ? $taxeFonciere->getMontant() : 0;
 
+        // Récupération des régul ponctuelles (229bis, 230 et 230bis)
+        $regulsPonctuelles = $regularisationPonctuelleRepository->findOneBy([
+            'residence' => $residence,
+            'annee' => $anneeChoisie
+        ]);
+
         //Calcul total frais et charges
         $totalFraisCharges = $sommeMandatGestion + $montant222 + $sommePrimesAssurance +
         $sommeTravaux + $montantTaxeFonciere + $sommeCharges;
 
         //Calcul 215-240-250
-        $montant261 = $montant211 - $totalFraisCharges - $sommeEmprunt;
+        $montant261 = $montant211 - $totalFraisCharges - $sommeEmprunt-$regulsPonctuelles->getMontant230();
         $AllTravaux = $travauxRepository->findByLotsIdAndYear($lotsId, $anneeChoisie);
+
+        //TODO : finir les calculs en incluant 229bis et 230bis
         return $this->render('declaration/index.html.twig', [
             'annees' => $annees,
             'residences' => $residenceRepository->findAll(),
@@ -162,7 +172,8 @@ class DeclarationController extends AbstractController
             'montant261' => $montant261,
             'allTravaux' => $AllTravaux,
             'annee_choisie' => $anneeChoisie,
-            'residence_choisie' => $idResidence
+            'residence_choisie' => $idResidence,
+            'regulsPonctuelles' => $regulsPonctuelles
         ]);
     }
 }
