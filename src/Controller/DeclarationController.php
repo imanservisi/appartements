@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Recapitulatif;
+use App\Entity\Residence;
 use App\Repository\CafRepository;
 use App\Repository\ChargeRepository;
 use App\Repository\EmpruntRepository;
@@ -17,7 +19,9 @@ use App\Repository\ResidenceRepository;
 use App\Repository\TaxeFonciereRepository;
 use App\Repository\TravauxRepository;
 use App\Service\DeclarationService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -186,5 +190,33 @@ class DeclarationController extends AbstractController
             'residence_choisie' => $idResidence,
             'regulsPonctuelles' => $regulsPonctuelles
         ]);
+    }
+
+    #[Route('/genererRecapitulatif/{residence}', name: 'app_generer_recapitulatif')]
+    public function genererRecapitulatif(
+        Request $request,
+        Residence $residence,
+        EntityManagerInterface $em
+    ): JsonResponse
+    {
+        // TODO : mettre en place la mise à jour
+        $loyer = $request->get('loyer');
+        $recap = new Recapitulatif();
+        $recap->setResidence($residence);
+        $recap->setAnnee('2026');
+        $recap->setLoyer($loyer);
+        $recap->setTotalRecette(0);
+        $recap->setFraisAdm(0);
+        $recap->setAutresFrais(0);             
+        $recap->setPrimesAssurances(0);
+        $recap->setTravaux(0);
+        $recap->setTaxeFonciere(0);
+        $recap->setProvisionPourCharge(0);
+        $recap->setInteretEmprunt(0);
+        $recap->setMontant261(0);
+        $em->persist($recap);
+        $em->flush();
+
+        return new JsonResponse('ok', 200);
     }
 }

@@ -33,12 +33,16 @@ class Residence
     #[ORM\OneToMany(mappedBy: 'residence', targetEntity: RegularisationPonctuelle::class)]
     private Collection $regularisationPonctuelles;
 
+    #[ORM\OneToMany(mappedBy: 'residence', targetEntity: Recapitulatif::class)]
+    private Collection $recapitulatifs;
+
     public function __construct()
     {
         $this->lot = new ArrayCollection();
         $this->mandatSyndics = new ArrayCollection();
         $this->taxeFoncieres = new ArrayCollection();
         $this->regularisationPonctuelles = new ArrayCollection();
+        $this->recapitulatifs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +188,36 @@ class Residence
             // set the owning side to null (unless already changed)
             if ($regularisationPonctuelle->getResidence() === $this) {
                 $regularisationPonctuelle->setResidence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recapitulatif>
+     */
+    public function getRecapitulatifs(): Collection
+    {
+        return $this->recapitulatifs;
+    }
+
+    public function addRecapitulatif(Recapitulatif $recapitulatif): static
+    {
+        if (!$this->recapitulatifs->contains($recapitulatif)) {
+            $this->recapitulatifs->add($recapitulatif);
+            $recapitulatif->setResidence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecapitulatif(Recapitulatif $recapitulatif): static
+    {
+        if ($this->recapitulatifs->removeElement($recapitulatif)) {
+            // set the owning side to null (unless already changed)
+            if ($recapitulatif->getResidence() === $this) {
+                $recapitulatif->setResidence(null);
             }
         }
 

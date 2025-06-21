@@ -11,4 +11,5 @@ import './styles/custom.css';
 
 import './delete.js';
 import './comment.js';
+import './recapitulatif.js';
 
