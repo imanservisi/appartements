@@ -142,20 +142,28 @@ class DeclarationController extends AbstractController
         $montantTaxeFonciere = !empty($taxeFonciere) ? $taxeFonciere->getMontant() : 0;
 
         // Récupération des régul ponctuelles (229bis, 230 et 230bis)
+        $montant230 = 0;
+        $montant229bis = 0;
+        $montant230bis = 0;
         $regulsPonctuelles = $regularisationPonctuelleRepository->findOneBy([
             'residence' => $residence,
             'annee' => $anneeChoisie
         ]);
+        if (!is_null($regulsPonctuelles)) {
+            $montant229bis = !is_null($regulsPonctuelles->getMontant229bis()) ? $regulsPonctuelles->getMontant229bis() : 0;
+            $montant230 = !is_null($regulsPonctuelles->getMontant230()) ? $regulsPonctuelles->getMontant230() : 0;
+            $montant230bis = !is_null($regulsPonctuelles->getMontant230bis()) ? $regulsPonctuelles->getMontant230bis() : 0;
+        }
 
-        //Calcul total frais et charges
+        // Calcul total frais et charges (240)
+        // 240 = 221 + 222 + 223 + 224 + 227 + 229 + 229bis - 230 - 230bis
         $totalFraisCharges = $sommeMandatGestion + $montant222 + $sommePrimesAssurance +
-        $sommeTravaux + $montantTaxeFonciere + $sommeCharges;
+        $sommeTravaux + $montantTaxeFonciere + $sommeCharges + $montant229bis - $montant230 - $montant230bis;
 
         //Calcul 215-240-250
-        $montant261 = $montant211 - $totalFraisCharges - $sommeEmprunt-$regulsPonctuelles->getMontant230();
+        $montant261 = $montant211 - $totalFraisCharges - $sommeEmprunt;
         $AllTravaux = $travauxRepository->findByLotsIdAndYear($lotsId, $anneeChoisie);
 
-        //TODO : finir les calculs en incluant 229bis et 230bis
         return $this->render('declaration/index.html.twig', [
             'annees' => $annees,
             'residences' => $residenceRepository->findAll(),
@@ -167,6 +175,9 @@ class DeclarationController extends AbstractController
             'montant224' => $sommeTravaux,
             'montant227' => $montantTaxeFonciere,
             'montant229' => $sommeCharges,
+            'montant229bis' => $montant229bis,
+            'montant230' => $montant230,
+            'montant230bis' => $montant230bis,
             'montant240' => $totalFraisCharges,
             'montant250' => $sommeEmprunt,
             'montant261' => $montant261,
