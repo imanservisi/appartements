@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecapitulatifController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center">Récapitulatif</h1>
+    <form method="post">
+        <div class="col-3">
+            <select class="mt-2 form-select" aria-label="Choix année" id="choix-annee" name="choix-annee" required>
+                <option value="">Choisir une année</option>
+                {% for annee in annees %}
+                    <option value="{{ annee }}"
+                        {% if annee == annee_choisie %} selected {% endif %}>
+                    {{ annee }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button class="mt-2 btn btn-info" type="submit">Choisir</button>
+    </form>
+</div>
+
+{% endblock %}
