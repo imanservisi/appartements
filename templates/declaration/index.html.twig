@@ -36,7 +36,28 @@
                 <h2 class="text-center">{{ residence.nomResidence }}</h2>
             </div>
             <div class="col-4 text-end">
-                <button id="recapitulatif" class="btn btn-warning " data-residence="{{ residence.id }}" data-loyer="{{ montant211 }}">Générer le récapitulatif</button>
+                <button 
+                    id="recapitulatif"
+                    class="btn btn-warning "
+                    data-residence="{{ residence.id }}"
+                    data-annee="{{ annee_choisie }}"
+                    data-loyer="{{ montant211 }}"
+                    data-totalrecettes="{{ montant211 }}"
+                    data-fraisgestion="{{ montant221 }}"
+                    data-autresfrais="{{ montant222 }}"
+                    data-primesassurances="{{ montant223 }}"
+                    data-travaux="{{ montant224 }}"
+                    data-taxesfoncieres="{{ montant227 }}"
+                    data-provisions="{{ montant229 }}"
+                    data-autresprovisions="{{ montant229bis }}"
+                    data-regul="{{ montant230 }}"
+                    data-autresregul="{{ montant230bis }}"
+                    data-fraischarges="{{ montant240 }}"
+                    data-emprunt="{{ montant250 }}"
+                    data-revenusfonciers="{{ montant261 }}"
+                >
+                        Générer le récapitulatif
+                </button>
             </div>
         </div>
         

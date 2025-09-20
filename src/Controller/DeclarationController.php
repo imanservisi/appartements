@@ -14,6 +14,7 @@ use App\Repository\LotRepository;
 use App\Repository\LoyerRepository;
 use App\Repository\MandatGestionnaireRepository;
 use App\Repository\PrimeAssuranceRepository;
+use App\Repository\RecapitulatifRepository;
 use App\Repository\RegularisationPonctuelleRepository;
 use App\Repository\ResidenceRepository;
 use App\Repository\TaxeFonciereRepository;
@@ -196,24 +197,52 @@ class DeclarationController extends AbstractController
     public function genererRecapitulatif(
         Request $request,
         Residence $residence,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        RecapitulatifRepository $recapitulatifRepository
     ): JsonResponse
     {
-        // TODO : mettre en place la mise à jour
+        $annee = $request->get('annee');
+        // Vérification si un récap existe déjà pour l'année et la résidence. Si n'existe pas, création
+        $recap = $recapitulatifRepository->findOneBy([
+            'residence' => $residence->getId(),
+            'annee' => $annee
+        ]);
+        if (is_null($recap)) {
+            $recap = new Recapitulatif();
+            $recap->setAnnee($annee);
+            $recap->setResidence($residence);
+        }
+        // Récupération de toutes les données
         $loyer = $request->get('loyer');
-        $recap = new Recapitulatif();
-        $recap->setResidence($residence);
-        $recap->setAnnee('2026');
+        $totalRecettes = $request->get('totalRecettes');
+        $fraisGestion = $request->get('fraisGestion');
+        $autresFrais = $request->get('autresFrais');
+        $primesAssurances = $request->get('primesAssurances');
+        $travaux = $request->get('travaux');
+        $taxesFoncieres = $request->get('taxesFoncieres');
+        $provisions = $request->get('provisions');
+        $autresProvisions = $request->get('autresProvisions');
+        $regul = $request->get('regul');
+        $autresRegul = $request->get('autresRegul');
+        $fraisCharges = $request->get('fraisCharges');
+        $emprunt = $request->get('emprunt');
+        $revenusFonciers = $request->get('revenusFonciers');
+        
+        // Mise à jour de l'entité
         $recap->setLoyer($loyer);
-        $recap->setTotalRecette(0);
-        $recap->setFraisAdm(0);
-        $recap->setAutresFrais(0);             
-        $recap->setPrimesAssurances(0);
-        $recap->setTravaux(0);
-        $recap->setTaxeFonciere(0);
-        $recap->setProvisionPourCharge(0);
-        $recap->setInteretEmprunt(0);
-        $recap->setMontant261(0);
+        $recap->setTotalRecette($totalRecettes);
+        $recap->setFraisAdm($fraisGestion);
+        $recap->setAutresFrais($autresFrais);
+        $recap->setPrimesAssurances($primesAssurances);
+        $recap->setTravaux($travaux);
+        $recap->setTaxeFonciere($taxesFoncieres);
+        $recap->setProvisionPourCharge($provisions);
+        $recap->setMontant229bis($autresProvisions);
+        $recap->setMontant230($regul);
+        $recap->setMontant230bis($autresRegul);
+        $recap->setProvisionPourCharge($fraisCharges);
+        $recap->setInteretEmprunt($emprunt);
+        $recap->setMontant261($revenusFonciers);
         $em->persist($recap);
         $em->flush();
 
