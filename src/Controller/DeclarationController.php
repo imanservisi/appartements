@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Recapitulatif;
 use App\Entity\Residence;
-use App\Repository\CafRepository;
 use App\Repository\ChargeRepository;
 use App\Repository\EmpruntRepository;
-use App\Repository\FraisGestionRepository;
 use App\Repository\InteretRepository;
 use App\Repository\LocationRepository;
 use App\Repository\LotRepository;
-use App\Repository\LoyerRepository;
 use App\Repository\MandatGestionnaireRepository;
 use App\Repository\PrimeAssuranceRepository;
 use App\Repository\RecapitulatifRepository;
@@ -19,6 +16,8 @@ use App\Repository\RegularisationPonctuelleRepository;
 use App\Repository\ResidenceRepository;
 use App\Repository\TaxeFonciereRepository;
 use App\Repository\TravauxRepository;
+use App\Service\AssembleurDonnees;
+use App\Service\Calculator;
 use App\Service\DeclarationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,10 +34,7 @@ class DeclarationController extends AbstractController
         ResidenceRepository $residenceRepository,
         LotRepository $lotRepository,
         LocationRepository $locationRepository,
-        LoyerRepository $loyerRepository,
-        CafRepository $cafRepository,
         MandatGestionnaireRepository $mandatGestionnaireRepository,
-        FraisGestionRepository $fraisGestionRepository,
         PrimeAssuranceRepository $primeAssuranceRepository,
         TravauxRepository $travauxRepository,
         TaxeFonciereRepository $taxeFonciereRepository,
@@ -46,7 +42,9 @@ class DeclarationController extends AbstractController
         EmpruntRepository $empruntRepository,
         InteretRepository $interetRepository,
         RegularisationPonctuelleRepository $regularisationPonctuelleRepository,
-        DeclarationService $declarationService
+        DeclarationService $declarationService,
+        Calculator $calculator,
+        AssembleurDonnees $assembleur
     ): Response {
         $annees = $declarationService->createYearsArray();
         $idResidence = $request->request->get('choix-residence', "1");
@@ -72,40 +70,20 @@ class DeclarationController extends AbstractController
             $locations = $locationRepository->findBy([
                 'lot' => $lot
             ]);
-            foreach ($locations as $location) {
-                $loyers = $loyerRepository->findBy([
-                    'location' => $location,
-                    'annee' => $anneeChoisie
-                ]);
-                foreach ($loyers as $loyer) {
-                    $sommeLoyer = $sommeLoyer + $loyer->getMontant();
-                }
-                $cafs = $cafRepository->findBy([
-                    'location' => $location,
-                    'annee' => $anneeChoisie
-                ]);
-                foreach ($cafs as $caf) {
-                    $sommeCaf = $sommeCaf + $caf->getMontantCaf();
-                }
-            }
+            $sommesLocations = $calculator->calculsPourLocation($anneeChoisie, $locations);
+            $sommeCaf += $sommesLocations['sommeCaf'];
+            $sommeLoyer += $sommesLocations['sommeLoyer'];
             //Récupération des frais de gestion des mandats gestionnaires de tous les lots de la résidence
             $mandatsGestion = $mandatGestionnaireRepository->findBy(['lot' => $lot]);
-            foreach ($mandatsGestion as $mandatGestion) {
-                $fraisGestions = $fraisGestionRepository->findBy([
-                    'mandatGestionnaire' => $mandatGestion,
-                    'annee' => $anneeChoisie
-                ]);
-                foreach ($fraisGestions as $fraisGestion) {
-                    $sommeMandatGestion = $sommeMandatGestion + $fraisGestion->getMontant();
-                }
-            }
+            $calculMandatsGestion = $calculator->calculMandatGestion($anneeChoisie, $mandatsGestion);
+            $sommeMandatGestion += $calculMandatsGestion['sommeMandatGestion'];
             //Récupération des primes d'assurance
             $primesAssurance = $primeAssuranceRepository->findBy([
                 'lot' => $lot,
                 'annee' => $anneeChoisie
             ]);
             foreach ($primesAssurance as $prime) {
-                $sommePrimesAssurance = $sommePrimesAssurance + $prime->getMontant();
+                $sommePrimesAssurance += $prime->getMontant();
             }
             //Récupération des travaux
             $montantsTravaux = $travauxRepository->findBy([
@@ -113,7 +91,7 @@ class DeclarationController extends AbstractController
                 'annee' => $anneeChoisie
             ]);
             foreach ($montantsTravaux as $travaux) {
-                $sommeTravaux = $sommeTravaux + $travaux->getMontantTravaux();
+                $sommeTravaux += $travaux->getMontantTravaux();
             }
             //Récupération des charges
             $montantsCharges = $chargeRepository->findBy([
@@ -121,7 +99,7 @@ class DeclarationController extends AbstractController
                 'annee' => $anneeChoisie
             ]);
             foreach ($montantsCharges as $charge) {
-                $sommeCharges = $sommeCharges + $charge->getMontant();
+                $sommeCharges += $charge->getMontant();
             }
             //Récupération des emprunts
             $emprunts = $empruntRepository->findBy([
@@ -137,8 +115,7 @@ class DeclarationController extends AbstractController
                 }
             }
         }
-        $montant211 = $sommeLoyer + $sommeCaf;
-        $montant222 = 20 * $nbLots;
+        
         //Récupération de la taxe foncière
         $taxeFonciere = $taxeFonciereRepository->findOneBy([
             'residence' => $residence,
@@ -160,36 +137,32 @@ class DeclarationController extends AbstractController
             $montant230bis = !is_null($regulsPonctuelles->getMontant230bis()) ? $regulsPonctuelles->getMontant230bis() : 0;
         }
 
-        // Calcul total frais et charges (240)
-        // 240 = 221 + 222 + 223 + 224 + 227 + 229 + 229bis - 230 - 230bis
-        $totalFraisCharges = $sommeMandatGestion + $montant222 + $sommePrimesAssurance +
-        $sommeTravaux + $montantTaxeFonciere + $sommeCharges + $montant229bis - $montant230 - $montant230bis;
-
-        //Calcul 215-240-250
-        $montant261 = $montant211 - $totalFraisCharges - $sommeEmprunt;
         $AllTravaux = $travauxRepository->findByLotsIdAndYear($lotsId, $anneeChoisie);
+
+        $montants = $assembleur->assembleMontants(
+            $sommeLoyer,
+            $sommeCaf,
+            $sommeMandatGestion,
+            $nbLots,
+            $sommePrimesAssurance,
+            $sommeTravaux,
+            $montantTaxeFonciere,
+            $sommeCharges,
+            $montant229bis,
+            $montant230,
+            $montant230bis,
+            $sommeEmprunt
+        );
 
         return $this->render('declaration/index.html.twig', [
             'annees' => $annees,
             'residences' => $residenceRepository->findAll(),
             'residence' => $residence,
-            'montant211' => $montant211,
-            'montant221' => $sommeMandatGestion,
-            'montant222' => $montant222,
-            'montant223' => $sommePrimesAssurance,
-            'montant224' => $sommeTravaux,
-            'montant227' => $montantTaxeFonciere,
-            'montant229' => $sommeCharges,
-            'montant229bis' => $montant229bis,
-            'montant230' => $montant230,
-            'montant230bis' => $montant230bis,
-            'montant240' => $totalFraisCharges,
-            'montant250' => $sommeEmprunt,
-            'montant261' => $montant261,
             'allTravaux' => $AllTravaux,
             'annee_choisie' => $anneeChoisie,
             'residence_choisie' => $idResidence,
-            'regulsPonctuelles' => $regulsPonctuelles
+            'regulsPonctuelles' => $regulsPonctuelles,
+            'montants' => $montants
         ]);
     }
 
@@ -213,38 +186,30 @@ class DeclarationController extends AbstractController
             $recap->setResidence($residence);
         }
         // Récupération de toutes les données
-        $loyer = $request->get('loyer');
-        $totalRecettes = $request->get('totalRecettes');
-        $fraisGestion = $request->get('fraisGestion');
-        $autresFrais = $request->get('autresFrais');
-        $primesAssurances = $request->get('primesAssurances');
-        $travaux = $request->get('travaux');
-        $taxesFoncieres = $request->get('taxesFoncieres');
-        $provisions = $request->get('provisions');
-        $autresProvisions = $request->get('autresProvisions');
-        $regul = $request->get('regul');
-        $autresRegul = $request->get('autresRegul');
-        $fraisCharges = $request->get('fraisCharges');
-        $emprunt = $request->get('emprunt');
-        $revenusFonciers = $request->get('revenusFonciers');
+        $montants = $request->get('montants');
+        if (is_string($montants)) {
+            $montants = json_decode($montants, true);
+        }
         
         // Mise à jour de l'entité
-        $recap->setLoyer($loyer);
-        $recap->setTotalRecette($totalRecettes);
-        $recap->setFraisAdm($fraisGestion);
-        $recap->setAutresFrais($autresFrais);
-        $recap->setPrimesAssurances($primesAssurances);
-        $recap->setTravaux($travaux);
-        $recap->setTaxeFonciere($taxesFoncieres);
-        $recap->setProvisionPourCharge($provisions);
-        $recap->setMontant229bis($autresProvisions);
-        $recap->setMontant230($regul);
-        $recap->setMontant230bis($autresRegul);
-        $recap->setProvisionPourCharge($fraisCharges);
-        $recap->setInteretEmprunt($emprunt);
-        $recap->setMontant261($revenusFonciers);
-        $em->persist($recap);
-        $em->flush();
+        $recap->setLoyer($montants['211']);
+        $recap->setTotalRecette($montants['211']);
+        $recap->setFraisAdm($montants['221']);
+        $recap->setAutresFrais($montants['222']);
+        $recap->setPrimesAssurances($montants['223']);
+        $recap->setTravaux($montants['224']);
+        $recap->setTaxeFonciere($montants['227']);
+        $recap->setProvisionPourCharge($montants['229']);
+        $recap->setMontant229bis($montants['229bis']);
+        $recap->setMontant230($montants['230']);
+        $recap->setMontant230bis($montants['230bis']);
+        $recap->setProvisionPourCharge($montants['240']);
+        $recap->setInteretEmprunt($montants['250']);
+        $recap->setMontant261($montants['261']);
+        dd([$montants, $recap]);
+        
+        // $em->persist($recap);
+        // $em->flush();
 
         return new JsonResponse('ok', 200);
     }

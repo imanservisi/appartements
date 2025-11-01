@@ -30,6 +30,7 @@
             <button class="mt-2 btn btn-info" type="submit">Choisir</button>
         </form>
 
+        {{ dump(montants)}}
         <div class="d-flex row">
             <div class="col-4"></div>
             <div class="col-4">
@@ -41,20 +42,7 @@
                     class="btn btn-warning "
                     data-residence="{{ residence.id }}"
                     data-annee="{{ annee_choisie }}"
-                    data-loyer="{{ montant211 }}"
-                    data-totalrecettes="{{ montant211 }}"
-                    data-fraisgestion="{{ montant221 }}"
-                    data-autresfrais="{{ montant222 }}"
-                    data-primesassurances="{{ montant223 }}"
-                    data-travaux="{{ montant224 }}"
-                    data-taxesfoncieres="{{ montant227 }}"
-                    data-provisions="{{ montant229 }}"
-                    data-autresprovisions="{{ montant229bis }}"
-                    data-regul="{{ montant230 }}"
-                    data-autresregul="{{ montant230bis }}"
-                    data-fraischarges="{{ montant240 }}"
-                    data-emprunt="{{ montant250 }}"
-                    data-revenusfonciers="{{ montant261 }}"
+                    data-montants="{{ montants|json_encode }}"
                 >
                         Générer le récapitulatif
                 </button>
@@ -81,7 +69,7 @@
                 <tr>
                     <th>211</th>
                     <td>Loyers</td>
-                    <td>{{ montant211 }}</td>
+                    <td>{{ montants.211 }}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -105,7 +93,7 @@
                 <tr>
                     <th>215</th>
                     <td>TOTAL DES RECETTES</td>
-                    <td>{{ montant211 }}</td>
+                    <td>{{ montants.211 }}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -117,25 +105,25 @@
                 <tr>
                     <th>221</th>
                     <td>Frais d'administration et de gestion</td>
-                    <td>{{ montant221 }}</td>
+                    <td>{{ montants.221 }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>222</th>
                     <td>Autres frais de gestion</td>
-                    <td>{{ montant222 }}</td>
+                    <td>{{ montants.222 }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>223</th>
                     <td>Primes d'assurance</td>
-                    <td>{{ montant223 }}</td>
+                    <td>{{ montants.223 }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>224</th>
                     <td>Dépenses de réparation</td>
-                    <td>{{ montant224 }}</td>
+                    <td>{{ montants.224 }}</td>
                     <td>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTravaux">
                             Détail des travaux
@@ -157,7 +145,7 @@
                 <tr>
                     <th>227</th>
                     <td>Taxes foncières</td>
-                    <td>{{ montant227 }}</td>
+                    <td>{{ montants.227 }}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -169,37 +157,37 @@
                 <tr>
                     <th>229</th>
                     <td>Provisions pour charges</td>
-                    <td>{{ montant229 }}</td>
+                    <td>{{ montants.229 }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>229 bis</th>
                     <td></td>
-                    <td>{{ montant229bis }}</td>
+                    <td>{{ montants['229bis']}}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>230</th>
                     <td>Régularisation des provisions</td>
-                    <td>{{ montant230 }}</td>
+                    <td>{{ montants.230 }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>230 bis</th>
                     <td></td>
-                    <td>{{ montant230bis }}</td>
+                    <td>{{ montants['230bis']}}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>240</th>
                     <td>Total des frais et charges</td>
-                    <td>{{ montant240 }}</td>
+                    <td>{{ montants.240 }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <th>250</th>
                     <td>Intérêts d'emprunt</td>
-                    <td>{{ montant250 }}</td>
+                    <td>{{ montants.250 }}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -211,7 +199,7 @@
                 <tr>
                     <th>261</th>
                     <td></td>
-                    <td>{{ montant261 }}</td>
+                    <td>{{ montants.261 }}</td>
                     <td></td>
                 </tr>
             </tbody>
