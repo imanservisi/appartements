@@ -20,6 +20,7 @@ use App\Service\AssembleurDonnees;
 use App\Service\Calculator;
 use App\Service\DeclarationService;
 use App\Service\SommeParLot;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -151,10 +152,10 @@ class DeclarationController extends AbstractController
         $recap->setProvisionPourCharge($montants['240']);
         $recap->setInteretEmprunt($montants['250']);
         $recap->setMontant261($montants['261']);
-        dd([$montants, $recap]);
+        $recap->setUpdatedAt(new DateTime('now'));
         
-        // $em->persist($recap);
-        // $em->flush();
+        $em->persist($recap);
+        $em->flush();
 
         return new JsonResponse('ok', 200);
     }

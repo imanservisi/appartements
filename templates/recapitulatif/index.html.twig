@@ -20,6 +20,178 @@
 
         <button class="mt-2 btn btn-info" type="submit">Choisir</button>
     </form>
+    {{ dump(residences) }}
+    {{ dump(recapitulatifs) }}
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col"></th> <!-- Cellule vide pour l'angle supérieur gauche -->
+                {% for residence in residences %}
+                    <th scope="col">{{ residence.nomResidence }}</th>
+                    {# <th scope="col">{{ residence.nomResidence }}</th> #}
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for recap in recapitulatifs %}
+                <tr>
+                <th scope="col">210 RECETTES</th>
+                    {% for residence in residences %}
+                        <td class="text-end">
+                            {# affiche le montant formaté ou un tiret si absent #}
+                            {% set val = recap.valeurs[residence.id] ?? null %}
+                            {{ val is not null ? val|number_format(2, ',', ' ') : '-' }}
+                        </td>
+                    {% endfor %}
+            </tr>
+            {% endfor %}
+            
+            <tr>
+                <th scope="col">211 Loyers</th>
+                <td>Data 2-1</td>
+                <td>Data 2-2</td>
+                <td>Data 2-3</td>
+            </tr>
+            <tr>
+                <th scope="col">212</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">213</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">214</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">215 Total des recettes</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">220 FRAIS ET CHARGES</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">221 Frais d'administration et de gestion</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">222 Autres frais de gestion</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">223 Primes d'assurance</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">224 Dépenses de réparation</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">225</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">226</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">227 Taxes foncières</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">228</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">229 Provisions pour charges</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">229 bis</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">230 Régularisation des provisions</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">230 bis</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">240 Total des frais et charges</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">250 Intérêts d'emprunt</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">260 REVENUS FONCIERS</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">261</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">262</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+            <tr>
+                <th scope="col">263</th>
+                <td>Data 3-1</td>
+                <td>Data 3-2</td>
+                <td>Data 3-3</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 {% endblock %}
