@@ -19,6 +19,7 @@ use App\Repository\TravauxRepository;
 use App\Service\AssembleurDonnees;
 use App\Service\Calculator;
 use App\Service\DeclarationService;
+use App\Service\SommeParLot;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,93 +29,37 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeclarationController extends AbstractController
 {
+    public function __construct(
+    )
+    {
+        
+    }
     #[Route('/', name: 'app_declaration')]
     public function index(
         Request $request,
         ResidenceRepository $residenceRepository,
         LotRepository $lotRepository,
-        LocationRepository $locationRepository,
-        MandatGestionnaireRepository $mandatGestionnaireRepository,
-        PrimeAssuranceRepository $primeAssuranceRepository,
         TravauxRepository $travauxRepository,
         TaxeFonciereRepository $taxeFonciereRepository,
-        ChargeRepository $chargeRepository,
-        EmpruntRepository $empruntRepository,
-        InteretRepository $interetRepository,
         RegularisationPonctuelleRepository $regularisationPonctuelleRepository,
         DeclarationService $declarationService,
         Calculator $calculator,
-        AssembleurDonnees $assembleur
+        AssembleurDonnees $assembleur,
+        SommeParLot $sommeParLot
     ): Response {
         $annees = $declarationService->createYearsArray();
         $idResidence = $request->request->get('choix-residence', "1");
         $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
         //Récupération de la résidence en fonction de l'idResidence demandé
         $residence = $residenceRepository->findOneBy(['id' => $idResidence]);
-        $nbLots = count($residence->getLot());
         //Récupération de tous les lots liés à la résidence
         $lots = $lotRepository->findBy(['residence' => $residence]);
-        
-        $sommeLoyer = 0;
-        $sommeCaf = 0;
-        $sommeMandatGestion = 0;
-        $sommePrimesAssurance = 0;
-        $sommeTravaux = 0;
-        $sommeCharges = 0;
-        $sommeEmprunt = 0;
-        $lotsId = [];
-        foreach ($lots as $lot) {
-            //Récupération de la liste des ids des lots
-            $lotsId[] = $lot->getId();
-            //Récupération des montants des loyers et de la CAF
-            $locations = $locationRepository->findBy([
-                'lot' => $lot
-            ]);
-            $sommesLocations = $calculator->calculsPourLocation($anneeChoisie, $locations);
-            $sommeCaf += $sommesLocations['sommeCaf'];
-            $sommeLoyer += $sommesLocations['sommeLoyer'];
-            //Récupération des frais de gestion des mandats gestionnaires de tous les lots de la résidence
-            $mandatsGestion = $mandatGestionnaireRepository->findBy(['lot' => $lot]);
-            $calculMandatsGestion = $calculator->calculMandatGestion($anneeChoisie, $mandatsGestion);
-            $sommeMandatGestion += $calculMandatsGestion['sommeMandatGestion'];
-            //Récupération des primes d'assurance
-            $primesAssurance = $primeAssuranceRepository->findBy([
-                'lot' => $lot,
-                'annee' => $anneeChoisie
-            ]);
-            foreach ($primesAssurance as $prime) {
-                $sommePrimesAssurance += $prime->getMontant();
-            }
-            //Récupération des travaux
-            $montantsTravaux = $travauxRepository->findBy([
-                'lot' => $lot,
-                'annee' => $anneeChoisie
-            ]);
-            foreach ($montantsTravaux as $travaux) {
-                $sommeTravaux += $travaux->getMontantTravaux();
-            }
-            //Récupération des charges
-            $montantsCharges = $chargeRepository->findBy([
-                'lot' => $lot,
-                'annee' => $anneeChoisie
-            ]);
-            foreach ($montantsCharges as $charge) {
-                $sommeCharges += $charge->getMontant();
-            }
-            //Récupération des emprunts
-            $emprunts = $empruntRepository->findBy([
-                'lot' => $lot,
-            ]);
-            foreach ($emprunts as $emprunt) {
-                $montantsInterets = $interetRepository->findBy([
-                    'emprunt' => $emprunt,
-                    'annee' => $anneeChoisie
-                ]);
-                foreach ($montantsInterets as $interet) {
-                    $sommeEmprunt = $sommeEmprunt + $interet->getMontantInteret();
-                }
-            }
-        }
+
+        $sommesLots = $sommeParLot->calculerSommesParLots(
+            $lots,
+            $anneeChoisie,
+            $calculator
+        );
         
         //Récupération de la taxe foncière
         $taxeFonciere = $taxeFonciereRepository->findOneBy([
@@ -137,28 +82,28 @@ class DeclarationController extends AbstractController
             $montant230bis = !is_null($regulsPonctuelles->getMontant230bis()) ? $regulsPonctuelles->getMontant230bis() : 0;
         }
 
-        $AllTravaux = $travauxRepository->findByLotsIdAndYear($lotsId, $anneeChoisie);
+        $allTravaux = $travauxRepository->findByLotsIdAndYear($sommesLots['lotsId'], $anneeChoisie);
 
         $montants = $assembleur->assembleMontants(
-            $sommeLoyer,
-            $sommeCaf,
-            $sommeMandatGestion,
-            $nbLots,
-            $sommePrimesAssurance,
-            $sommeTravaux,
+            $sommesLots['sommeLoyer'],
+            $sommesLots['sommeCaf'],
+            $sommesLots['sommeMandatGestion'],
+            count($lots),
+            $sommesLots['sommePrimesAssurance'],
+            $sommesLots['sommeTravaux'],
             $montantTaxeFonciere,
-            $sommeCharges,
+            $sommesLots['sommeCharges'],
             $montant229bis,
             $montant230,
             $montant230bis,
-            $sommeEmprunt
+            $sommesLots['sommeEmprunt']
         );
 
         return $this->render('declaration/index.html.twig', [
             'annees' => $annees,
             'residences' => $residenceRepository->findAll(),
             'residence' => $residence,
-            'allTravaux' => $AllTravaux,
+            'allTravaux' => $allTravaux,
             'annee_choisie' => $anneeChoisie,
             'residence_choisie' => $idResidence,
             'regulsPonctuelles' => $regulsPonctuelles,
