@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\RecapitulatifRepository;
 use App\Repository\ResidenceRepository;
+use App\Service\AssembleurRecap;
 use App\Service\DeclarationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,35 +18,44 @@ class RecapitulatifController extends AbstractController
         Request $request,
         DeclarationService $declarationService,
         ResidenceRepository $residenceRepository,
-        RecapitulatifRepository $recapitulatifRepository
+        RecapitulatifRepository $recapitulatifRepository,
+        AssembleurRecap $assembleurRecap
     ): Response
     {
         $annees = $declarationService->createYearsArray();
         $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
 
         $residences = $residenceRepository->findAll();
-        // $recapitulatifs = $recapitulatifRepository->findBy(['annee' => $anneeChoisie]);
-        // TODO créer un modèle pour tout mettre en mémoire d'abord, afin de boucler sur le tableau des données
-        $recapitulatifs = [];
+        $recap = $recapitulatifRepository->findBy(['annee' => $anneeChoisie]);
+        // dd($recap);
+        $recapitulatifs = $assembleurRecap->assembleRecapitulatif($recap);
 
-        // exemples de lignes (à remplacer par logique réelle)
-        $recapitulatifs[] = [
-            'libelle' => '210 RECETTES',
-            'valeurs' => [
-                1 => 12345.67,
-                2 => 23456.78,
-                // ...
-            ],
-        ];
+        // $recapitulatifs = [];
 
-        $recapitulatifs[] = [
-            'libelle' => '211 Loyers',
-            'valeurs' => [
-                1 => 9876.54,
-                2 => 8765.43,
-                // ...
-            ],
-        ];
+        // // exemples de lignes (à remplacer par logique réelle)
+        // $recapitulatifs[] = [
+        //     'libelle' => '210 RECETTES',
+        //     'valeurs' => [
+        //         'Galion' => 12345.67,
+        //         'Panorama' => 23456.78,
+        //         'Cravache' => 123,
+        //         'Schiaffini' => null,
+        //         'Vallon des Auffes' => null,
+        //         'Domaine des Lauriers' => 456
+        //     ],
+        // ];
+
+        // $recapitulatifs[] = [
+        //     'libelle' => '211 Loyers',
+        //     'valeurs' => [
+        //         'Galion' => 9876.54,
+        //         'Panorama' => 8765.43,
+        //         'Cravache' => 456,
+        //         'Schiaffini' => null,
+        //         'Vallon des Auffes' => null,
+        //         'Domaine des Lauriers' => 456
+        //     ],
+        // ];
 
         return $this->render('recapitulatif/index.html.twig', [
             'annees' => $annees,
