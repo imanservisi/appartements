@@ -1,13 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Declaration{% endblock %}
+{% block title %}Aide à la déclaration - Déclaration par résidence{% endblock %}
 
 {% block body %}
     <div class="container">
         <h1 class="text-center">Déclaration {{ annee_choisie }}</h1>
         <form method="post">
             <div class="col-3">
-                <select class="form-select" aria-label="Choix residence" id="choix-residence" name="choix-residence" required>
+                <label class="form-label" for="choix-residence">
+                Choix résidence
+                    <span class="text-danger" aria-hidden="true">*</span>
+                    <span class="visually-hidden"> - champ obligatoire</span>
+                </label>
+                <select
+                    class="form-select" 
+                    aria-label="Choix residence"
+                    id="choix-residence"
+                    name="choix-residence"
+                    aria-required="true"
+                    aria-describebby="help-choix-residence error-choix-residence"
+                    required
+                >
                     <option value="">Choisir une résidence</option>
                     {% for residence in residences %}
                         <option value="{{ residence.id }}"
@@ -16,7 +29,24 @@
                         </option>
                     {% endfor %}
                 </select>
-                <select class="mt-2 form-select" aria-label="Choix année" id="choix-annee" name="choix-annee" required>
+                <div id="help-choix-residence" class="form-text">Sélectionnez la résidence désirée</div>
+                <div id="error-choix-residence" class="invalid-feedback" role="alert" aria-live="polite" hidden></div>
+            </div>
+            <div class="col-3 mt-2">
+                <label class="form-label" for="choix-annee">
+                    Choix année
+                    <span class="text-danger" aria-hidden="true">*</span>
+                    <span class="visually-hidden"> — champ obligatoire</span>
+                </label>
+                <select
+                        class="form-select"
+                        aria-label="Choix année"
+                        id="choix-annee"
+                        name="choix-annee"
+                        aria-required="true"
+                        aria-describedby="help-choix-annee error-choix-annee"
+                        required
+                    >
                     <option value="">Choisir une année</option>
                     {% for annee in annees %}
                         <option value="{{ annee }}"
@@ -25,6 +55,8 @@
                         </option>
                     {% endfor %}
                 </select>
+                <div id="help-choix-annee" class="form-text">Sélectionnez l'année de déclaration.</div>
+                <div id="error-choix-annee" class="invalid-feedback" role="alert" aria-live="polite" hidden></div>
             </div>
 
             <button class="mt-2 btn btn-info" type="submit">Choisir</button>

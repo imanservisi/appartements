@@ -2,6 +2,10 @@ a {
     text-decoration: none;
     color: black;
 }
+
+.bg-navbar {
+    background-color: #e3f2fd;
+}
 /* .fa-trash {
     color: red;
 } */
