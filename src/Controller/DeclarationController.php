@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\DonneesComptables;
 use App\Entity\Recapitulatif;
 use App\Entity\Residence;
 use App\Repository\ChargeRepository;
@@ -19,6 +20,7 @@ use App\Repository\TravauxRepository;
 use App\Service\AssembleurDonnees;
 use App\Service\Calculator;
 use App\Service\DeclarationService;
+use App\Service\DonneesResidenceService;
 use App\Service\SommeParLot;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,74 +32,60 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeclarationController extends AbstractController
 {
-    public function __construct(
-    )
-    {
-        
-    }
     #[Route('/', name: 'app_declaration')]
     public function index(
         Request $request,
         ResidenceRepository $residenceRepository,
-        LotRepository $lotRepository,
-        TravauxRepository $travauxRepository,
-        TaxeFonciereRepository $taxeFonciereRepository,
-        RegularisationPonctuelleRepository $regularisationPonctuelleRepository,
         DeclarationService $declarationService,
         Calculator $calculator,
         AssembleurDonnees $assembleur,
-        SommeParLot $sommeParLot
+        SommeParLot $sommeParLot,
+        DonneesResidenceService $donneesResidenceService
     ): Response {
         $annees = $declarationService->createYearsArray();
-        $idResidence = $request->request->get('choix-residence', "1");
+        $idResidence = $request->request->get(
+            'choix-residence',
+            "1"
+        );
         $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
         //Récupération de la résidence en fonction de l'idResidence demandé
         $residence = $residenceRepository->findOneBy(['id' => $idResidence]);
-        //Récupération de tous les lots liés à la résidence
-        $lots = $lotRepository->findBy(['residence' => $residence]);
+        [$lots, $taxeFonciere, $regulsPonctuelles, $allTravaux] = $donneesResidenceService->recupererDonneesResidence($residence, $anneeChoisie, null);
 
         $sommesLots = $sommeParLot->calculerSommesParLots(
             $lots,
             $anneeChoisie,
             $calculator
         );
-        
-        //Récupération de la taxe foncière
-        $taxeFonciere = $taxeFonciereRepository->findOneBy([
-            'residence' => $residence,
-            'annee' => $anneeChoisie
-        ]);
+
         $montantTaxeFonciere = !empty($taxeFonciere) ? $taxeFonciere->getMontant() : 0;
 
         // Récupération des régul ponctuelles (229bis, 230 et 230bis)
         $montant230 = 0;
         $montant229bis = 0;
         $montant230bis = 0;
-        $regulsPonctuelles = $regularisationPonctuelleRepository->findOneBy([
-            'residence' => $residence,
-            'annee' => $anneeChoisie
-        ]);
         if (!is_null($regulsPonctuelles)) {
             $montant229bis = !is_null($regulsPonctuelles->getMontant229bis()) ? $regulsPonctuelles->getMontant229bis() : 0;
             $montant230 = !is_null($regulsPonctuelles->getMontant230()) ? $regulsPonctuelles->getMontant230() : 0;
             $montant230bis = !is_null($regulsPonctuelles->getMontant230bis()) ? $regulsPonctuelles->getMontant230bis() : 0;
         }
 
-        $allTravaux = $travauxRepository->findByLotsIdAndYear($sommesLots['lotsId'], $anneeChoisie);
-
+        $donnees = new DonneesComptables(
+            sommeLoyer: $sommesLots['sommeLoyer'],
+            sommeCaf:  $sommesLots['sommeCaf'],
+            sommeMandatGestion: $sommesLots['sommeMandatGestion'],
+            nbLots: count($lots),
+            sommePrimesAssurance:  $sommesLots['sommePrimesAssurance'],
+            sommeTravaux: $sommesLots['sommeTravaux'],
+            montantTaxeFonciere: $montantTaxeFonciere,
+            sommeCharges: $sommesLots['sommeCharges'],
+            montant229bis: $montant229bis,
+            montant230: $montant230,
+            montant230bis: $montant230bis,
+            sommeEmprunt: $sommesLots['sommeEmprunt']
+        );
         $montants = $assembleur->assembleMontants(
-            $sommesLots['sommeLoyer'],
-            $sommesLots['sommeCaf'],
-            $sommesLots['sommeMandatGestion'],
-            count($lots),
-            $sommesLots['sommePrimesAssurance'],
-            $sommesLots['sommeTravaux'],
-            $montantTaxeFonciere,
-            $sommesLots['sommeCharges'],
-            $montant229bis,
-            $montant230,
-            $montant230bis,
-            $sommesLots['sommeEmprunt']
+            $donnees
         );
 
         return $this->render('declaration/index.html.twig', [
@@ -120,23 +108,23 @@ class DeclarationController extends AbstractController
         RecapitulatifRepository $recapitulatifRepository
     ): JsonResponse
     {
-        $annee = $request->get('annee');
+        $results = $request->getPayload()->all();
+        $annee = $results['annee'];
         // Vérification si un récap existe déjà pour l'année et la résidence. Si n'existe pas, création
         $recap = $recapitulatifRepository->findOneBy([
             'residence' => $residence->getId(),
             'annee' => $annee
-        ]);
-        if (is_null($recap)) {
-            $recap = new Recapitulatif();
+        ]) ?? new Recapitulatif();
+        if ($recap->getId() === null) {
             $recap->setAnnee($annee);
             $recap->setResidence($residence);
         }
         // Récupération de toutes les données
-        $montants = $request->get('montants');
+        $montants = $results['montants'];
         if (is_string($montants)) {
             $montants = json_decode($montants, true);
         }
-        
+
         // Mise à jour de l'entité
         $recap->setLoyer($montants['211']);
         $recap->setTotalRecette($montants['211']);
