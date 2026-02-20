@@ -109,7 +109,7 @@ class InteretController extends AbstractController
         EntityManagerInterface $entityManager,
         Residence $residence,
         Lot $lot,
-        Emprunt $emprunt  
+        Emprunt $emprunt
     ): Response {
         try {
             $entityManager->remove($interet);

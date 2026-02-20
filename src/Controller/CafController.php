@@ -10,36 +10,35 @@ use App\Form\CafType;
 use App\Repository\CafRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('residence/{residenceId}/lot/{lotId}/location/{locationId}/caf')]
 class CafController extends AbstractController
 {
     #[Route('/', name: 'app_caf_index', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('location', options: ['id' => 'locationId'])]
-    public function index(CafRepository $cafRepository): Response
-    {
+    public function index(
+        CafRepository $cafRepository,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'locationId')] Location $location
+    ): Response {
         return $this->render('caf/index.html.twig', [
             'cafs' => $cafRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_caf_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('location', options: ['id' => 'locationId'])]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
-        Location $location
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'locationId')] Location $location
     ): Response {
         $caf = new Caf();
         $form = $this->createForm(CafType::class, $caf);
@@ -67,16 +66,13 @@ class CafController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_caf_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('location', options: ['id' => 'locationId'])]
     public function edit(
         Request $request,
         Caf $caf,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
-        Location $location
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'locationId')] Location $location
     ): Response {
         $form = $this->createForm(CafType::class, $caf);
         $form->handleRequest($request);
@@ -101,15 +97,12 @@ class CafController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_caf_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('location', options: ['id' => 'locationId'])]
     public function delete(
         Caf $caf,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
-        Location $location
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'locationId')] Location $location
     ): Response {
         try {
             $entityManager->remove($caf);
@@ -126,12 +119,15 @@ class CafController extends AbstractController
         ], Response::HTTP_SEE_OTHER);
     }
 
-    
+
     #[Route('/{id}/duplicate', name: 'app_caf_duplicate')]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('location', options: ['id' => 'locationId'])]
-    public function duplicate(Caf $caf, Residence $residence, Lot $lot, Location $location, EntityManagerInterface $entityManager)
+    public function duplicate(
+        Caf $caf,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'locationId')] Location $location,
+        EntityManagerInterface $entityManager
+    ): RedirectResponse
     {
         $newCaf = clone $caf; // Cloner l'objet CAF
         $newCaf->setMois($caf->getMois() + 1);
