@@ -10,36 +10,34 @@ use App\Form\InteretType;
 use App\Repository\InteretRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('residence/{residenceId}/lot/{lotId}/emprunt/{empruntId}/interet')]
 class InteretController extends AbstractController
 {
     #[Route('/', name: 'app_interet_index', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('emprunt', options: ['id' => 'empruntId'])]
-    public function index(InteretRepository $interetRepository): Response
-    {
+    public function index(
+        InteretRepository $interetRepository,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'empruntId')] Emprunt $emprunt
+    ): Response {
         return $this->render('interet/index.html.twig', [
             'interets' => $interetRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_interet_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('emprunt', options: ['id' => 'empruntId'])]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
-        Emprunt $emprunt    
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'empruntId')] Emprunt $emprunt
     ): Response {
         $interet = new Interet();
         $form = $this->createForm(InteretType::class, $interet);
@@ -67,16 +65,13 @@ class InteretController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_interet_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('emprunt', options: ['id' => 'empruntId'])]
     public function edit(
         Request $request,
         Interet $interet,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
-        Emprunt $emprunt  
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'empruntId')] Emprunt $emprunt
     ): Response {
         $form = $this->createForm(InteretType::class, $interet);
         $form->handleRequest($request);
@@ -101,15 +96,12 @@ class InteretController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_interet_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    #[ParamConverter('emprunt', options: ['id' => 'empruntId'])]
     public function delete(
         Interet $interet,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
-        Emprunt $emprunt
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
+        #[MapEntity(id: 'empruntId')] Emprunt $emprunt
     ): Response {
         try {
             $entityManager->remove($interet);

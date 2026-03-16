@@ -9,11 +9,11 @@ use App\Repository\RegularisationPonctuelleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PhpParser\Node\Stmt\TryCatch;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/residence/{residenceId}/regularisationPonctuelle')]
 class RegularisationPonctuelleController extends AbstractController
@@ -27,9 +27,11 @@ class RegularisationPonctuelleController extends AbstractController
     }
 
     #[Route('/new', name: 'app_regularisation_ponctuelle_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         $regularisationPonctuelle = new RegularisationPonctuelle();
         $form = $this->createForm(RegularisationPonctuelleType::class, $regularisationPonctuelle);
         $form->handleRequest($request);
@@ -52,18 +54,22 @@ class RegularisationPonctuelleController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_regularisation_ponctuelle_show', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function show(RegularisationPonctuelle $regularisationPonctuelle, Residence $residence): Response
-    {
+    public function show(
+        RegularisationPonctuelle $regularisationPonctuelle,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         return $this->render('regularisation_ponctuelle/show.html.twig', [
             'regularisation_ponctuelle' => $regularisationPonctuelle,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_regularisation_ponctuelle_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function edit(Residence $residence, Request $request, RegularisationPonctuelle $regularisationPonctuelle, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        Request $request,
+        RegularisationPonctuelle $regularisationPonctuelle,
+        EntityManagerInterface $entityManager
+    ): Response {
         $form = $this->createForm(RegularisationPonctuelleType::class, $regularisationPonctuelle);
         $form->handleRequest($request);
 
@@ -83,9 +89,11 @@ class RegularisationPonctuelleController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_regularisation_ponctuelle_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function delete(Residence $residence, RegularisationPonctuelle $regularisationPonctuelle, EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        RegularisationPonctuelle $regularisationPonctuelle,
+        EntityManagerInterface $entityManager
+    ): Response {
         try {
             $entityManager->remove($regularisationPonctuelle);
             $entityManager->flush();

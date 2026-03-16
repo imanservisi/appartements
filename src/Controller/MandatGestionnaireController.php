@@ -10,11 +10,11 @@ use App\Repository\FraisGestionRepository;
 use App\Repository\MandatGestionnaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('residence/{residenceId}/lot/{lotId}/mandatGestionnaire')]
 class MandatGestionnaireController extends AbstractController
@@ -27,10 +27,11 @@ class MandatGestionnaireController extends AbstractController
     }
 
     #[Route('/', name: 'app_mandat_gestionnaire_index', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    public function index(MandatGestionnaireRepository $mandatGestionnaireRepository, Residence $residence, Lot $lot): Response
-    {
+    public function index(
+        MandatGestionnaireRepository $mandatGestionnaireRepository,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot
+    ): Response {
         $mandatGestionnaires = $mandatGestionnaireRepository->findBy(['lot' => $lot]);
         return $this->render('mandat_gestionnaire/index.html.twig', [
             'mandat_gestionnaires' => $mandatGestionnaires,
@@ -40,13 +41,11 @@ class MandatGestionnaireController extends AbstractController
     }
 
     #[Route('/new', name: 'app_mandat_gestionnaire_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot
         ): Response {
         $mandatGestionnaire = new MandatGestionnaire();
         $form = $this->createForm(MandatGestionnaireType::class, $mandatGestionnaire);
@@ -72,14 +71,12 @@ class MandatGestionnaireController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_mandat_gestionnaire_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function edit(
         Request $request,
         MandatGestionnaire $mandatGestionnaire,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
         FraisGestionRepository $fraisGestionRepository
         ): Response {
         //Récupération des frais de gestion liés au mandat
@@ -107,13 +104,11 @@ class MandatGestionnaireController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_mandat_gestionnaire_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function delete(
         MandatGestionnaire $mandatGestionnaire,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot
     ): Response {
         try {
             $entityManager->remove($mandatGestionnaire);

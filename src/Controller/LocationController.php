@@ -12,11 +12,11 @@ use App\Repository\LoyerRepository;
 use App\Service\DeclarationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('residence/{residenceId}/lot/{lotId}/location')]
 class LocationController extends AbstractController
@@ -29,23 +29,23 @@ class LocationController extends AbstractController
     }
 
     #[Route('/', name: 'app_location_index', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
-    public function index(LocationRepository $locationRepository, DeclarationService $declarationService): Response
-    {
+    public function index(
+        LocationRepository $locationRepository,
+        DeclarationService $declarationService,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot
+    ): Response {
         return $this->render('location/index.html.twig', [
             'locations' => $locationRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_location_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot
     ): Response {
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location);
@@ -71,14 +71,12 @@ class LocationController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_location_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function edit(
         Request $request,
         Location $location,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot,
         CafRepository $cafRepository,
         LoyerRepository $loyerRepository,
         DeclarationService $declarationService
@@ -122,13 +120,11 @@ class LocationController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_location_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    #[ParamConverter('lot', options: ['id' => 'lotId'])]
     public function delete(
         Location $location,
         EntityManagerInterface $entityManager,
-        Residence $residence,
-        Lot $lot
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        #[MapEntity(id: 'lotId')] Lot $lot
     ): Response {
         try {
             $entityManager->remove($location);

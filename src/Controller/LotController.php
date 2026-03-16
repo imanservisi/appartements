@@ -17,11 +17,11 @@ use App\Repository\TravauxRepository;
 use App\Service\DeclarationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('residence/{residenceId}/lot')]
 class LotController extends AbstractController
@@ -42,9 +42,11 @@ class LotController extends AbstractController
     }
 
     #[Route('/new', name: 'app_lot_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         $lot = new Lot();
         $form = $this->createForm(LotType::class, $lot);
         $form->handleRequest($request);
@@ -66,10 +68,9 @@ class LotController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_lot_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
     public function edit(
         Request $request,
-        Residence $residence,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
         Lot $lot,
         EntityManagerInterface $entityManager,
         ChargeRepository $chargeRepository,
@@ -129,9 +130,12 @@ class LotController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_lot_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function delete(Request $request, Residence $residence, Lot $lot, EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        #[MapEntity(id: 'residenceId')] Residence $residence,
+        Lot $lot,
+        EntityManagerInterface $entityManager
+    ): Response {
         try {
             $entityManager->remove($lot);
             $entityManager->flush();

@@ -8,28 +8,31 @@ use App\Form\TaxeFonciereType;
 use App\Repository\TaxeFonciereRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/residence/{residenceId}/taxe-fonciere')]
 class TaxeFonciereController extends AbstractController
 {
     #[Route('/', name: 'app_taxe_fonciere_index', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function index(TaxeFonciereRepository $taxeFonciereRepository, Residence $residence): Response
-    {
+    public function index(
+        TaxeFonciereRepository $taxeFonciereRepository,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         return $this->render('taxe_fonciere/index.html.twig', [
             'taxe_foncieres' => $taxeFonciereRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_taxe_fonciere_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         $taxeFonciere = new TaxeFonciere();
         $form = $this->createForm(TaxeFonciereType::class, $taxeFonciere);
         $form->handleRequest($request);
@@ -52,9 +55,12 @@ class TaxeFonciereController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_taxe_fonciere_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function edit(Request $request, TaxeFonciere $taxeFonciere, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function edit(
+        Request $request,
+        TaxeFonciere $taxeFonciere,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         $form = $this->createForm(TaxeFonciereType::class, $taxeFonciere);
         $form->handleRequest($request);
 
@@ -74,9 +80,11 @@ class TaxeFonciereController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_taxe_fonciere_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function delete(TaxeFonciere $taxeFonciere, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function delete(
+        TaxeFonciere $taxeFonciere,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         try {
             $entityManager->remove($taxeFonciere);
             $entityManager->flush();

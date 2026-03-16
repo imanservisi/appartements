@@ -8,28 +8,31 @@ use App\Form\MandatSyndicType;
 use App\Repository\MandatSyndicRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/residence/{residenceId}/mandat-syndic')]
 class MandatSyndicController extends AbstractController
 {
     #[Route('/', name: 'app_mandat_syndic_index', methods: ['GET'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function index(MandatSyndicRepository $mandatSyndicRepository, Residence $residence): Response
-    {
+    public function index(
+        MandatSyndicRepository $mandatSyndicRepository,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         return $this->render('mandat_syndic/index.html.twig', [
             'mandat_syndics' => $mandatSyndicRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_mandat_syndic_new', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         $mandatSyndic = new MandatSyndic();
         $form = $this->createForm(MandatSyndicType::class, $mandatSyndic);
         $form->handleRequest($request);
@@ -51,19 +54,13 @@ class MandatSyndicController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}', name: 'app_mandat_syndic_show', methods: ['GET'])]
-    // #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    // public function show(MandatSyndic $mandatSyndic): Response
-    // {
-    //     return $this->render('mandat_syndic/show.html.twig', [
-    //         'mandat_syndic' => $mandatSyndic,
-    //     ]);
-    // }
-
     #[Route('/{id}/edit', name: 'app_mandat_syndic_edit', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function edit(Request $request, MandatSyndic $mandatSyndic, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function edit(
+        Request $request,
+        MandatSyndic $mandatSyndic,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         $form = $this->createForm(MandatSyndicType::class, $mandatSyndic);
         $form->handleRequest($request);
 
@@ -83,9 +80,11 @@ class MandatSyndicController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_mandat_syndic_delete', methods: ['GET', 'POST'])]
-    #[ParamConverter('residence', options: ['id' => 'residenceId'])]
-    public function delete(MandatSyndic $mandatSyndic, EntityManagerInterface $entityManager, Residence $residence): Response
-    {
+    public function delete(
+        MandatSyndic $mandatSyndic,
+        EntityManagerInterface $entityManager,
+        #[MapEntity(id: 'residenceId')] Residence $residence
+    ): Response {
         try {
             $entityManager->remove($mandatSyndic);
             $entityManager->flush();
