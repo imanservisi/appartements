@@ -47,7 +47,7 @@ class MandatSyndicController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('mandat_syndic/new.html.twig', [
+        return $this->render('mandat_syndic/new.html.twig', [
             'mandat_syndic' => $mandatSyndic,
             'form' => $form,
             'residence' => $residence
@@ -72,7 +72,7 @@ class MandatSyndicController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('mandat_syndic/edit.html.twig', [
+        return $this->render('mandat_syndic/edit.html.twig', [
             'mandat_syndic' => $mandatSyndic,
             'form' => $form,
             'residence' => $residence

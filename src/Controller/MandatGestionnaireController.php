@@ -62,7 +62,7 @@ class MandatGestionnaireController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('mandat_gestionnaire/new.html.twig', [
+        return $this->render('mandat_gestionnaire/edit.html.twig', [
             'mandat_gestionnaire' => $mandatGestionnaire,
             'form' => $form,
             'residence' => $residence,
@@ -93,7 +93,7 @@ class MandatGestionnaireController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('mandat_gestionnaire/edit.html.twig', [
+        return $this->render('mandat_gestionnaire/edit.html.twig', [
             'mandat_gestionnaire' => $mandatGestionnaire,
             'form' => $form,
             'residence' => $residence,

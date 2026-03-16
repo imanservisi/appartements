@@ -60,7 +60,7 @@ class FraisGestionController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('frais_gestion/new.html.twig', [
+        return $this->render('frais_gestion/new.html.twig', [
             'frais_gestion' => $fraisGestion,
             'form' => $form,
             'residence' => $residence,
@@ -90,7 +90,7 @@ class FraisGestionController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('frais_gestion/edit.html.twig', [
+        return $this->render('frais_gestion/edit.html.twig', [
             'frais_gestion' => $fraisGestion,
             'form' => $form,
             'residence' => $residence,

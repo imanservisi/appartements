@@ -62,7 +62,7 @@ class LocationController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('location/new.html.twig', [
+        return $this->render('location/new.html.twig', [
             'location' => $location,
             'form' => $form,
             'residence' => $residence,
@@ -106,7 +106,7 @@ class LocationController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('location/edit.html.twig', [
+        return $this->render('location/edit.html.twig', [
             'location' => $location,
             'form' => $form,
             'residence' => $residence,

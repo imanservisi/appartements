@@ -51,7 +51,7 @@ class TravauxController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('travaux/new.html.twig', [
+        return $this->render('travaux/new.html.twig', [
             'travaux' => $travaux,
             'form' => $form,
             'residence' => $residence,
@@ -79,7 +79,7 @@ class TravauxController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('travaux/edit.html.twig', [
+        return $this->render('travaux/edit.html.twig', [
             'travaux' => $travaux,
             'form' => $form,
             'residence' => $residence,

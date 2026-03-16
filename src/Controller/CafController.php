@@ -56,7 +56,7 @@ class CafController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('caf/new.html.twig', [
+        return $this->render('caf/new.html.twig', [
             'caf' => $caf,
             'form' => $form,
             'residence' => $residence,
@@ -87,7 +87,7 @@ class CafController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('caf/edit.html.twig', [
+        return $this->render('caf/edit.html.twig', [
             'caf' => $caf,
             'form' => $form,
             'residence' => $residence,

@@ -10,7 +10,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/locataire')]
 class LocataireController extends AbstractController
@@ -37,7 +37,7 @@ class LocataireController extends AbstractController
             return $this->redirectToRoute('app_locataire_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('locataire/new.html.twig', [
+        return $this->render('locataire/new.html.twig', [
             'locataire' => $locataire,
             'form' => $form,
         ]);
@@ -55,7 +55,7 @@ class LocataireController extends AbstractController
             return $this->redirectToRoute('app_locataire_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('locataire/edit.html.twig', [
+        return $this->render('locataire/edit.html.twig', [
             'locataire' => $locataire,
             'form' => $form,
         ]);

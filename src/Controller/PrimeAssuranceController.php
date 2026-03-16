@@ -51,7 +51,7 @@ class PrimeAssuranceController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('prime_assurance/new.html.twig', [
+        return $this->render('prime_assurance/new.html.twig', [
             'prime_assurance' => $primeAssurance,
             'form' => $form,
             'residence' => $residence,
@@ -90,7 +90,7 @@ class PrimeAssuranceController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('prime_assurance/edit.html.twig', [
+        return $this->render('prime_assurance/edit.html.twig', [
             'prime_assurance' => $primeAssurance,
             'form' => $form,
             'residence' => $residence,

@@ -10,7 +10,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/entreprise')]
 class EntrepriseController extends AbstractController
@@ -37,7 +37,7 @@ class EntrepriseController extends AbstractController
             return $this->redirectToRoute('app_entreprise_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('entreprise/new.html.twig', [
+        return $this->render('entreprise/new.html.twig', [
             'entreprise' => $entreprise,
             'form' => $form,
         ]);
@@ -55,7 +55,7 @@ class EntrepriseController extends AbstractController
             return $this->redirectToRoute('app_entreprise_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('entreprise/edit.html.twig', [
+        return $this->render('entreprise/edit.html.twig', [
             'entreprise' => $entreprise,
             'form' => $form,
         ]);

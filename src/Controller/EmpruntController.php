@@ -59,7 +59,7 @@ class EmpruntController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('emprunt/new.html.twig', [
+        return $this->render('emprunt/new.html.twig', [
             'emprunt' => $emprunt,
             'form' => $form,
             'residence' => $residence,
@@ -91,7 +91,7 @@ class EmpruntController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('emprunt/edit.html.twig', [
+        return $this->render('emprunt/edit.html.twig', [
             'emprunt' => $emprunt,
             'form' => $form,
             'residence' => $residence,

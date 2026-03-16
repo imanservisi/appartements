@@ -10,7 +10,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/banque')]
 class BanqueController extends AbstractController
@@ -37,7 +37,7 @@ class BanqueController extends AbstractController
             return $this->redirectToRoute('app_banque_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('banque/new.html.twig', [
+        return $this->render('banque/new.html.twig', [
             'banque' => $banque,
             'form' => $form,
         ]);
@@ -55,7 +55,7 @@ class BanqueController extends AbstractController
             return $this->redirectToRoute('app_banque_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('banque/edit.html.twig', [
+        return $this->render('banque/edit.html.twig', [
             'banque' => $banque,
             'form' => $form,
         ]);

@@ -113,7 +113,7 @@ class LotController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('lot/edit.html.twig', [
+        return $this->render('lot/edit.html.twig', [
             'residence' => $residence,
             'lot' => $lot,
             'form' => $form,

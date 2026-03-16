@@ -56,7 +56,7 @@ class LoyerController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('loyer/new.html.twig', [
+        return $this->render('loyer/new.html.twig', [
             'loyer' => $loyer,
             'form' => $form,
             'residence' => $residence,
@@ -83,16 +83,16 @@ class LoyerController extends AbstractController
             return $this->redirectToRoute('app_location_edit', [
                 'residenceId' => $residence->getId(),
                 'lotId' => $lot->getId(),
-                'id' => $location->getId()
+                'id' => $location->getId(),
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('loyer/edit.html.twig', [
+        return $this->render('loyer/edit.html.twig', [
             'loyer' => $loyer,
             'form' => $form,
             'residence' => $residence,
             'lot' => $lot,
-            'location' => $location
+            'location' => $location,
         ]);
     }
 

@@ -47,7 +47,7 @@ class TaxeFonciereController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('taxe_fonciere/new.html.twig', [
+        return $this->render('taxe_fonciere/new.html.twig', [
             'taxe_fonciere' => $taxeFonciere,
             'form' => $form,
             'residence' => $residence,
@@ -72,7 +72,7 @@ class TaxeFonciereController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('taxe_fonciere/edit.html.twig', [
+        return $this->render('taxe_fonciere/edit.html.twig', [
             'taxe_fonciere' => $taxeFonciere,
             'form' => $form,
             'residence' => $residence

@@ -51,7 +51,7 @@ class ChargeController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('charge/new.html.twig', [
+        return $this->render('charge/new.html.twig', [
             'charge' => $charge,
             'form' => $form,
             'residence' => $residence,
@@ -79,7 +79,7 @@ class ChargeController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('charge/edit.html.twig', [
+        return $this->render('charge/edit.html.twig', [
             'charge' => $charge,
             'form' => $form,
             'residence' => $residence,

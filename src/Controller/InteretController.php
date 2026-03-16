@@ -55,7 +55,7 @@ class InteretController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('interet/new.html.twig', [
+        return $this->render('interet/new.html.twig', [
             'interet' => $interet,
             'form' => $form,
             'residence' => $residence,
@@ -86,7 +86,7 @@ class InteretController extends AbstractController
             ], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('interet/edit.html.twig', [
+        return $this->render('interet/edit.html.twig', [
             'interet' => $interet,
             'form' => $form,
             'residence' => $residence,
