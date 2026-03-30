@@ -4,7 +4,7 @@
 Application web pour permettre d'avoir une aide au remplissage de la déclaration d'impôts, lorsque l'utilisateur a un parc d'appartements à gérer.
 
 ## Documentation technique
-MVC utilisé : Symfony 6.3 
+MVC utilisé : Symfony 7.4
 BDD : Sql, via PHPMyAdmin
 Bootstrap : 5.3
 
