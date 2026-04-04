@@ -24,38 +24,9 @@ class RecapitulatifController extends AbstractController
     {
         $annees = $declarationService->createYearsArray();
         $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
-
         $residences = $residenceRepository->findAll();
         $recap = $recapitulatifRepository->findBy(['annee' => $anneeChoisie]);
-        // dd($recap);
-        $recapitulatifs = $assembleurRecap->assembleRecapitulatif($recap);
-
-        // $recapitulatifs = [];
-
-        // // exemples de lignes (à remplacer par logique réelle)
-        // $recapitulatifs[] = [
-        //     'libelle' => '210 RECETTES',
-        //     'valeurs' => [
-        //         'Galion' => 12345.67,
-        //         'Panorama' => 23456.78,
-        //         'Cravache' => 123,
-        //         'Schiaffini' => null,
-        //         'Vallon des Auffes' => null,
-        //         'Domaine des Lauriers' => 456
-        //     ],
-        // ];
-
-        // $recapitulatifs[] = [
-        //     'libelle' => '211 Loyers',
-        //     'valeurs' => [
-        //         'Galion' => 9876.54,
-        //         'Panorama' => 8765.43,
-        //         'Cravache' => 456,
-        //         'Schiaffini' => null,
-        //         'Vallon des Auffes' => null,
-        //         'Domaine des Lauriers' => 456
-        //     ],
-        // ];
+        $recapitulatifs = empty($recap) ? [] : $assembleurRecap->assembleRecapitulatif($recap);
 
         return $this->render('recapitulatif/index.html.twig', [
             'annees' => $annees,

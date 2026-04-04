@@ -14,11 +14,10 @@
                 </label>
                 <select
                     class="form-select" 
-                    aria-label="Choix residence"
                     id="choix-residence"
                     name="choix-residence"
                     aria-required="true"
-                    aria-describebby="help-choix-residence error-choix-residence"
+                    aria-describedby="help-choix-residence error-choix-residence"
                     required
                 >
                     <option value="">Choisir une résidence</option>
@@ -40,7 +39,6 @@
                 </label>
                 <select
                         class="form-select"
-                        aria-label="Choix année"
                         id="choix-annee"
                         name="choix-annee"
                         aria-required="true"
@@ -92,69 +90,69 @@
                 
             <tbody >
                 <tr>
-                    <th>210</th>
+                    <th scope="row">210</th>
                     <td>RECETTES</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>211</th>
+                    <th scope="row">211</th>
                     <td>Loyers</td>
-                    <td>{{ montants.211 }}</td>
+                    <td>{{ montants.211|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>212</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>213</th>
+                    <th scope="row">212</th>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>214</th>
+                    <th scope="row">213</th>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>215</th>
+                    <th scope="row">214</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row">215</th>
                     <td>TOTAL DES RECETTES</td>
-                    <td>{{ montants.211 }}</td>
+                    <td>{{ montants.211|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>220</th>
+                    <th scope="row">220</th>
                     <td>FRAIS ET CHARGES</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>221</th>
+                    <th scope="row">221</th>
                     <td>Frais d'administration et de gestion</td>
-                    <td>{{ montants.221 }}</td>
+                    <td>{{ montants.221|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>222</th>
+                    <th scope="row">222</th>
                     <td>Autres frais de gestion</td>
-                    <td>{{ montants.222 }}</td>
+                    <td>{{ montants.222|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>223</th>
+                    <th scope="row">223</th>
                     <td>Primes d'assurance</td>
-                    <td>{{ montants.223 }}</td>
+                    <td>{{ montants.223|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>224</th>
+                    <th scope="row">224</th>
                     <td>Dépenses de réparation</td>
-                    <td>{{ montants.224 }}</td>
+                    <td>{{ montants.224|number_format(2, ',', ' ') }}</td>
                     <td>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTravaux">
                             Détail des travaux
@@ -162,75 +160,75 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>225</th>
+                    <th scope="row">225</th>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>226</th>
+                    <th scope="row">226</th>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>227</th>
+                    <th scope="row">227</th>
                     <td>Taxes foncières</td>
-                    <td>{{ montants.227 }}</td>
+                    <td>{{ montants.227|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>228</th>
+                    <th scope="row">228</th>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>229</th>
+                    <th scope="row">229</th>
                     <td>Provisions pour charges</td>
-                    <td>{{ montants.229 }}</td>
+                    <td>{{ montants.229|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>229 bis</th>
+                    <th scope="row">229 bis</th>
                     <td></td>
-                    <td>{{ montants['229bis']}}</td>
+                    <td>{{ montants['229bis']|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>230</th>
+                    <th scope="row">230</th>
                     <td>Régularisation des provisions</td>
-                    <td>{{ montants.230 }}</td>
+                    <td>{{ montants.230|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>230 bis</th>
+                    <th scope="row">230 bis</th>
                     <td></td>
-                    <td>{{ montants['230bis']}}</td>
+                    <td>{{ montants['230bis']|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>240</th>
+                    <th scope="row">240</th>
                     <td>Total des frais et charges</td>
-                    <td>{{ montants.240 }}</td>
+                    <td>{{ montants.240|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>250</th>
+                    <th scope="row">250</th>
                     <td>Intérêts d'emprunt</td>
-                    <td>{{ montants.250 }}</td>
+                    <td>{{ montants.250|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>260</th>
+                    <th scope="row">260</th>
                     <td>REVENUS FONCIERS</td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <th>261</th>
+                    <th scope="row">261</th>
                     <td></td>
-                    <td>{{ montants.261 }}</td>
+                    <td>{{ montants.261|number_format(2, ',', ' ') }}</td>
                     <td></td>
                 </tr>
             </tbody>
