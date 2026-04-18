@@ -20,11 +20,14 @@ class DonneesResidenceService
     public function recupererDonneesResidence(
         ?Residence $residence,
         string $anneeChoisie,
-        $lotsId
     ): array
     {
         //Récupération de tous les lots liés à la résidence
         $lots = $this->lotRepository->findBy(['residence' => $residence]);
+        $lotsId = [];
+        foreach($lots as $lot) {
+            $lotsId[] = $lot->getId();
+        }
         //Récupération de la taxe foncière
         $taxeFonciere = $this->taxeFonciereRepository->findOneBy([
             'residence' => $residence,

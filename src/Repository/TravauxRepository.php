@@ -24,7 +24,7 @@ class TravauxRepository extends ServiceEntityRepository
    /**
     * @return Travaux[] Returns an array of Travaux objects
     */
-   public function findByLotsIdAndYear($lotsId, string $annee): array
+   public function findByLotsIdAndYear(array $lotsId, string $annee): array
    {
         return $this->createQueryBuilder('t')
             ->where('t.lot IN (:listIds)')
