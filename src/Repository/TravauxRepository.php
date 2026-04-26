@@ -36,4 +36,17 @@ class TravauxRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
+
+   public function findByYearOrderByResidence(string $annee): array
+    {
+        return $this->createQueryBuilder('t')
+            ->join('t.lot', 'l')
+            ->join('l.residence', 'r')
+            ->andWhere('t.annee = :annee')
+            ->setParameter('annee', $annee)
+            ->orderBy('r.nomResidence', 'ASC')
+            ->addOrderBy('t.dateTravaux', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
