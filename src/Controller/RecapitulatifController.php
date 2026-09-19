@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\RecapitulatifRepository;
 use App\Repository\ResidenceRepository;
+use App\Repository\TravauxRepository;
 use App\Service\AssembleurRecap;
 use App\Service\DeclarationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,8 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RecapitulatifController extends AbstractController
 {
-    #[Route('/recapitulatif', name: 'app_recapitulatif')]
-    public function index(
+    #[Route('/recapitulatifResidences', name: 'app_recapitulatif')]
+    public function recapitulatifResidences(
         Request $request,
         DeclarationService $declarationService,
         ResidenceRepository $residenceRepository,
@@ -24,44 +25,33 @@ class RecapitulatifController extends AbstractController
     {
         $annees = $declarationService->createYearsArray();
         $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
-
         $residences = $residenceRepository->findAll();
         $recap = $recapitulatifRepository->findBy(['annee' => $anneeChoisie]);
-        // dd($recap);
-        $recapitulatifs = $assembleurRecap->assembleRecapitulatif($recap);
+        $recapitulatifs = empty($recap) ? [] : $assembleurRecap->assembleRecapitulatif($recap);
 
-        // $recapitulatifs = [];
-
-        // // exemples de lignes (à remplacer par logique réelle)
-        // $recapitulatifs[] = [
-        //     'libelle' => '210 RECETTES',
-        //     'valeurs' => [
-        //         'Galion' => 12345.67,
-        //         'Panorama' => 23456.78,
-        //         'Cravache' => 123,
-        //         'Schiaffini' => null,
-        //         'Vallon des Auffes' => null,
-        //         'Domaine des Lauriers' => 456
-        //     ],
-        // ];
-
-        // $recapitulatifs[] = [
-        //     'libelle' => '211 Loyers',
-        //     'valeurs' => [
-        //         'Galion' => 9876.54,
-        //         'Panorama' => 8765.43,
-        //         'Cravache' => 456,
-        //         'Schiaffini' => null,
-        //         'Vallon des Auffes' => null,
-        //         'Domaine des Lauriers' => 456
-        //     ],
-        // ];
-
-        return $this->render('recapitulatif/index.html.twig', [
+        return $this->render('recapitulatif/residences.html.twig', [
             'annees' => $annees,
             'annee_choisie' => $anneeChoisie,
             'residences' => $residences,
             'recapitulatifs' => $recapitulatifs
+        ]);
+    }
+
+    #[Route('/recapitulatifTravaux', name: 'app_recapitulatif_travaux')]
+    public function recapitulatifTravaux(
+        Request $request,
+        DeclarationService $declarationService,
+        TravauxRepository $travauxRepository
+        )
+    {
+       $annees = $declarationService->createYearsArray();
+       $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
+       $travaux = $travauxRepository->findByYearOrderByResidence($anneeChoisie);
+       
+       return $this->render('recapitulatif/travaux.html.twig', [
+            'annees' => $annees,
+            'annee_choisie' => $anneeChoisie,
+            'travaux' => $travaux
         ]);
     }
 }

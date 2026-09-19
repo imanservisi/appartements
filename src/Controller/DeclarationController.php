@@ -50,7 +50,7 @@ class DeclarationController extends AbstractController
         $anneeChoisie = $request->request->get('choix-annee', date('Y', strtotime('-1 year')));
         //Récupération de la résidence en fonction de l'idResidence demandé
         $residence = $residenceRepository->findOneBy(['id' => $idResidence]);
-        [$lots, $taxeFonciere, $regulsPonctuelles, $allTravaux] = $donneesResidenceService->recupererDonneesResidence($residence, $anneeChoisie, null);
+        [$lots, $taxeFonciere, $regulsPonctuelles, $allTravaux] = $donneesResidenceService->recupererDonneesResidence($residence, $anneeChoisie);
 
         $sommesLots = $sommeParLot->calculerSommesParLots(
             $lots,
