@@ -1,5 +1,9 @@
 # Versions
 
+## Version 2.0 (19/09/2026)
+Montée version en Symfony 7.4 et PHP8.4
+Ajout d'un récapitulatif des résidences à des fins de comparaison/vérification
+
 ## Version 1.0
 Ajout d'un récapitulatif des travaux dans la page de déclaration (modal)
 Transformation des fonctions de suppression par du javascript avec installation du bundle Webpack Encore

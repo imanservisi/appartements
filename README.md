@@ -5,7 +5,7 @@ Application web pour permettre d'avoir une aide au remplissage de la déclaratio
 
 ## Documentation technique
 MVC utilisé : Symfony 7.4
-BDD : Sql, via PHPMyAdmin
+BDD : Sql, via PHPMyAdmin (8.4.7)
 Bootstrap : 5.3
 
 Mise à jour des scripts et css : 
