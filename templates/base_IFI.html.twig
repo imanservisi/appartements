@@ -17,7 +17,7 @@
             <header role="banner">
                 <nav class="navbar navbar-expand-lg bg-navbar" aria-label="Navigation principale">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="/">Déclaration IFI</a>
+                        <a class="navbar-brand" href="{{ path('app_declaration_ifi') }}">Déclaration IFI</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Ouvrir le menu de navigation">
                         <span class="navbar-toggler-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Ouvrir le menu</span>
@@ -25,29 +25,19 @@
                         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="/residence">Résidences</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Récapitulatif</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="/recapitulatifResidences">Résidences</a></li>
-                                        <li><a class="dropdown-item" href="/recapitulatifTravaux">Travaux</a></li>
-                                    </ul>
+                                    <a class="nav-link" aria-current="page" href="#">Résidences</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/locataire">Locataires</a>
+                                    <a class="nav-link" aria-current="page" href="#">Biens détenus indirectement</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/syndic">Syndics</a>
+                                    <a class="nav-link" href="/#">Travaux</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/gestionnaire">Gestionnaires</a>
+                                    <a class="nav-link" href="/#">Taxes foncières</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/entreprise">Entreprises</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/banque">Banques</a>
+                                    <a class="nav-link" href="/#">Crédits</a>
                                 </li>
                             </ul>
                         </div>
