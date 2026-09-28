@@ -5,18 +5,8 @@ namespace App\Controller;
 use App\DTO\DonneesComptables;
 use App\Entity\Recapitulatif;
 use App\Entity\Residence;
-use App\Repository\ChargeRepository;
-use App\Repository\EmpruntRepository;
-use App\Repository\InteretRepository;
-use App\Repository\LocationRepository;
-use App\Repository\LotRepository;
-use App\Repository\MandatGestionnaireRepository;
-use App\Repository\PrimeAssuranceRepository;
 use App\Repository\RecapitulatifRepository;
-use App\Repository\RegularisationPonctuelleRepository;
 use App\Repository\ResidenceRepository;
-use App\Repository\TaxeFonciereRepository;
-use App\Repository\TravauxRepository;
 use App\Service\AssembleurDonnees;
 use App\Service\Calculator;
 use App\Service\DeclarationService;
@@ -32,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DeclarationController extends AbstractController
 {
-    #[Route('/', name: 'app_declaration')]
+    #[Route('/declarationIr', name: 'app_declaration_ir')]
     public function index(
         Request $request,
         ResidenceRepository $residenceRepository,

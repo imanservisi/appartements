@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RecapitulatifController extends AbstractController
 {
-    #[Route('/recapitulatifResidences', name: 'app_recapitulatif')]
+    #[Route('/recapitulatifResidences', name: 'app_recapitulatif_residences')]
     public function recapitulatifResidences(
         Request $request,
         DeclarationService $declarationService,
