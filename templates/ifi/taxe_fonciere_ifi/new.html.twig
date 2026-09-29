@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>New TaxeFonciereIfi</title>
+
+{% block body %}
+    <h1>Create new TaxeFonciereIfi</h1>
+
+    {{ include('ifi/taxe_fonciere_ifi/_form.html.twig') }}
+
+    <a href="{{ path('app_ifi_taxe_fonciere_ifi_index') }}">back to list</a>
+{% endblock %}

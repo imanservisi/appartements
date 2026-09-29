@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Ifi;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +11,7 @@ final class DeclarationIFIController extends AbstractController
     #[Route('/declarationIfi', name: 'app_declaration_ifi')]
     public function index(): Response
     {
-        return $this->render('declaration_ifi/index.html.twig', [
+        return $this->render('ifi/declaration_ifi/index.html.twig', [
             'controller_name' => 'DeclarationIFIController',
         ]);
     }

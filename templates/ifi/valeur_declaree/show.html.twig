@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>ValeurDeclaree</title>
+
+{% block body %}
+    <h1>ValeurDeclaree</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ valeur_declaree.id }}</td>
+            </tr>
+            <tr>
+                <th>Valeur</th>
+                <td>{{ valeur_declaree.valeur }}</td>
+            </tr>
+            <tr>
+                <th>Annee</th>
+                <td>{{ valeur_declaree.annee }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ifi_valeur_declaree_index') }}">back to list</a>
+
+    <a href="{{ path('app_ifi_valeur_declaree_edit', {'id': valeur_declaree.id}) }}">edit</a>
+
+    {{ include('ifi/valeur_declaree/_delete_form.html.twig') }}
+{% endblock %}

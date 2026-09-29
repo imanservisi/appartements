@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_ifi_valeur_declaree_delete', {'id': valeur_declaree.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ valeur_declaree.id) }}">
+    <button class="btn">Delete</button>
+</form>

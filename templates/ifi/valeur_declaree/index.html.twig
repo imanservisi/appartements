@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<title>ValeurDeclaree index</title>
+
+{% block body %}
+    <h1>ValeurDeclaree index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Valeur</th>
+                <th>Annee</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for valeur_declaree in valeur_declarees %}
+            <tr>
+                <td>{{ valeur_declaree.id }}</td>
+                <td>{{ valeur_declaree.valeur }}</td>
+                <td>{{ valeur_declaree.annee }}</td>
+                <td>
+                    <a href="{{ path('app_ifi_valeur_declaree_show', {'id': valeur_declaree.id}) }}">show</a>
+                    <a href="{{ path('app_ifi_valeur_declaree_edit', {'id': valeur_declaree.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ifi_valeur_declaree_new') }}">Create new</a>
+{% endblock %}

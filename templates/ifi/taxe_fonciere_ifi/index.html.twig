@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<title>TaxeFonciereIfi index</title>
+
+{% block body %}
+    <h1>TaxeFonciereIfi index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Valeur</th>
+                <th>Date</th>
+                <th>Annee</th>
+                <th>NomTFI</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for taxe_fonciere_ifi in taxe_fonciere_ifis %}
+            <tr>
+                <td>{{ taxe_fonciere_ifi.id }}</td>
+                <td>{{ taxe_fonciere_ifi.valeur }}</td>
+                <td>{{ taxe_fonciere_ifi.date ? taxe_fonciere_ifi.date|date('Y-m-d') : '' }}</td>
+                <td>{{ taxe_fonciere_ifi.annee }}</td>
+                <td>{{ taxe_fonciere_ifi.nomTFI }}</td>
+                <td>
+                    <a href="{{ path('app_ifi_taxe_fonciere_ifi_show', {'id': taxe_fonciere_ifi.id}) }}">show</a>
+                    <a href="{{ path('app_ifi_taxe_fonciere_ifi_edit', {'id': taxe_fonciere_ifi.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ifi_taxe_fonciere_ifi_new') }}">Create new</a>
+{% endblock %}

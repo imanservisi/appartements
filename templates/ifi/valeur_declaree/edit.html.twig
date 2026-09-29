@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit ValeurDeclaree</title>
+
+{% block body %}
+    <h1>Edit ValeurDeclaree</h1>
+
+    {{ include('ifi/valeur_declaree/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_ifi_valeur_declaree_index') }}">back to list</a>
+
+    {{ include('ifi/valeur_declaree/_delete_form.html.twig') }}
+{% endblock %}

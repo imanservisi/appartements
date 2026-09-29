@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<title>ValeurDette index</title>
+
+{% block body %}
+    <h1>ValeurDette index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Valeur</th>
+                <th>Date</th>
+                <th>Annee</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for valeur_dette in valeur_dettes %}
+            <tr>
+                <td>{{ valeur_dette.id }}</td>
+                <td>{{ valeur_dette.valeur }}</td>
+                <td>{{ valeur_dette.date ? valeur_dette.date|date('Y-m-d') : '' }}</td>
+                <td>{{ valeur_dette.annee }}</td>
+                <td>
+                    <a href="{{ path('app_ifi_valeur_dette_show', {'id': valeur_dette.id}) }}">show</a>
+                    <a href="{{ path('app_ifi_valeur_dette_edit', {'id': valeur_dette.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ifi_valeur_dette_new') }}">Create new</a>
+{% endblock %}
