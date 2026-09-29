@@ -1,5 +1,8 @@
 # Versions
 
+## Version 3.0 (octobre 2026)
+Ajout de la partie concernant l'impôt sur la fortune immobilière
+
 ## Version 2.0 (19/09/2026)
 Montée version en Symfony 7.4 et PHP8.4
 Ajout d'un récapitulatif des résidences à des fins de comparaison/vérification

@@ -1,0 +1,69 @@
+{% extends 'base_IFI.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center mb-3">Travaux pour l'année {{ annee_choisie }}</h1>
+        <div class="row mt-3">
+            <div class="col-6">
+                <form method="post">
+                    <div class="col-3">
+                        <label class="form-label" for="choix-annee">
+                            Choix année
+                            <span class="text-danger" aria-hidden="true">*</span>
+                            <span class="visually-hidden"> — champ obligatoire</span>
+                        </label>
+                        <select
+                                class="form-select"
+                                id="choix-annee"
+                                name="choix-annee"
+                                aria-required="true"
+                                aria-describedby="help-choix-annee error-choix-annee"
+                                required
+                        >
+                            <option value="">Choisir une année</option>
+                            {% for annee in annees %}
+                                <option value="{{ annee }}"
+                                        {% if annee == annee_choisie %} selected {% endif %}>
+                                    {{ annee }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div id="help-choix-annee" class="form-text visually-hidden">Sélectionnez l'année des travaux.</div>
+                        <div id="error-choix-annee" class="invalid-feedback" role="alert" aria-live="polite" hidden></div>
+                    </div>
+
+                    <button class="mt-2 btn btn-info" type="submit">Choisir</button>
+                </form>
+            </div>
+            <div class="col-6 justify-content-end">
+                <button class="btn btn-primary">
+                    <a href="{{ path('app_ifi_travaux_new') }}">Ajouter des travaux</a>
+                </button>
+            </div>
+        </div>
+        <div class="container mt-3 ps-0">
+            {% for travail in travaux %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p><strong>Société :</strong> {{ travail.entreprise.nomEntreprise }}</p>
+                        <p><strong>Adresse : </strong>{{ travail.entreprise.adresseEntreprise }}</p>
+                        <p><strong>Objet : </strong>{{ travail.typeTravaux }}</p>
+                        <p><strong>Date : </strong>{{ travail.dateTravaux ? travail.dateTravaux|date('d/m/Y') : '' }}</p>
+                        <p><strong>Valeur : </strong>{{ travail.montantTravaux }} €</p>
+                    </div>
+                    {% if travail.lot is null %}
+                        <div class="card-footer d-flex gap-2">
+                            <a type="button"
+                               class="btn btn-success"
+                               title="modifier"
+                               href="{{ path('app_ifi_travaux_edit', {id: travail.id})}}">
+                                Modifier
+                            </a>
+                            {{ include('ifi/travaux_ifi/_delete_form.html.twig', { travail: travail }) }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
