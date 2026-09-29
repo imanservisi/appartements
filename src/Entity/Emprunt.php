@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Ifi\ValeurDette;
 use App\Repository\EmpruntRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,9 +29,19 @@ class Emprunt
     #[ORM\OneToMany(mappedBy: 'emprunt', targetEntity: Interet::class)]
     private Collection $interets;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nomDette = null;
+
+    /**
+     * @var Collection<int, ValeurDette>
+     */
+    #[ORM\OneToMany(mappedBy: 'emprunt', targetEntity: ValeurDette::class)]
+    private Collection $valeurDettes;
+
     public function __construct()
     {
         $this->interets = new ArrayCollection();
+        $this->valeurDettes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,6 +109,48 @@ class Emprunt
             // set the owning side to null (unless already changed)
             if ($interet->getEmprunt() === $this) {
                 $interet->setEmprunt(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNomDette(): ?string
+    {
+        return $this->nomDette;
+    }
+
+    public function setNomDette(?string $nomDette): static
+    {
+        $this->nomDette = $nomDette;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ValeurDette>
+     */
+    public function getValeurDettes(): Collection
+    {
+        return $this->valeurDettes;
+    }
+
+    public function addValeurDette(ValeurDette $valeurDette): static
+    {
+        if (!$this->valeurDettes->contains($valeurDette)) {
+            $this->valeurDettes->add($valeurDette);
+            $valeurDette->setEmprunt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeValeurDette(ValeurDette $valeurDette): static
+    {
+        if ($this->valeurDettes->removeElement($valeurDette)) {
+            // set the owning side to null (unless already changed)
+            if ($valeurDette->getEmprunt() === $this) {
+                $valeurDette->setEmprunt(null);
             }
         }
 

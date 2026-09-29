@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Ifi\ValeurDeclaree;
 use App\Repository\LotRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -46,6 +47,30 @@ class Lot
     #[ORM\OneToMany(mappedBy: 'lot', targetEntity: Location::class)]
     private Collection $locations;
 
+    /**
+     * @var Collection<int, ValeurDeclaree>
+     */
+    #[ORM\OneToMany(mappedBy: 'lot', targetEntity: ValeurDeclaree::class)]
+    private Collection $valeurDeclarees;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $prixAcquisition = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $nbPieces = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $superficie = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $bdi = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nomSociete = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $adresseSociete = null;
+
     public function __construct()
     {
         $this->charges = new ArrayCollection();
@@ -54,6 +79,7 @@ class Lot
         $this->emprunts = new ArrayCollection();
         $this->travauxes = new ArrayCollection();
         $this->locations = new ArrayCollection();
+        $this->valeurDeclarees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +311,108 @@ class Lot
                 $location->setLot(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ValeurDeclaree>
+     */
+    public function getValeurDeclarees(): Collection
+    {
+        return $this->valeurDeclarees;
+    }
+
+    public function addValeurDeclaree(ValeurDeclaree $valeurDeclaree): static
+    {
+        if (!$this->valeurDeclarees->contains($valeurDeclaree)) {
+            $this->valeurDeclarees->add($valeurDeclaree);
+            $valeurDeclaree->setLot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeValeurDeclaree(ValeurDeclaree $valeurDeclaree): static
+    {
+        if ($this->valeurDeclarees->removeElement($valeurDeclaree)) {
+            // set the owning side to null (unless already changed)
+            if ($valeurDeclaree->getLot() === $this) {
+                $valeurDeclaree->setLot(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPrixAcquisition(): ?int
+    {
+        return $this->prixAcquisition;
+    }
+
+    public function setPrixAcquisition(?int $prixAcquisition): static
+    {
+        $this->prixAcquisition = $prixAcquisition;
+
+        return $this;
+    }
+
+    public function getNbPieces(): ?int
+    {
+        return $this->nbPieces;
+    }
+
+    public function setNbPieces(?int $nbPieces): static
+    {
+        $this->nbPieces = $nbPieces;
+
+        return $this;
+    }
+
+    public function getSuperficie(): ?int
+    {
+        return $this->superficie;
+    }
+
+    public function setSuperficie(?int $superficie): static
+    {
+        $this->superficie = $superficie;
+
+        return $this;
+    }
+
+    public function isBdi(): bool
+    {
+        return $this->bdi;
+    }
+
+    public function setBdi(bool $bdi): static
+    {
+        $this->bdi = $bdi;
+
+        return $this;
+    }
+
+    public function getNomSociete(): ?string
+    {
+        return $this->nomSociete;
+    }
+
+    public function setNomSociete(?string $nomSociete): static
+    {
+        $this->nomSociete = $nomSociete;
+
+        return $this;
+    }
+
+    public function getAdresseSociete(): ?string
+    {
+        return $this->adresseSociete;
+    }
+
+    public function setAdresseSociete(?string $adresseSociete): static
+    {
+        $this->adresseSociete = $adresseSociete;
 
         return $this;
     }
