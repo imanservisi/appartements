@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/ifi/taxe/fonciere/ifi')]
+#[Route('/ifi/taxeFonciere')]
 final class TaxeFonciereIfiController extends AbstractController
 {
-    #[Route(name: 'app_ifi_taxe_fonciere_ifi_index', methods: ['GET'])]
+    #[Route(name: 'app_ifi_taxe_fonciere_index', methods: ['GET'])]
     public function index(TaxeFonciereIfiRepository $taxeFonciereIfiRepository): Response
     {
         return $this->render('ifi/taxe_fonciere_ifi/index.html.twig', [
@@ -22,7 +22,7 @@ final class TaxeFonciereIfiController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_ifi_taxe_fonciere_ifi_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_ifi_taxe_fonciere_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $taxeFonciereIfi = new TaxeFonciereIfi();
@@ -33,7 +33,7 @@ final class TaxeFonciereIfiController extends AbstractController
             $entityManager->persist($taxeFonciereIfi);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_ifi_taxe_fonciere_ifi_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ifi_taxe_fonciere_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ifi/taxe_fonciere_ifi/new.html.twig', [
@@ -42,15 +42,7 @@ final class TaxeFonciereIfiController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_ifi_taxe_fonciere_ifi_show', methods: ['GET'])]
-    public function show(TaxeFonciereIfi $taxeFonciereIfi): Response
-    {
-        return $this->render('ifi/taxe_fonciere_ifi/show.html.twig', [
-            'taxe_fonciere_ifi' => $taxeFonciereIfi,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_ifi_taxe_fonciere_ifi_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_ifi_taxe_fonciere_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, TaxeFonciereIfi $taxeFonciereIfi, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TaxeFonciereIfiType::class, $taxeFonciereIfi);
@@ -59,7 +51,7 @@ final class TaxeFonciereIfiController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_ifi_taxe_fonciere_ifi_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ifi_taxe_fonciere_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ifi/taxe_fonciere_ifi/edit.html.twig', [
@@ -68,7 +60,7 @@ final class TaxeFonciereIfiController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_ifi_taxe_fonciere_ifi_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_ifi_taxe_fonciere_delete', methods: ['POST'])]
     public function delete(Request $request, TaxeFonciereIfi $taxeFonciereIfi, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$taxeFonciereIfi->getId(), $request->getPayload()->getString('_token'))) {
@@ -76,6 +68,6 @@ final class TaxeFonciereIfiController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_ifi_taxe_fonciere_ifi_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_ifi_taxe_fonciere_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,41 +1,46 @@
-<!DOCTYPE html>
+{% extends 'base_IFI.html.twig' %}
 
-<title>TaxeFonciereIfi index</title>
+{% block title %}Taxe Fonciere IFI index{% endblock %}
 
 {% block body %}
-    <h1>TaxeFonciereIfi index</h1>
+    <div class="container">
+        <h1>Taxes Foncieres Ifi</h1>
 
-    <table class="table">
-        <thead>
+        <table class="table">
+            <thead>
             <tr>
-                <th>Id</th>
-                <th>Valeur</th>
+                <th>Montant</th>
                 <th>Date</th>
-                <th>Annee</th>
-                <th>NomTFI</th>
-                <th>actions</th>
+                <th>Année</th>
+                <th>Nom TFI/Commentaire</th>
+                <th class="text-center">Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for taxe_fonciere_ifi in taxe_fonciere_ifis %}
-            <tr>
-                <td>{{ taxe_fonciere_ifi.id }}</td>
-                <td>{{ taxe_fonciere_ifi.valeur }}</td>
-                <td>{{ taxe_fonciere_ifi.date ? taxe_fonciere_ifi.date|date('Y-m-d') : '' }}</td>
-                <td>{{ taxe_fonciere_ifi.annee }}</td>
-                <td>{{ taxe_fonciere_ifi.nomTFI }}</td>
-                <td>
-                    <a href="{{ path('app_ifi_taxe_fonciere_ifi_show', {'id': taxe_fonciere_ifi.id}) }}">show</a>
-                    <a href="{{ path('app_ifi_taxe_fonciere_ifi_edit', {'id': taxe_fonciere_ifi.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for taxe_fonciere_ifi in taxe_fonciere_ifis %}
+                <tr>
+                    <td>{{ taxe_fonciere_ifi.valeur }}</td>
+                    <td>{{ taxe_fonciere_ifi.date ? taxe_fonciere_ifi.date|date('Y-m-d') : '' }}</td>
+                    <td>{{ taxe_fonciere_ifi.annee }}</td>
+                    <td>{{ taxe_fonciere_ifi.nomTFI }}</td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center align-items-center gap-2">
+                            <a data-toggle="tooltip" data-placement="top" title="modifier la TF" type="button" class="btn btn-success" href="{{ path('app_ifi_taxe_fonciere_edit', {'id': taxe_fonciere_ifi.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            {{ include('ifi/taxe_fonciere_ifi/_delete_form.html.twig') }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucune donnée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_ifi_taxe_fonciere_ifi_new') }}">Create new</a>
+        <button class="btn btn-primary">
+            <a href="{{ path('app_ifi_taxe_fonciere_new') }}">Nouvelle taxe foncière</a>
+        </button>
+    </div>
+
 {% endblock %}

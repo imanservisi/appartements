@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-
-<title>Edit TaxeFonciereIfi</title>
+{% extends 'base_IFI.html.twig' %}
 
 {% block body %}
-    <h1>Edit TaxeFonciereIfi</h1>
+    <h1>Modifier Taxe Foncière Ifi</h1>
 
-    {{ include('ifi/taxe_fonciere_ifi/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('ifi/taxe_fonciere_ifi/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('app_ifi_taxe_fonciere_ifi_index') }}">back to list</a>
-
-    {{ include('ifi/taxe_fonciere_ifi/_delete_form.html.twig') }}
+    <button class="mt-3 btn btn-secondary">
+        <a href="{{ path('app_ifi_taxe_fonciere_index') }}">Retour à liste TF IFI</a>
+    </button>
 {% endblock %}
